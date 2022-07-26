@@ -11,12 +11,34 @@ const AntComponents = () => Components({
   resolvers: [AntDesignVueResolver()],
 })
 
+//自动注入page
+import Pages from 'vite-plugin-pages'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue(), 
-    vueJsx(), 
-    AntComponents()
+    vue(),
+    vueJsx(),
+    AntComponents(),
+    Pages({
+      //将什么样的文件转换成路由
+      extensions: ['vue'],
+      //哪个文件夹里的vue文件不需要转换成路由
+      exclude: ["**/components/*.vue"],
+      //接收一个路由，修改并返回修改后的路由
+      extendRoute(route, parent) {
+        
+        if (route.path === "/") {
+          // Index is unauthenticated.
+          return {...route,redirect:'/home'};
+        }
+        // Augment the route with meta that indicates that the route requires authentication.
+        return {
+          ...route,
+          meta: { auth: true },
+        }
+      }
+    }),
   ],
   resolve: {
     alias: {

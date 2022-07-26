@@ -19,10 +19,16 @@ import BreadCrumb from "./components/BreadCrumb.vue";
 import Footer from "@/components/Footer.vue";
 </script>
 
+<style>
+html {
+  overflow-x: hidden;
+}
+</style>
 <style scoped lang="scss">
 .page-x {
   width: 100vw;
-  height: 100vh;
+  
+  // height: 100vh;
 }
 // #components-layout-demo-fixed .logo {
 //   width: 120px;
