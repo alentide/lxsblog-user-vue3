@@ -1,6 +1,6 @@
 <template>
   <div>
-    home
+    如果你想了解我，就在这里逛一逛吧~~
   </div>
 </template>
 
