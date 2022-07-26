@@ -33,7 +33,10 @@
         </a-affix>
       </a-layout-sider>
       <a-layout-content style="padding: 10px">
-        <Markdown :source="source"
+          <md-editor
+    v-model="source"
+    previewOnly
+  />
       /></a-layout-content>
     </a-layout>
 
@@ -65,6 +68,10 @@ import Comments from './components/Comments.vue'
 
 import type { DrawerProps } from "ant-design-vue";
 
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
+
+
 const placement = ref<DrawerProps["placement"]>("left");
 const visible = ref<boolean>(false);
 
@@ -77,27 +84,13 @@ const onClose = () => {
 };
 
 
-const source = `# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!
-# Hello World!`;
+const source = `11111111123213123大幅度十分士大夫十分犯得上地方的上述代码
+\`\`\`mermaid
+flowchart TD 
+  Start --> Stop
+\`\`\`
+\`\`
+意思是？发`;
 </script>
 
 <style scoped></style>
