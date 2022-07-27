@@ -1,56 +1,81 @@
 <template>
-  <a-form
-    :model="formState"
-    name="basic"
-    autocomplete="off"
-    @finish="onFinish"
-    @finishFailed="onFinishFailed"
-    class="form-x"
-  >
-    <a-form-item
-      label="标题"
-      name="username"
-      :rules="[{ required: true, message: 'Please input your username!' }]"
-    >
-      <a-input v-model:value="formState.username" />
-    </a-form-item>
-
-    <a-form-item
-      label="摘要"
-      name="password"
-      :rules="[{ required: true, message: 'Please input your password!' }]"
-    >
-      <a-input-password v-model:value="formState.password" />
-    </a-form-item>
-    <a-form-item label="封面" name="password">
-      <a-upload-dragger
-        v-model:fileList="fileList"
-        name="file"
-        :multiple="true"
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        @change="handleChange"
-        @drop="handleDrop"
+  <div>
+    <!-- <a-row align="middle">
+      <a-col>
+        <a-button type="primary" shape="circle">
+          <template #icon>+</template>
+        </a-button>
+      </a-col>
+      <a-col :span="23">
+        <a-menu v-model:selectedKeys="current" mode="horizontal">
+          <a-menu-item :key="item" v-for="item in 4">
+            <a href="javascript:void(0)">item</a>
+          </a-menu-item>
+        </a-menu></a-col
       >
-        <p class="ant-upload-drag-icon">
-          <inbox-outlined></inbox-outlined>
-        </p>
-        <p class="ant-upload-text">Click or drag file to this area to upload</p>
-        <p class="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading
-          company data or other band files
-        </p>
-      </a-upload-dragger>
-    </a-form-item>
+    </a-row> -->
 
-    <a-form-item name="remember">
-      <MdEditor class="editor-x" v-model="value" />
-    </a-form-item>
+    <a-form
+      :model="formState"
+      name="basic"
+      autocomplete="off"
+      @finish="onFinish"
+      @finishFailed="onFinishFailed"
+      class="form-x"
+    >
+      <a-form-item
+        label="标题"
+        name="username"
+        :rules="[{ required: true, message: 'Please input your username!' }]"
+      >
+        <a-input v-model:value="formState.username" />
+      </a-form-item>
 
-    <a-form-item>
-      <a-button type="primary" html-type="submit">保存</a-button>
-    </a-form-item>
-  </a-form>
+      <a-form-item
+        label="摘要"
+        name="password"
+        :rules="[{ required: true, message: 'Please input your password!' }]"
+      >
+        <a-input-password v-model:value="formState.password" />
+      </a-form-item>
+      <a-form-item label="封面" name="password">
+        <a-upload-dragger
+          v-model:fileList="fileList"
+          name="file"
+          :multiple="true"
+          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          @change="handleChange"
+          @drop="handleDrop"
+        >
+          <p class="ant-upload-drag-icon">
+            <inbox-outlined></inbox-outlined>
+          </p>
+          <p class="ant-upload-text">
+            Click or drag file to this area to upload
+          </p>
+          <p class="ant-upload-hint">
+            Support for a single or bulk upload. Strictly prohibit from
+            uploading company data or other band files
+          </p>
+        </a-upload-dragger>
+      </a-form-item>
+
+      <a-form-item name="remember">
+        <MdEditor class="editor-x" v-model="value" />
+      </a-form-item>
+
+      <a-form-item>
+        <a-button type="primary" html-type="submit">保存</a-button>
+      </a-form-item>
+    </a-form>
+  </div>
 </template>
+
+<route lang="yml">
+meta:
+  title: 修改文章
+  lang: yml
+</route>
 
 <script setup lang="ts">
 import EasyMDE from "easymde";

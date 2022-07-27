@@ -1,8 +1,8 @@
 <template>
   <a-layout class="page-x">
     <Nav />
-    <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
-      <BreadCrumb />
+    <a-layout-content :style="{ padding: '20px 50px', marginTop: '64px' }">
+      <!-- <BreadCrumb /> -->
       <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
         <RouterView />
       </div>

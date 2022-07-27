@@ -1,4 +1,5 @@
 // import Home from '@/views/home/index.vue'
+import useAdminTabs from '@/modules/adminTabs/useAdminTabs'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '~pages'
 
@@ -31,7 +32,15 @@ const router = createRouter({
   // ]
 })
 
+
+const adminTabs = useAdminTabs()
 router.beforeEach((to, from) => {
+  console.log(to);
+  if (to.fullPath.startsWith('/admin')) {
+    adminTabs.add(to.fullPath)
+  }
+
+
   window.scrollTo({
     left: 0,
     top: 0,
