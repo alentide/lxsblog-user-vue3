@@ -1,7 +1,7 @@
 <template>
   <a-timeline mode="alternate">
     <a-timeline-item
-      v-for="item in timeLines.list.value"
+      v-for="item in list"
       :color="item.iconColor"
     >
       <a-popover>
@@ -13,15 +13,15 @@
                   title="确定要删除这个时间线节点吗？"
                   ok-text="是"
                   cancel-text="否"
-                  @confirm="timeLines.remove(item.id)"
+                  @confirm="remove(item.id)"
                 >
                   <a-button class="mr10" danger>
                     <template #icon><DeleteOutlined /></template>
                   </a-button>
                 </a-popconfirm>
-                <a-button type="primary" @click="timeLineForm.openEdit(item)">
+                <!-- <a-button type="primary" @click="timeLineForm.openEdit(item)">
                   <template #icon><EditOutlined /></template>
-                </a-button>
+                </a-button> -->
               </a-button-group>
             </template>
             {{ item.content }}
@@ -35,14 +35,26 @@
 </template>
 
 <script setup lang="ts">
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 // import useTimeLineForm from '@/modules/timeLine/useTimeLineForm';
 // import useTimeLines from '@/modules/timeLine/useTimeLines';
-// import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 // import { inject,onMounted} from "vue";
-
 // const timeLines =  inject('timeLines',()=>useTimeLines(),true)
 // const timeLineForm = inject('timeLineForm',()=>useTimeLineForm(),true)
 // onMounted(timeLines.refresh);
+import useTimeLines from '@/modules/timeLine/useTimeLines';
+import { onMounted } from 'vue';
+import timeLineRepo from "@/modules/timeLine/timeLineRepo";
+
+
+
+const {list,refresh,remove:_remove} = useTimeLines()
+onMounted(refresh)
+
+const remove = async (id:number)=>{
+   await timeLineRepo.remove(id)
+   _remove(id)
+}
 
 </script>
 
