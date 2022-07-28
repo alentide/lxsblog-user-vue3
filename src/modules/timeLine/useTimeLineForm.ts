@@ -61,7 +61,6 @@ import timeLineRepo from "./timeLineRepo"
 const useTimeLineNewForm = ()=>{
     const title = ref('新建时间线')
     const defaultForm = ()=>({
-        title: '',
         content: '',
     })
     const form:Ref<CreateTimeLineDto> = ref(defaultForm())
@@ -82,7 +81,6 @@ const useTimeLineEditForm = ()=>{
     const title = ref('编辑时间线')
     const defaultForm = ()=>({
         id: 0,
-        title: '',
         content: '',
         createTime: '',
         iconColor: '',

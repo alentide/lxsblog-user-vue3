@@ -10,11 +10,8 @@ export default () => {
     const {list,refresh,nextPage} = useList<TimeLine>('/time-lines')
     async function add(item: TimeLine) {
         const i = list.value.findIndex(m=>item.id ===m.id)
-
-       
         if(i===-1) {
             list.value.unshift(item)
-            console.log('i',list.value,item);
             return
         }
         list.value.splice(i,1,item)

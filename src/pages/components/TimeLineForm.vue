@@ -4,15 +4,10 @@
     :title="title"
     wrap-class-name="full-modal"
     :footer="null"
+    
   >
-    <a-form :model="form" name="basic" autocomplete="on">
-      <a-form-item
-        label="标题"
-        name="title"
-        :rules="[{ required: true, message: '请输入标题！' }]"
-      >
-        <a-input v-model:value="form.title" />
-      </a-form-item>
+    <a-form @finish="save" :model="form" name="basic" autocomplete="on">
+
 
       <a-form-item
         label="内容"
@@ -27,7 +22,6 @@
           type="primary"
           html-type="submit"
           :loading="loading"
-          @click="save"
           >保存</a-button
         >
       </a-form-item>
@@ -40,6 +34,8 @@ import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
 import { andThen, pipe } from "ramda";
 import { inject } from "vue";
 
+
+const log = console.log
 
 const { title, form, save, visible, loading } = inject(
   "timeLineForm",

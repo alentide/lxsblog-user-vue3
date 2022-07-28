@@ -30,7 +30,7 @@ export function useList<T>(url: string) {
     }
 
     const nextPage = async ()=>{
-        if(!hasMore.value) return Promise.reject(new IgnoreError('没有更多了'))
+        if(!hasMore.value) return []
         loading.value = true
         page.value.num++
         try{
