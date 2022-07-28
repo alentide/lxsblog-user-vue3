@@ -29,11 +29,14 @@
       </a-popover>
     </a-timeline-item>
   </a-timeline>
+  <ListLoading />
 </template>
 
 <script setup lang="ts">
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 import { onMounted, inject } from "vue";
+
+import ListLoading from '@/components/base/ListLoading.vue'
 
 import useTimeLines from "@/modules/timeLine/useTimeLines";
 import timeLineRepo from "@/modules/timeLine/timeLineRepo";
