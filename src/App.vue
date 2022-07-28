@@ -4,7 +4,7 @@
     <a-layout-content :style="{ padding: '20px 50px', marginTop: '64px' }">
       <!-- <BreadCrumb /> -->
       <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
-        <RouterView />
+        <RouterView class="view-x" />
       </div>
     </a-layout-content>
     <a-layout-footer :style="{ textAlign: 'center' }">
@@ -25,9 +25,12 @@ html {
 }
 </style>
 <style scoped lang="scss">
+.view-x {
+  min-height: calc(100vh - 64px - 70px - 40px - 48px);
+}
 .page-x {
-  width: 100vw;
-  
+  // width: 100vw;
+
   // height: 100vh;
 }
 // #components-layout-demo-fixed .logo {

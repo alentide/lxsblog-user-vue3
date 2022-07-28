@@ -5,6 +5,10 @@ import App from './App.vue'
 import router from './router'
 
 import 'normalize.css'
+import './styles/common.scss'
+
+
+import 'ant-design-vue/es/message/style/css'; //vite只能用 ant-design-vue/es 而非 ant-design-vue/lib
 
 
 

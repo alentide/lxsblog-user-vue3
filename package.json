@@ -14,11 +14,13 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "ant-design-vue": "^3.2.10",
+    "axios": "^0.27.2",
     "easymde": "^2.16.1",
     "highlight.js": "^11.6.0",
     "md-editor-v3": "^2.2.1",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.16",
+    "ramda": "^0.28.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2",
     "vue3-markdown-it": "^1.0.10"
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@types/jsdom": "^16.2.14",
     "@types/node": "^16.11.45",
+    "@types/ramda": "^0.28.15",
     "@vitejs/plugin-vue": "^3.0.1",
     "@vitejs/plugin-vue-jsx": "^2.0.0",
     "@vue/test-utils": "^2.0.2",

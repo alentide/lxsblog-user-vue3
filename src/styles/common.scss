@@ -1,0 +1,27 @@
+.dpf {
+    display: flex;
+}
+
+.aic {
+    align-items: center;
+}
+
+.jcc {
+    justify-content: center;
+}
+
+.xyc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@for $i from 0 through 100 {
+    .my#{$i} {
+        margin-top: $i * 1px;
+        margin-bottom: $i * 1px;
+    }
+    .mr#{$i} {
+        margin-right: $i * 1px;
+    }
+}
