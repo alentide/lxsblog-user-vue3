@@ -5,7 +5,7 @@
         >添加时间线节点</a-button
       >
     </div>
-    <a-timeline mode="alternate">
+    <!-- <a-timeline mode="alternate">
       <a-timeline-item v-for="item in timeLineItems" :color="item.iconColor">
         <a-popover>
           <template #content>
@@ -34,9 +34,9 @@
           <p style="color: #999">{{ item.createTimeDisplayed }}</p>
         </a-popover>
       </a-timeline-item>
-    </a-timeline>
+    </a-timeline> -->
 
-    <TimeLineForm />
+    <!-- <TimeLineForm /> -->
   </div>
 </template>
 
@@ -53,25 +53,25 @@ const visible = ref(false);
  */
 const hide = () => (visible.value = false);
 
-const { refresh, timeLineItems, add: _add, addLoading,remove:_remove } = useTimeLine();
+// const { refresh, timeLineItems, add: _add, addLoading,remove:_remove } = useTimeLine();
 
 
-const {success} = useToast();
-const successRes = (res)=>success(res.msg)
-const remove = pipe(
-  _remove,
-  andThen(successRes)
-)
+// const {success} = useToast();
+// const successRes = (res)=>success(res.msg)
+// const remove = pipe(
+//   _remove,
+//   andThen(successRes)
+// )
 
 
-provide('timeLineForm',useTimeLineForm())
+// provide('timeLineForm',useTimeLineForm())
 
 
 
 
-onMounted(() => {
-  refresh();
-});
+// onMounted(() => {
+//   refresh();
+// });
 </script>
 
 <style scoped lang="scss">

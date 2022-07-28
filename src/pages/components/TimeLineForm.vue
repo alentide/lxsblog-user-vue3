@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <!-- <a-modal
     v-model:visible="visible"
     title="添加新的时间线节点"
     wrap-class-name="full-modal"
@@ -32,7 +32,7 @@
         >
       </a-form-item>
     </a-form>
-  </a-modal>
+  </a-modal> -->
 </template>
 
 <script setup lang="ts">
@@ -40,13 +40,13 @@ import { inject} from "vue";
 
 
 
-const props = defineProps<{
-  form: TimeLineItems;
-}>();
+// const props = defineProps<{
+//   form: TimeLineItems;
+// }>();
 
-const emit = defineEmits(["after-save"]);
+// const emit = defineEmits(["after-save"]);
 
-const {form,save,loading,visible,hide,show,clear,} = inject('timeLineForm',()=>useTimeLineForm())
+// const {form,save,loading,visible,hide,show,clear,} = inject('timeLineForm',()=>useTimeLineForm())
 </script>
 
 <style scoped></style>

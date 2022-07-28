@@ -31,6 +31,9 @@ class Http {
     post(url: string, params?: any) {
         return this._axios.post(url, params).then((res: { data: any }) => res.data)
     }
+    put(url: string, params?: any) {
+        return this._axios.put(url, params).then((res: { data: any }) => res.data)
+    }
     delete(url: string, params?: any) {
         return this._axios.delete(url, {
             data: params
