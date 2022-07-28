@@ -16,3 +16,10 @@ export async function update(createTimeLineItems: CreateTimeLineDto) {
 export async function get(id:number) {
     return http.get('/time-lines',{id}).then((res: { data: TimeLine }) => res.data)
 }
+
+export default {
+    add,
+    remove,
+    update,
+    get,
+}

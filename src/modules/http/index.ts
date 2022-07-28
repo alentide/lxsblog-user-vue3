@@ -1,7 +1,10 @@
+import { reactive } from 'vue';
 
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import useToast from '../toast/useToast'
+import type { ListResponseData, ProjectResponse } from './http.interfaces';
+import IgnoreError from '../error/IgnoreError';
 
 const toast = useToast()
 class Http {
@@ -25,7 +28,7 @@ class Http {
             return Promise.reject(error);
           });
     }
-    get(url: string, params?: any) {
+    get<T>(url: string, params?: any):Promise<ProjectResponse<T>> {
         return this._axios.get(url, params).then((res: { data: any }) => res.data)
     }
     post(url: string, params?: any) {
@@ -57,5 +60,55 @@ export const usePost = (url: string, required: any={}) => {
         loading,
         result,
         request,
+    }
+}
+
+
+
+export function useList<T>(url: string) {
+    const list:Ref<T[]> = ref([])
+    const loading = ref(false)
+    const hasMore = ref(true)
+    const defaultPage = ()=>({
+        num:1,
+        limit:10
+    })
+    const page = ref(defaultPage())
+
+    const refresh = async ()=>{
+        loading.value = true
+        page.value = defaultPage()
+        try{
+            const {data} = await http.get<ListResponseData<T>>(url,{
+                page:page.value,
+            });
+            ({hasMore:hasMore.value} = data);
+            list.value=data.list
+            return data.list
+        }finally{
+            loading.value =false
+        }
+    }
+
+    const nextPage = async ()=>{
+        if(hasMore.value) return Promise.reject(new IgnoreError('没有更多了'))
+        loading.value = true
+        page.value.num++
+        try{
+            const {data} = await http.get<ListResponseData<T>>(url,{
+                page:page.value,
+            });
+            ({hasMore:hasMore.value} = data);
+            list.value.push(...data.list)
+            return data.list
+        }finally{
+            loading.value =false
+        }
+    }
+    return {
+        list,
+        refresh,
+        loading,
+        nextPage,
     }
 }
