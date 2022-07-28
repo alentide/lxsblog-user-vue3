@@ -1,33 +1,35 @@
-import { usePost } from './../http/index';
+import { useList, usePost } from './../http/index';
 import { ref, type Ref } from "vue"
 import { http } from "../http"
 import useListLoader from "../listLoader/useListLoader"
-import type { TimeLineItems } from './useTimeLine';
+
 import timeLineRepo from './timeLineRepo';
+import type { TimeLine } from './timeline.interface';
 
 
 
 
 
 export default () => {
-    const timeLines: Ref<TimeLineItems[]> = ref([])
-    async function refresh() {
-        
-    }
-
-    async function add(items: TimeLineItems) {
-        timeLines.value.unshift(items)
-        
+    const {list,refresh,nextPage} = useList<TimeLine>('/time-lines')
+    async function add(item: TimeLine) {
+        const i = list.value.findIndex(m=>item.id ===m.id)
+        if(i===-1) {
+            list.value.unshift(item)
+            return
+        }
+        list.value.splice(i,1,item)
     }
     const  remove = async (id:number)=>{
-        const i = timeLines.value.findIndex(m=>m.id ===id)
+        const i = list.value.findIndex(m=>m.id ===id)
         if(i===-1) return
-        timeLines.value.splice(i,1)
+        list.value.splice(i,1)
     }
     return {
         refresh,
-        timeLines,
+        list,
         add,
         remove,
+        nextPage,
     }
 }

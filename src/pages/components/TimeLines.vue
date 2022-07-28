@@ -35,14 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import useTimeLineForm from '@/modules/timeLine/useTimeLineForm';
-import useTimeLines from '@/modules/timeLine/useTimeLines';
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-import { inject,onMounted} from "vue";
+// import useTimeLineForm from '@/modules/timeLine/useTimeLineForm';
+// import useTimeLines from '@/modules/timeLine/useTimeLines';
+// import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
+// import { inject,onMounted} from "vue";
 
-const timeLines =  inject('timeLines',()=>useTimeLines(),true)
-const timeLineForm = inject('timeLineForm',()=>useTimeLineForm(),true)
-onMounted(timeLines.refresh);
+// const timeLines =  inject('timeLines',()=>useTimeLines(),true)
+// const timeLineForm = inject('timeLineForm',()=>useTimeLineForm(),true)
+// onMounted(timeLines.refresh);
 
 </script>
 
