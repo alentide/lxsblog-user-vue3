@@ -14,16 +14,25 @@ export default () => {
     const {list,refresh,nextPage} = useList<TimeLine>('/time-lines')
     async function add(item: TimeLine) {
         const i = list.value.findIndex(m=>item.id ===m.id)
+
+       
         if(i===-1) {
             list.value.unshift(item)
+            console.log('i',list.value,item);
             return
         }
         list.value.splice(i,1,item)
     }
     const  remove = async (id:number)=>{
-        const i = list.value.findIndex(m=>m.id ===id)
-        if(i===-1) return
-        list.value.splice(i,1)
+        try{
+            await timeLineRepo.remove(id)
+            const i = list.value.findIndex(m=>m.id ===id)
+            if(i===-1) return
+            list.value.splice(i,1)
+        }catch(error){
+
+        }
+
     }
     return {
         refresh,

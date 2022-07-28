@@ -2,7 +2,7 @@ import { http } from "../http";
 import type {  CreateTimeLineDto, TimeLine } from "./timeline.interface";
 
 export async function add(createTimeLineItems: CreateTimeLineDto) {
-    return http.post('/time-lines',createTimeLineItems).then((res: { data: TimeLine }) => res.data)
+    return http.post<TimeLine>('/time-lines',createTimeLineItems).then((res: { data: TimeLine }) => res.data)
 }
 
 export async function remove(id:number) {

@@ -1,51 +1,35 @@
 <template>
   <div>
     <div class="xyc my20">
-      <a-button type="primary" size="small" @click="visible = true"
+      <a-button type="primary" size="small" @click="openCreate"
         >添加时间线节点</a-button
       >
     </div>
-    <TimeLines />
-    <!-- <TimeLineForm /> -->
+    <TimeLines  />
+    <TimeLineForm />
   </div>
 </template>
 
 <script setup lang="ts">
-import useTimeLine from "@/modules/timeLine/useTimeLine";
+import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
+import useTimeLines from "@/modules/timeLine/useTimeLines";
 import { onMounted, provide, reactive, ref } from "vue";
-import { pipe, andThen, reduce } from "ramda";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-import useToast from "@/modules/toast/useToast";
+
 import TimeLineForm from "./components/TimeLineForm.vue";
+import TimeLines from "./components/TimeLines.vue";
 
-import TimeLines from './components/TimeLines.vue'
+const timeLineForm = useTimeLineForm();
+const save = timeLineForm.save;
+timeLineForm.save = async () => {
+  const res = await save();
+  timeLines.add(res);
+  return res;
+};
+provide("timeLineForm", timeLineForm);
+const { openCreate, openEdit } = timeLineForm;
 
-
-const visible = ref(false);
-/**
- * 隐藏表单
- */
-const hide = () => (visible.value = false);
-
-// const { refresh, timeLineItems, add: _add, addLoading,remove:_remove } = useTimeLine();
-
-
-// const {success} = useToast();
-// const successRes = (res)=>success(res.msg)
-// const remove = pipe(
-//   _remove,
-//   andThen(successRes)
-// )
-
-
-// provide('timeLineForm',useTimeLineForm())
-
-
-
-
-// onMounted(() => {
-//   refresh();
-// });
+const timeLines = useTimeLines();
+provide("timeLines", timeLines);
 </script>
 
 <style scoped lang="scss">

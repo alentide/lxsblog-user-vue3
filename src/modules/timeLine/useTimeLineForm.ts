@@ -1,7 +1,10 @@
 
 // export default ()=>{
 
-import { ref } from "vue"
+import { clone } from "ramda"
+import { computed, ref, type Ref } from "vue"
+import type { CreateTimeLineDto, TimeLine } from "./timeline.interface"
+import timeLineRepo from "./timeLineRepo"
 
     
 // const {
@@ -53,3 +56,108 @@ import { ref } from "vue"
 //         form,save,loading,visible,hide,show,clear
 //     }
 // }
+
+
+const useTimeLineNewForm = ()=>{
+    const title = ref('新建时间线')
+    const defaultForm = ()=>({
+        title: '',
+        content: '',
+    })
+    const form:Ref<CreateTimeLineDto> = ref(defaultForm())
+    const clear = ()=>form.value= defaultForm()
+    const save = async ()=>{
+        const res = await timeLineRepo.add(form.value)
+        clear()
+        return res
+    }
+    return {
+        title,
+        form,
+        save,
+    }
+}
+
+const useTimeLineEditForm = ()=>{
+    const title = ref('编辑时间线')
+    const defaultForm = ()=>({
+        id: 0,
+        title: '',
+        content: '',
+        createTime: '',
+        iconColor: '',
+        createTimeDisplayed:'',
+    })
+
+    const form:Ref<TimeLine> = ref(defaultForm())
+    const save = async ()=>{
+        return await timeLineRepo.add(form.value)
+    }
+    return {
+        title,
+        form,
+        save,
+    }
+}
+
+const enum TimeLineFormType {
+    'NEW',
+    'EDIT'
+}
+
+export default ()=>{
+    const visible = ref(false)
+    const loading = ref(false)
+
+    const formForCreate = useTimeLineNewForm()
+    const formForEdit = useTimeLineEditForm()
+
+    const type = ref(TimeLineFormType.NEW)
+
+    const getCurrentForm = ()=>{
+        switch(type.value){
+            case TimeLineFormType.NEW: return formForCreate;
+            case TimeLineFormType.EDIT: return formForEdit;
+        }
+    }
+
+    const openCreate = ()=>{
+        type.value = TimeLineFormType.NEW
+        visible.value = true
+    }
+
+    const openEdit = (item:TimeLine)=>{
+        type.value = TimeLineFormType.EDIT
+        getCurrentForm().form.value=clone(item)
+        visible.value=true
+    }
+    
+    const title = computed({
+        get: () => {
+            return getCurrentForm().title.value
+        },
+        set: (val:string) => {
+            getCurrentForm().title.value =val
+        }
+    })
+
+    const form = computed(()=>getCurrentForm().form.value)
+    const save = async ()=>{
+        const res =  await getCurrentForm().save()
+        visible.value=false
+        return res
+    }
+
+
+    
+    return {
+        title,
+        form,
+        save,
+        visible,
+        loading,
+
+        openCreate,
+        openEdit,
+    }
+}

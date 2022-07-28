@@ -1,9 +1,6 @@
 <template>
   <a-timeline mode="alternate">
-    <a-timeline-item
-      v-for="item in list"
-      :color="item.iconColor"
-    >
+    <a-timeline-item v-for="item in list" :color="item.iconColor">
       <a-popover>
         <template #content>
           <a-card :title="item.title" style="width: 300px">
@@ -19,9 +16,9 @@
                     <template #icon><DeleteOutlined /></template>
                   </a-button>
                 </a-popconfirm>
-                <!-- <a-button type="primary" @click="timeLineForm.openEdit(item)">
+                <a-button type="primary" @click="openEdit(item)">
                   <template #icon><EditOutlined /></template>
-                </a-button> -->
+                </a-button>
               </a-button-group>
             </template>
             {{ item.content }}
@@ -36,26 +33,20 @@
 
 <script setup lang="ts">
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-// import useTimeLineForm from '@/modules/timeLine/useTimeLineForm';
-// import useTimeLines from '@/modules/timeLine/useTimeLines';
-// import { inject,onMounted} from "vue";
-// const timeLines =  inject('timeLines',()=>useTimeLines(),true)
-// const timeLineForm = inject('timeLineForm',()=>useTimeLineForm(),true)
-// onMounted(timeLines.refresh);
-import useTimeLines from '@/modules/timeLine/useTimeLines';
-import { onMounted } from 'vue';
+import { onMounted, inject } from "vue";
+
+import useTimeLines from "@/modules/timeLine/useTimeLines";
 import timeLineRepo from "@/modules/timeLine/timeLineRepo";
+import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
 
+const { list, refresh, remove } = inject(
+  "timeLines",
+  () => useTimeLines(),
+  true
+);
+onMounted(refresh);
 
-
-const {list,refresh,remove:_remove} = useTimeLines()
-onMounted(refresh)
-
-const remove = async (id:number)=>{
-   await timeLineRepo.remove(id)
-   _remove(id)
-}
-
+const { openEdit } = inject("timeLineForm", useTimeLineForm(), true);
 </script>
 
 <style scoped></style>

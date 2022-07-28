@@ -29,9 +29,9 @@ class Http {
           });
     }
     get<T>(url: string, params?: any):Promise<ProjectResponse<T>> {
-        return this._axios.get(url, params).then((res: { data: any }) => res.data)
+        return this._axios.get(url, {params}).then((res: { data: any }) => res.data)
     }
-    post(url: string, params?: any) {
+    post<T>(url: string, params?: any):Promise<ProjectResponse<T>>  {
         return this._axios.post(url, params).then((res: { data: any }) => res.data)
     }
     put(url: string, params?: any) {
@@ -80,7 +80,8 @@ export function useList<T>(url: string) {
         page.value = defaultPage()
         try{
             const {data} = await http.get<ListResponseData<T>>(url,{
-                page:page.value,
+                pageNum: page.value.num,
+                pageLimit: page.value.limit,
             });
             ({hasMore:hasMore.value} = data);
             list.value=data.list
@@ -96,7 +97,8 @@ export function useList<T>(url: string) {
         page.value.num++
         try{
             const {data} = await http.get<ListResponseData<T>>(url,{
-                page:page.value,
+                pageNum: page.value.num,
+                pageLimit: page.value.limit,
             });
             ({hasMore:hasMore.value} = data);
             list.value.push(...data.list)

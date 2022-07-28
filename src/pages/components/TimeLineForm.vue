@@ -1,7 +1,7 @@
 <template>
   <a-modal
     v-model:visible="visible"
-    title="添加新的时间线节点"
+    :title="title"
     wrap-class-name="full-modal"
     :footer="null"
   >
@@ -27,7 +27,7 @@
           type="primary"
           html-type="submit"
           :loading="loading"
-          @click="save(form)"
+          @click="save"
           >保存</a-button
         >
       </a-form-item>
@@ -36,17 +36,17 @@
 </template>
 
 <script setup lang="ts">
-import { inject} from "vue";
+import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
+import { andThen, pipe } from "ramda";
+import { inject } from "vue";
 
 
+const { title, form, save, visible, loading } = inject(
+  "timeLineForm",
+  () => useTimeLineForm(),
+  true
+);
 
-// const props = defineProps<{
-//   form: TimeLineItems;
-// }>();
-
-// const emit = defineEmits(["after-save"]);
-
-// const {form,save,loading,visible,hide,show,clear,} = inject('timeLineForm',()=>useTimeLineForm())
 </script>
 
 <style scoped></style>
