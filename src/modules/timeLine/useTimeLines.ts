@@ -9,6 +9,13 @@ import { useList } from '../http/useList';
 export default () => {
     const {list,refresh,nextPage} = useList<TimeLine>('/time-lines')
     async function add(item: TimeLine) {
+
+        /**
+         * 如果是空的，直接刷新，因为要重置好些状态，刷新更方便
+         */
+        if(!list.value.length){
+            return await refresh()
+        }
         const i = list.value.findIndex(m=>item.id ===m.id)
         if(i===-1) {
             list.value.unshift(item)

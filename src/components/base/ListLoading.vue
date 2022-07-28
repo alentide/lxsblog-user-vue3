@@ -1,7 +1,7 @@
 <template>
     <div class="list-loading-x">
          <a-spin :spinning="loading"/>
-         <span v-if="!hasMore">没有更多了</span>
+         <span v-if="!hasMore && list.length > 8">没有更多了</span>
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 import { useList } from '@/modules/http/useList';
 import { inject } from 'vue';
 
-const {loading,hasMore} = inject('list',()=>useList(''),true)
+const {loading,hasMore,list} = inject('list',()=>useList(''),true)
 </script>
 
 <style scoped lang="scss">

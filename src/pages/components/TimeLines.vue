@@ -25,6 +25,7 @@
       </a-popover>
     </a-timeline-item>
   </a-timeline>
+  <ListEmpty />
   <ListLoading />
 </template>
 
@@ -33,6 +34,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 import { onMounted, inject } from "vue";
 
 import ListLoading from "@/components/base/ListLoading.vue";
+import ListEmpty from "@/components/base/ListEmpty.vue";
 
 import useTimeLines from "@/modules/timeLine/useTimeLines";
 import timeLineRepo from "@/modules/timeLine/timeLineRepo";

@@ -32,8 +32,6 @@ const timeLines = useTimeLines();
 provide("timeLines", timeLines);
 
 const onReachBottom = () => {
-  // console.log(document.documentElement.scrollHeight , window.innerHeight  , document.documentElement.scrollTop);
-
   if (
     document.documentElement.scrollHeight -
       window.innerHeight -
