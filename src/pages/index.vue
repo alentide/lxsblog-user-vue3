@@ -5,7 +5,7 @@
         >添加时间线节点</a-button
       >
     </div>
-    <TimeLines  />
+    <TimeLines />
     <TimeLineForm />
   </div>
 </template>
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
 import useTimeLines from "@/modules/timeLine/useTimeLines";
-import { onMounted, provide, reactive, ref } from "vue";
+import { onMounted, provide, reactive, ref, onBeforeUnmount } from "vue";
 
 import TimeLineForm from "./components/TimeLineForm.vue";
 import TimeLines from "./components/TimeLines.vue";
@@ -30,6 +30,25 @@ const { openCreate, openEdit } = timeLineForm;
 
 const timeLines = useTimeLines();
 provide("timeLines", timeLines);
+
+const onReachBottom = () => {
+  // console.log(document.documentElement.scrollHeight , window.innerHeight  , document.documentElement.scrollTop);
+
+  if (
+    document.documentElement.scrollHeight -
+      window.innerHeight -
+      document.documentElement.scrollTop <
+    50
+  ) {
+    timeLines.nextPage();
+  }
+};
+onMounted(() => {
+  window.addEventListener("scroll", onReachBottom);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onReachBottom);
+});
 </script>
 
 <style scoped lang="scss">
