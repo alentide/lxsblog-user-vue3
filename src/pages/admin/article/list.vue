@@ -1,6 +1,6 @@
 <template>
   <div>
-    文章列表
+    <!-- 文章列表
     <a-form
       :model="formState"
       name="validate_other"
@@ -32,7 +32,7 @@
           <a-radio value="c">评论最多</a-radio>
         </a-radio-group>
       </a-form-item>
-    </a-form>
+    </a-form> -->
     <a-table :columns="columns" :data-source="dataSource" bordered>
       <template #bodyCell="{ column, text, record }">
         <template v-if="['name', 'age', 'address'].includes(column.dataIndex)">
@@ -70,12 +70,6 @@
   </div>
 </template>
 
-
-<route lang="yml">
-meta:
-  title: 文章列表
-  lang: yml
-</route>
 
 <script setup lang="ts">
 

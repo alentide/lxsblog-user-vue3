@@ -25,15 +25,14 @@ import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import router from "@/router";
 import { computed, onMounted, ref, type Ref } from "vue";
 
-const adminTabs = useAdminTabs()
-const selectedKeys = computed(()=>[adminTabs.current.value])
+const adminTabs = useAdminTabs();
+const selectedKeys = computed(() => [adminTabs.current.value]);
 
 const clickMenu = ({ key }: { key: string }) => {
   router.push(key);
 };
 
-const {fetchMenu,menu} = useAdminMenu()
-
+const { fetchMenu, menu } = useAdminMenu();
 
 onMounted(() => fetchMenu().then((data) => (menu.value = data)));
 </script>

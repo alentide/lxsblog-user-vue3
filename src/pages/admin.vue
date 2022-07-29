@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-sider width="200" style="background: #fff">
+    <a-layout-sider width="200"   style="background: #fff">
       <SiderNav />
     </a-layout-sider>
     <a-layout-content
@@ -11,8 +11,8 @@
         margin: 0,
       }"
     >
-      <a-tabs hideAdd v-model:activeKey="current" @tabClick="go" type="editable-card" @edit="remove">
-        <a-tab-pane :key="tab.fullPath" :tab="tab.title" v-for="tab in tabs"  >
+      <a-tabs style="height: 100%" hideAdd v-model:activeKey="current" @tabClick="go" type="editable-card" @edit="remove">
+        <a-tab-pane class="custom-pane" :key="tab.fullPath" :tab="tab.title" v-for="tab in tabs" style="height: 100%"  >
           <RouterView v-if="tab.fullPath===current" style="height: 100%" />
         </a-tab-pane>
       </a-tabs>
@@ -40,5 +40,9 @@ const edit = (e)=>{
 <style scoped lang="scss">
 .admin-content-x {
   height: calc(100vh - 118px - 70px - 48px);
+}
+
+::v-deep(.ant-tabs-content-holder){
+  overflow-y: auto;
 }
 </style>

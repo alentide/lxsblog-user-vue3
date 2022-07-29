@@ -1,7 +1,7 @@
 <template>
   <a-layout class="page-x">
     <Nav />
-    <a-layout-content :style="{ padding: '20px 50px', marginTop: '64px' }">
+    <a-layout-content class="content-x" :style="{marginTop: '64px' }">
       <!-- <BreadCrumb /> -->
       <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
         <RouterView class="view-x" />
@@ -20,8 +20,47 @@ import Footer from "@/components/Footer.vue";
 </script>
 
 <style>
+.content-x {
+  padding: 20px 50px;
+}
+
+@media screen and (max-width:992px) {
+  .content-x {
+    padding: 20px 40px;
+  }
+}
+
+@media screen and (max-width:576px) {
+  .content-x {
+    padding: 20px 10px;
+  }
+}
+
+
 html {
   overflow-x: hidden;
+}
+
+/*定义滚动条高宽及背景
+ 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #f5f5f5;
+}
+/*定义滚动条轨道
+ 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+/*定义滑块
+ 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+  background-color: rgba(0,0,0,.1)
 }
 </style>
 <style scoped lang="scss">
