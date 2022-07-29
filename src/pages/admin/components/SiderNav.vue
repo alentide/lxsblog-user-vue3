@@ -8,7 +8,7 @@
     <a-sub-menu :key="submenu.key" v-for="submenu in menu">
       <template #title>
         <span>
-          <user-outlined />
+          <!-- <user-outlined /> -->
           {{ submenu.title }}
         </span>
       </template>

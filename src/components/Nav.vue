@@ -54,7 +54,6 @@
       v-model:visible="visible"
       centered
       title="登录"
-      @ok="handleOk"
       :footer="null"
     >
       <a-form
@@ -103,6 +102,8 @@ import router from '@/router';
 const clickMenu = ({ key }: { key: string }) => {
   router.push(key);
 };
+
+const selectedKeys =ref([])
 
 const visible = ref(false);
 const openLoginForm = () => (visible.value = true);

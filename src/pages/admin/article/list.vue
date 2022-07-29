@@ -70,11 +70,16 @@
 
 <script setup lang="ts">
 import ArticleItem from "@/components/article/ArticleItem.vue";
+import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import { useList } from "@/modules/http/useList";
 import { onMounted } from "vue";
 
 const { list, refresh,loading } = useList("/articles");
-onMounted(() => refresh());
+onMounted(() => {
+  console.log(useAdminTabs().current);
+  
+  refresh()
+});
 
 const columns = [
   {

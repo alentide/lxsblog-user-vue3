@@ -77,11 +77,8 @@ const menu: Ref<MenuItem[]> = ref([
 ]);
 
 const findMenu = (callback: (...args: any[]) => any, lastMenu = menu.value) => {
-    console.log('lastMenu', lastMenu);
 
-    return lastMenu.find(m => {
-        console.log('callback(m)',m,callback(m));
-        
+    return lastMenu.find(m => {        
         if (callback(m)) return callback(m)
         if (m.children) return findMenu(callback, m.children)
     })

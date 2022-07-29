@@ -35,7 +35,6 @@ const router = createRouter({
 
 const adminTabs = useAdminTabs()
 router.beforeEach((to, from) => {
-  console.log(to);
   if (to.fullPath.startsWith('/admin')) {
     adminTabs.add(to.fullPath)
   }

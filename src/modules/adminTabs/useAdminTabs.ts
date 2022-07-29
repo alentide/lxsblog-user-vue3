@@ -1,5 +1,5 @@
 import router from "@/router"
-import { type Ref, ref } from "vue"
+import { type Ref, ref ,computed} from "vue"
 import useAdminMenu from "../adminMenu/useAdminMenu"
 
 const {fetchMenu,menu,findMenu} = useAdminMenu()
@@ -10,10 +10,15 @@ interface Tab {
     fullPath:string 
  }
 const tabs:Ref<Tab[]> = ref([])
+const current = ref('')
 
+const currentIndex = computed(()=>{
+    return tabs.value.findIndex(existsTab=>existsTab.fullPath===current.value)
+})
 
 const add = (fullPath:string)=>{
     current.value=fullPath
+
     if(!tabs.value.find(existsTab=>existsTab.fullPath===fullPath)) {
         tabs.value.push({
             title: findMenu(m=>m.key===fullPath)?.title || '',
@@ -34,7 +39,7 @@ const remove = (fullPath:string)=>{
     router.push(tabs.value.slice(-1)[0]?.fullPath || '/admin')
 }
 
-const current = ref('')
+
 
 const pop = ()=>{
     remove(current.value)
@@ -42,7 +47,7 @@ const pop = ()=>{
 
 const go=(fullPath:string)=>{
     // console.log(fullPath);
-    current.value=fullPath
+    // current.value=fullPath
     router.push(fullPath)
     
 }
@@ -56,5 +61,6 @@ export default ()=>{
         remove,
         go,
         pop,
+        currentIndex,
     }
 }

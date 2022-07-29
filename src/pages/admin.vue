@@ -1,6 +1,6 @@
 <template>
-  <a-layout>
-    <a-layout-sider width="200"   style="background: #fff">
+  <a-layout style="background: #fff">
+    <a-layout-sider width="200" style="background: #fff">
       <SiderNav />
     </a-layout-sider>
     <a-layout-content
@@ -11,13 +11,26 @@
         margin: 0,
       }"
     >
-      <a-tabs style="height: 100%" hideAdd v-model:activeKey="current" @tabClick="go" type="editable-card" @edit="remove">
-        <a-tab-pane class="custom-pane" :key="tab.fullPath" :tab="tab.title" v-for="tab in tabs" style="height: 100%"  >
-          <RouterView v-if="tab.fullPath===current" style="height: 100%" />
-        </a-tab-pane>
-      </a-tabs>
-
-      
+        <a-tabs
+          hideAdd
+          v-model:activeKey="current"
+          @tabClick="go"
+          type="editable-card"
+          @edit="remove"
+          
+        >
+          <a-tab-pane
+            class="custom-pane"
+            :key="tab.fullPath"
+            :tab="tab.title"
+            v-for="(tab,i) in tabs"
+            style="display: none"
+          >
+          </a-tab-pane>
+        </a-tabs>
+      <RouterView style="height: 100%;background:#fff;" v-slot="{ Component, route }">
+        <component :is="Component" :key="route.fullPath" />
+      </RouterView>
     </a-layout-content>
   </a-layout>
 </template>
@@ -28,13 +41,11 @@ import { ref } from "vue";
 import SiderNav from "./admin/components/SiderNav.vue";
 // const current = ref("1");
 
-const {tabs,current,go,remove} = useAdminTabs()
+const { tabs, current, go, remove, currentIndex } = useAdminTabs();
 
-const edit = (e)=>{
+const edit = (e) => {
   console.log(e);
-  
-}
-
+};
 </script>
 
 <style scoped lang="scss">
@@ -42,7 +53,7 @@ const edit = (e)=>{
   height: calc(100vh - 118px - 70px - 48px);
 }
 
-::v-deep(.ant-tabs-content-holder){
+::v-deep(.ant-tabs-content-holder) {
   overflow-y: auto;
 }
 </style>
