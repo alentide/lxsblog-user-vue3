@@ -13,13 +13,14 @@ const tabs:Ref<Tab[]> = ref([])
 
 
 const add = (fullPath:string)=>{
+    current.value=fullPath
     if(!tabs.value.find(existsTab=>existsTab.fullPath===fullPath)) {
         tabs.value.push({
             title: findMenu(m=>m.key===fullPath)?.title || '',
             fullPath,
         })
     }
-    current.value=fullPath
+    
     
 }
 const remove = (fullPath:string)=>{
@@ -29,11 +30,19 @@ const remove = (fullPath:string)=>{
     if((i=tabs.value.findIndex(existsTab=>existsTab.fullPath===fullPath)) !==-1) {
         tabs.value.splice(i,1)
     }
+
+    router.push(tabs.value.slice(-1)[0]?.fullPath || '/admin')
 }
+
 const current = ref('')
+
+const pop = ()=>{
+    remove(current.value)
+}
 
 const go=(fullPath:string)=>{
     // console.log(fullPath);
+    current.value=fullPath
     router.push(fullPath)
     
 }
@@ -46,5 +55,6 @@ export default ()=>{
         add,
         remove,
         go,
+        pop,
     }
 }

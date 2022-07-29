@@ -65,6 +65,7 @@ declare module '@vue/runtime-core' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    ImageUploader: typeof import('./src/components/base/ImageUploader.vue')['default']
     ListEmpty: typeof import('./src/components/base/ListEmpty.vue')['default']
     ListLoading: typeof import('./src/components/base/ListLoading.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']

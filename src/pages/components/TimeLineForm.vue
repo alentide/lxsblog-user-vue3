@@ -14,7 +14,7 @@
         name="content"
         :rules="[{ required: true, message: '请输入内容！' }]"
       >
-        <a-input v-model:value="form.content" />
+        <a-textarea  v-model:value="form.content" />
       </a-form-item>
 
       <a-form-item>

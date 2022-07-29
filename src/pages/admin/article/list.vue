@@ -33,22 +33,20 @@
         </a-radio-group>
       </a-form-item>
     </a-form> -->
-    <a-table :columns="columns" :data-source="dataSource" bordered>
+    <a-table :columns="columns" :data-source="list" bordered :loading="loading">
       <template #bodyCell="{ column, text, record }">
-        <template v-if="['name', 'age', 'address'].includes(column.dataIndex)">
+        <template
+          v-if="['title', 'summary', 'address'].includes(column.dataIndex)"
+        >
           <div>
-            <!-- <a-input
-              v-if="editableData[record.key]"
-              v-model:value="editableData[record.key][column.dataIndex]"
-              style="margin: -5px 0"
-            /> -->
-            <template>
-              {{ text }}
-            </template>
+          <RouterLink :to="'/admin/article/edit/'+record.id">{{ text }}</RouterLink>
+          <!-- <RouterLink to="/admin/article/edit">{{ text }}</RouterLink> -->
+            
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <div class="editable-row-operations">
+          delete
+          <!-- <div class="editable-row-operations">
             <span v-if="dataSource[record.key]">
               <a-typography-link @click="save(record.key)"
                 >Save</a-typography-link
@@ -63,86 +61,31 @@
             <span v-else>
               <a @click="edit(record.key)">Edit</a>
             </span>
-          </div>
+          </div> -->
         </template>
       </template>
     </a-table>
   </div>
 </template>
 
-
 <script setup lang="ts">
-
-
 import ArticleItem from "@/components/article/ArticleItem.vue";
-import { reactive, ref } from "vue";
+import { useList } from "@/modules/http/useList";
+import { onMounted } from "vue";
 
-const plainOptions = ["Apple", "Pear", "Orange"];
-
-const value1 = ref([""]);
-
-const formItemLayout = {
-  labelCol: { span: 1 },
-  wrapperCol: { span: 14 },
-};
-
-const formState = reactive<Record<string, any>>({
-  "input-number": 3,
-  "checkbox-group": ["A", "B"],
-  rate: 3.5,
-});
-const onFinish = (values: any) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
-};
-
-const pagination = {
-  onChange: (page: number) => {
-    console.log(page);
-  },
-  pageSize: 10,
-};
-
-
-const selectorVisible = ref(true);
-const change = (affixed: boolean) => {
-  selectorVisible.value = !affixed;
-  console.log(affixed);
-};
-
-const dataSource = [
-  {
-    key: "1",
-    name: "胡彦斌",
-    age: 32,
-    address: "西湖区湖底公园1号",
-  },
-  {
-    key: "2",
-    name: "胡彦祖",
-    age: 42,
-    address: "西湖区湖底公园1号",
-  },
-];
+const { list, refresh,loading } = useList("/articles");
+onMounted(() => refresh());
 
 const columns = [
   {
-    title: "姓名",
-    dataIndex: "name",
-    key: "name",
+    title: "标题",
+    dataIndex: "title",
+    key: "title",
   },
   {
-    title: "年龄",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "住址",
-    dataIndex: "address",
-    key: "address",
+    title: "概述",
+    dataIndex: "summary",
+    key: "summary",
   },
   {
     title: "操作",

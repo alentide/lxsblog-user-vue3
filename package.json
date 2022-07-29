@@ -19,6 +19,7 @@
     "easymde": "^2.16.1",
     "highlight.js": "^11.6.0",
     "md-editor-v3": "^2.2.1",
+    "nanoid": "^4.0.0",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.16",
     "ramda": "^0.28.0",

@@ -37,6 +37,9 @@ class Http {
     put(url: string, params?: any) {
         return this._axios.put(url, params).then((res: { data: any }) => res.data)
     }
+    patch<T>(url: string, params?: any):Promise<ProjectResponse<T>> {
+        return this._axios.patch(url, params).then((res: { data: any }) => res.data)
+    }
     delete(url: string, params?: any) {
         return this._axios.delete(url, {
             data: params
