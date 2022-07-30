@@ -33,6 +33,12 @@ const columns = [
     dataIndex: "name",
   },
   {
+    title: "创建的时间",
+    dataIndex: "createTimeDisplayed",
+    sorter: (a, b,) => a-b,
+    sortDirections: ['descend', 'ascend'],
+  },
+  {
     title: "操作",
     dataIndex: "operation",
     width: "100px",

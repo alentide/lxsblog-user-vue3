@@ -13,10 +13,11 @@ export const defaultPage = () => ({
 
 export function useListRequest<T>(url: string) {
     const page = ref(defaultPage())
-    const request = async () => {
+    const request = async (options:any={}) => {
         const { data } = await http.get<ListResponseData<T>>(url, {
             pageNum: page.value.num,
             pageLimit: page.value.limit,
+            ...options,
         })
         return data
     }
@@ -26,13 +27,37 @@ export function useListRequest<T>(url: string) {
     }
 }
 
+
+
+interface Sorter {
+    column?: {
+        dataIndex: string;
+        sortDirections: string[];
+        sorter: (a: any, b: any) => number;
+        title: string;
+    };
+    columnKey?: undefined;
+    field: string;
+    order?: 'descend'|'ascend';
+}
+
 export function usePageList<T>(url: string, _useListRequest = useListRequest) {
 
-    const { page, request } = _useListRequest<T>(url)
+    
     const list: Ref<T[][]> = ref([])
     const loading = ref(false)
     const hasMore = ref(true)
     const total = ref(0)
+
+    const sortOption:{
+        [key:string]: 'DESC'|'ASC'|undefined
+    } = {}
+
+    const { page, request:_request } = _useListRequest<T>(url)
+    const request = ()=>_request({
+        sort: sortOption,
+    })
+
 
 
 
@@ -93,17 +118,54 @@ export function usePageList<T>(url: string, _useListRequest = useListRequest) {
         adminTabs.go('/admin/article/edit/' + record.id, record.title)
     }
 
+
+    /**
+     * 转换排序关键字
+     */
+    function transformOrderTypeToEndInSorter(sorter: Sorter) {
+        const types = { descend: 'DESC', ascend: 'ASC' } as const
+        const order = sorter.order && types[sorter.order]
+        return {
+            ...sorter,
+            order,
+        }
+    }
+
+    /**
+     * 用于显示的字段恢复到真正的字段
+     */
+    const keyRevertToPrevious = (key:string)=>{
+        return {
+            createTimeDisplayed: 'createTime'
+        }[key] || key
+    }
+
+    /**
+     * 当改变排序时
+     * @param sorter 
+     */
+    const onChangeSorter = (sorter:Sorter)=>{
+        const sorterTransformed = transformOrderTypeToEndInSorter(sorter)
+        sortOption[keyRevertToPrevious(sorter.field)] = sorterTransformed.order
+        if(!sortOption[keyRevertToPrevious(sorter.field)]){
+            delete sortOption[keyRevertToPrevious(sorter.field)]
+        }
+        console.log('sortOption',sorter,sortOption);
+    }
+
     /**
      * 使用a-table时，onChange事件传递该函数即可
      * @param param0 
      */
-    const onTableChange = ({
-        current,
-    }: {
+    const onTableChange = (e: {
         current: number;
         pageSize: number;
         total: number;
-    }) => {
+    },filter,sorter:Sorter) => {
+        const {
+            current,
+        }=e
+        onChangeSorter(sorter)
         goPageNum(current);
     };
 
