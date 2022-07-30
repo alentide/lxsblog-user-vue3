@@ -44,6 +44,7 @@ declare module '@vue/runtime-core' {
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
     ARow: typeof import('ant-design-vue/es')['Row']
+    ArticleForm: typeof import('./src/components/article/ArticleForm.vue')['default']
     ArticleItem: typeof import('./src/components/article/ArticleItem.vue')['default']
     ArticleSearch: typeof import('./src/components/article/ArticleSearch.vue')['default']
     ASelect: typeof import('ant-design-vue/es')['Select']

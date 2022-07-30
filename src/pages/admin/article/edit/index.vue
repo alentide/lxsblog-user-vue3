@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { useAutoCreateArticleForm,useArticleNewForm } from "@/modules/article/useArticleForm";
-import ArticleForm from "./components/ArticleForm.vue";
+import ArticleForm from "@/components/article/ArticleForm.vue";
 import {provide,watch} from 'vue'
 import router from "@/router";
 import { watchDebounced } from '@vueuse/core'
