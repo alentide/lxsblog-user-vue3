@@ -12,6 +12,10 @@ interface Tab {
     closable:boolean
  }
 
+const storeRef = (key:string,data:Ref<any>)=>{
+    const old = localStorage.getItem(key) 
+}
+
  const tabs:Ref<Tab[]> = ref([
     {
         title: '首页',
@@ -26,9 +30,11 @@ const currentIndex = computed(()=>{
     return tabs.value.findIndex(existsTab=>existsTab.fullPath===current.value)
 })
 
+const currentTab = ()=>tabs.value[currentIndex.value]
 
 
-const add = async (fullPath:string,title:string='')=>{
+
+const add = async (fullPath:string,title:string='无标题')=>{
     current.value=fullPath
     if(!tabs.value.find(existsTab=>existsTab.fullPath===fullPath)) {
         tabs.value.push({
@@ -58,9 +64,10 @@ const pop = ()=>{
     remove(current.value)
 }
 
-const go=(fullPath:string)=>{
+const go=(fullPath:string,title:string)=>{
     // console.log(fullPath);
     // current.value=fullPath
+    add(fullPath,title)
     router.push(fullPath)
     
 }
@@ -75,5 +82,6 @@ export default ()=>{
         go,
         pop,
         currentIndex,
+        currentTab,
     }
 }

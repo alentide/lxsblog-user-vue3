@@ -40,9 +40,19 @@
       <a-form-item
         label="封面"
         name="coverImage.src"
-        :rules="[{ type:'string',required: false, message: '请上传封面！',trigger:'change' }]"
+        :rules="[
+          {
+            type: 'string',
+            required: false,
+            message: '请上传封面！',
+            trigger: 'change',
+          },
+        ]"
       >
-        <ImageUploader style="width:100%;height: 100px;" v-model="form.coverImage"/>
+        <ImageUploader
+          style="width: 100%; height: 100px"
+          v-model="form.coverImage"
+        />
       </a-form-item>
 
       <a-form-item name="remember">
@@ -50,7 +60,9 @@
       </a-form-item>
 
       <a-form-item>
-        <a-button type="primary" :loading="loading" html-type="submit">保存</a-button>
+        <a-button type="primary" :loading="loading" html-type="submit"
+          >保存</a-button
+        >
       </a-form-item>
     </a-form>
   </div>
@@ -72,11 +84,14 @@ import {
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
-import ImageUploader from '@/components/base/ImageUploader.vue'
+import ImageUploader from "@/components/base/ImageUploader.vue";
 
-const useArticleForm = inject('useArticleForm',useArticleNewForm)
-const {loading,form,save,fetch} = useArticleForm()
-onMounted(fetch)
+const { loading, form, save, fetch } = inject("articleForm", ()=>useArticleNewForm(),true);
+
+onMounted(fetch);
+
+
+// onBeforeUnmount(save);
 </script>
 
 <style scoped lang="scss">

@@ -7,7 +7,7 @@
       @change="onChangeFile"
       accept=".png,.jpeg"
     />
-    <div class="image-x" v-if="image.src">
+    <div class="image-x" v-if="image?.src">
       <a-image
         height="100%"
         width="100%"
@@ -36,18 +36,16 @@ import { CameraOutlined, CloseCircleFilled } from "@ant-design/icons-vue";
 
 import { ref, watch, type Ref } from "vue";
 
-const props = defineProps({
-  modelValue: {
-    default: emptyImage()
-  }
-})
+const props = defineProps<{
+  modelValue: ProjectImage | null
+}>()
 const emit = defineEmits(["update:modelValue"]);
 
 const { loading, upload, image } = useImageUploader();
 
 watch(()=>props.modelValue,(newVal)=>{
-  if(!newVal) {
-    emit("update:modelValue", image);
+  if(!newVal && image.value) {
+    emit("update:modelValue", image.value);
     return 
   }
   image.value = newVal
@@ -72,17 +70,18 @@ const value = ref('')
 
 // 待重构 改用computed更合理些
 const base64Url = ref("");
-watch(()=>image.value.src, () => {
+watch(()=>image.value?.src, () => {
   emit("update:modelValue", image);
 });
 
 const file: Ref<File> = ref(emptyFile);
 
 const remove = () => {
-  image.value.src = "";
+  
   file.value = emptyFile;
   base64Url.value = "";
   value.value = ''
+  image.value=null
 };
 
 

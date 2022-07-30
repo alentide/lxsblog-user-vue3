@@ -44,14 +44,9 @@
       :loading="loading"
     >
       <template #bodyCell="{ column, text, record }">
-        <template
-          v-if="['title', 'summary', 'address'].includes(column.dataIndex)"
-        >
-          <div>
-            <RouterLink :to="'/admin/article/edit/' + record.id">{{
-              text
-            }}</RouterLink>
-            <!-- <RouterLink to="/admin/article/edit">{{ text }}</RouterLink> -->
+        <template v-if="['title'].includes(column.dataIndex)">
+          <div @click="go(record)">
+            <span>{{ text }}</span>
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
@@ -85,7 +80,7 @@ import type { ArticleDfe } from "@/modules/article/article.interfaces";
 import { useList, usePageList } from "@/modules/http/useList";
 import { onMounted } from "vue";
 
-const { currentList, refresh, loading, pagination, goPageNum } =
+const { currentList, refresh, loading, pagination, goPageNum, go } =
   usePageList<ArticleDfe>("/articles");
 onMounted(() => {
   console.log(useAdminTabs().current);

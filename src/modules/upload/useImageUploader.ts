@@ -1,5 +1,5 @@
 import OSS from "ali-oss"
-import { ref } from "vue"
+import { ref, type Ref } from "vue"
 import { http } from "../http"
 import { nanoid } from 'nanoid'
 
@@ -65,7 +65,7 @@ export const emptyImage:()=>ProjectImage =()=>({
 })
 export const useImageUploader = () => {
     const loading = ref(false)
-    const image = ref(emptyImage())
+    const image:Ref<ProjectImage|null> = ref(null)
     const upload = async (file: File) => {
         loading.value = true
         try {

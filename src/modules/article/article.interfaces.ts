@@ -5,7 +5,7 @@ export interface CreateArticleDto {
     coverImage: {
         id: number
         src: string
-    }
+    } | null
 }
 
 
@@ -17,7 +17,7 @@ export interface UpdateArticleDto {
     coverImage: {
         id: number
         src: string
-    }
+    }|null
 }
 
 export interface ArticleDfe {
@@ -28,6 +28,6 @@ export interface ArticleDfe {
     coverImage: {
         id: number
         src: string
-    }
+    }|null
     createTimeDisplayed: string;
 }

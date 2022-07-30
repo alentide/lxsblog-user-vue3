@@ -1,5 +1,7 @@
 import { computed, provide, ref, type Ref } from "vue"
 import { http } from "."
+import useAdminTabs from "../adminTabs/useAdminTabs"
+import type { ArticleDfe } from "../article/article.interfaces"
 import IgnoreError from "../error/IgnoreError"
 import type { ListResponseData } from "./http.interfaces"
 
@@ -85,6 +87,11 @@ export function usePageList<T>(url: string,_useListRequest=useListRequest){
             loading.value =false
         }
     }
+    const adminTabs = useAdminTabs()
+
+    const go = (record:ArticleDfe)=>{
+        adminTabs.go('/admin/article/edit/' + record.id,record.title)
+    }
 
     const result = {
         list,
@@ -96,6 +103,7 @@ export function usePageList<T>(url: string,_useListRequest=useListRequest){
         goPageNum,
         pagination,
         currentList,
+        go,
     }
     provide('list',result)
     return result

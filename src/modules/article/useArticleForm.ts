@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch, type Ref } from "vue"
 import { useRoute } from "vue-router"
 import useAdminTabs from "../adminTabs/useAdminTabs"
 import { http } from "../http"
+import { emptyImage } from "../upload/useImageUploader"
 import type { CreateArticleDto, UpdateArticleDto } from "./article.interfaces"
 
 export const useArticleForm = () => {
@@ -49,10 +50,7 @@ const cacheArticleForm = (form: Ref<CreateArticleDto>) => {
 const emptyArticleForm = () => ({
     title: '',
     summary: '',
-    coverImage: {
-        id: 0,
-        src: '',
-    },
+    coverImage: null,
     content: '',
 })
 
@@ -67,11 +65,6 @@ export const useArticleNewForm = () => {
     })
     cacheArticleForm(form)
 
-    const formTRQ = computed(() => ({
-        ...form.value,
-        coverImageId: form.value.coverImage.id
-    }))
-
     const { pop } = useAdminTabs()
 
 
@@ -79,7 +72,7 @@ export const useArticleNewForm = () => {
     const save = async () => {
         loading.value = true
         try {
-            const res = await http.post('/articles', formTRQ.value)
+            const res = await http.post('/articles', form.value)
 
             pop()
             return res
@@ -128,7 +121,10 @@ export const useArticleEditForm = () => {
         initLoading.value = true
         try {
             const res = await http.get<UpdateArticleDto>('/articles/' + id)
-            form.value = res.data
+            form.value = {
+                ...res.data,
+                // coverImage: res.data.coverImage || emptyImage()
+            }
             return res
         } finally {
             initLoading.value = false
