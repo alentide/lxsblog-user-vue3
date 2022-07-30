@@ -35,7 +35,7 @@ interface Sorter {
         sortDirections: string[];
         sorter: (a: any, b: any) => number;
         title: string;
-        isRelation: true,
+        sortKey?: string,
     };
     columnKey?: undefined;
     field: string;
@@ -78,7 +78,7 @@ export function usePageList<T>(url: string,listOptions={}) {
     const total = ref(0)
 
 
-    const sortOption:SortOption = {}
+    let sortOption:SortOption = {}
 
     const { page, request:_request } = useListRequest<T>(url)
     const request = ()=>_request({
@@ -173,20 +173,38 @@ export function usePageList<T>(url: string,listOptions={}) {
      */
     const onChangeSorter = (sorter:Sorter)=>{
 
-        console.log('sorter',sorter);
         const sorterTransformed = transformOrderTypeToEndInSorter(sorter)
-        if(sorter.column?.isRelation){
-            sortOption[keyRevertToPrevious(sorter.field)] = {
-                id: sorterTransformed.order
+        if(sorter.column?.sortKey){
+            sortOption = {
+                [keyRevertToPrevious(sorter.field)]:{
+                    [sorter.column?.sortKey]: sorterTransformed.order
+                }
             }
         }else {
-            sortOption[keyRevertToPrevious(sorter.field)] = sorterTransformed.order
+            sortOption = {
+                [keyRevertToPrevious(sorter.field)]:sorterTransformed.order
+            }
         }
         
         if(!sortOption[keyRevertToPrevious(sorter.field)]){
             delete sortOption[keyRevertToPrevious(sorter.field)]
         }
         console.log('sortOption',sorter,sortOption);
+
+        // console.log('sorter',sorter);
+        // const sorterTransformed = transformOrderTypeToEndInSorter(sorter)
+        // if(sorter.column?.sortKey){
+        //     sortOption[keyRevertToPrevious(sorter.field)] = {
+        //         [sorter.column?.sortKey]: sorterTransformed.order
+        //     }
+        // }else {
+        //     sortOption[keyRevertToPrevious(sorter.field)] = sorterTransformed.order
+        // }
+        
+        // if(!sortOption[keyRevertToPrevious(sorter.field)]){
+        //     delete sortOption[keyRevertToPrevious(sorter.field)]
+        // }
+        // console.log('sortOption',sorter,sortOption);
     }
 
     /**
