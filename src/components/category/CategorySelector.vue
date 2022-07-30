@@ -13,9 +13,8 @@
 <script setup lang="ts">
 import { http } from "@/modules/http";
 import { useLoadingHoc } from "@/modules/utils/useLoadingHoc";
-import type { SelectProps } from "ant-design-vue";
 import { computed, onMounted, ref, toRefs, watch, type Ref } from "vue";
-import type { CategoryDfe } from "../interfaces/CategoryDfe";
+import type { CategoryDfe } from "@/modules/category/interfaces/CategoryDfe";
 
 const props = defineProps<{
     modelValue?: {

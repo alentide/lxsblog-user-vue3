@@ -86,7 +86,7 @@ import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
 import ImageUploader from "@/components/base/ImageUploader.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
-import CategorySelector from '@/modules/category/components/CategorySelector.vue'
+import CategorySelector from '@/components/category/CategorySelector.vue'
 import TagSelector from '@/components/tag/TagSelector.vue'
 const { currentTab } = useAdminTabs();
 const adminTabs = useAdminTabs();
