@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ArticleSearch />
     <a-form
       :model="formState"
       name="validate_other"
@@ -88,7 +89,13 @@
 </template>
 <script lang="ts" setup>
 import ArticleItem from "@/components/article/ArticleItem.vue";
-import { reactive, ref } from "vue";
+import { provide, reactive, ref } from "vue";
+import ArticleSearch from "../../components/article/ArticleSearch.vue";
+
+
+import { useArticleSearch } from '@/pages/article/hooks/useArticleSearch';
+provide('articleSearch',useArticleSearch())
+
 
 const plainOptions = ["Apple", "Pear", "Orange"];
 

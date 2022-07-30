@@ -25,6 +25,7 @@
             :tab="tab.title"
             v-for="(tab,i) in tabs"
             style="display: none"
+            :closable="tab.closable"
           >
           </a-tab-pane>
         </a-tabs>

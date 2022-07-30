@@ -33,15 +33,25 @@
         </a-radio-group>
       </a-form-item>
     </a-form> -->
-    <a-table :columns="columns" :data-source="list" bordered :loading="loading">
+
+    <a-table
+      size="small"
+      :pagination="pagination"
+      @change="onTableChange"
+      :columns="columns"
+      :data-source="currentList"
+      bordered
+      :loading="loading"
+    >
       <template #bodyCell="{ column, text, record }">
         <template
           v-if="['title', 'summary', 'address'].includes(column.dataIndex)"
         >
           <div>
-          <RouterLink :to="'/admin/article/edit/'+record.id">{{ text }}</RouterLink>
-          <!-- <RouterLink to="/admin/article/edit">{{ text }}</RouterLink> -->
-            
+            <RouterLink :to="'/admin/article/edit/' + record.id">{{
+              text
+            }}</RouterLink>
+            <!-- <RouterLink to="/admin/article/edit">{{ text }}</RouterLink> -->
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
@@ -71,15 +81,27 @@
 <script setup lang="ts">
 import ArticleItem from "@/components/article/ArticleItem.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
-import { useList } from "@/modules/http/useList";
+import type { ArticleDfe } from "@/modules/article/article.interfaces";
+import { useList, usePageList } from "@/modules/http/useList";
 import { onMounted } from "vue";
 
-const { list, refresh,loading } = useList("/articles");
+const { currentList, refresh, loading, pagination, goPageNum } =
+  usePageList<ArticleDfe>("/articles");
 onMounted(() => {
   console.log(useAdminTabs().current);
-  
-  refresh()
+
+  refresh();
 });
+
+const onTableChange = ({
+  current,
+}: {
+  current: number;
+  pageSize: number;
+  total: number;
+}) => {
+  goPageNum(current);
+};
 
 const columns = [
   {

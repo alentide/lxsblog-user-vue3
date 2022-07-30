@@ -19,12 +19,6 @@
       >
       <a-col>
         <div style="align-items: center; display: flex">
-          <a-input-search
-            v-model:value="value"
-            placeholder="input search loading with enterButton"
-            @search="$router.push('/search')"
-          />
-
           <a-dropdown placement="bottomRight">
             <a-avatar style="flex-shrink: 0; margin-left: 20px" :size="40">
               <template #icon>
@@ -98,9 +92,12 @@ import Logo from "@/assets/logo.png";
 import { UserOutlined } from "@ant-design/icons-vue";
 import { reactive, ref } from "vue";
 import router from '@/router';
+import { useNav } from "@/modules/nav/useNav";
 
+
+const nav = useNav()
 const clickMenu = ({ key }: { key: string }) => {
-  router.push(key);
+  nav.go(key)
 };
 
 const selectedKeys =ref([])
