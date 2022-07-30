@@ -1,19 +1,5 @@
 <template>
   <div>
-    <!-- <a-row align="middle">
-      <a-col>
-        <a-button type="primary" shape="circle">
-          <template #icon>+</template>
-        </a-button>
-      </a-col>
-      <a-col :span="23">
-        <a-menu v-model:selectedKeys="current" mode="horizontal">
-          <a-menu-item :key="item" v-for="item in 4">
-            <a href="javascript:void(0)">item</a>
-          </a-menu-item>
-        </a-menu></a-col
-      >
-    </a-row> -->
 
     <a-form
       :model="form"
@@ -39,10 +25,18 @@
       </a-form-item>
       <a-form-item
         label="分类"
-        name="categoryId"
+        name="category"
       >
         <CategorySelector v-model="form.category" />
       </a-form-item>
+
+      <a-form-item
+        label="标签"
+        name="tag"
+      >
+        <TagSelector v-model="form.tags" />
+      </a-form-item>
+      
       <a-form-item
         label="封面"
         name="coverImage.src"
@@ -93,6 +87,7 @@ import { useArticleNewForm } from "@/modules/article/useArticleForm";
 import ImageUploader from "@/components/base/ImageUploader.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import CategorySelector from '@/modules/category/components/CategorySelector.vue'
+import TagSelector from '@/components/tag/TagSelector.vue'
 const { currentTab } = useAdminTabs();
 const adminTabs = useAdminTabs();
 
@@ -112,7 +107,7 @@ watch(
   () => form.value.title,
   (newVal: string) => {
     if (currentTab.value) {
-      currentTab.value.title = newVal || "无标题";
+      currentTab.value.title = (newVal || "无标题")+'-编辑文章';
     }
   }
 );

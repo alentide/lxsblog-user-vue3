@@ -76,5 +76,7 @@ declare module '@vue/runtime-core' {
     RemoveIcon: typeof import('./src/components/RemoveIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TagEdit: typeof import('./src/components/tag/TagEdit.vue')['default']
+    TagSelector: typeof import('./src/components/tag/TagSelector.vue')['default']
   }
 }

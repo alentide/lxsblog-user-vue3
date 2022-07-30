@@ -35,11 +35,19 @@ interface Sorter {
         sortDirections: string[];
         sorter: (a: any, b: any) => number;
         title: string;
+        isRelation: true,
     };
     columnKey?: undefined;
     field: string;
     order?: 'descend'|'ascend';
 }
+
+
+interface SortOption {
+    [key:string]: 'DESC'|'ASC'|undefined | SortOption
+}
+
+
 const defaultOptions = {
     all:false
 }
@@ -69,9 +77,8 @@ export function usePageList<T>(url: string,listOptions={}) {
     const hasMore = ref(true)
     const total = ref(0)
 
-    const sortOption:{
-        [key:string]: 'DESC'|'ASC'|undefined
-    } = {}
+
+    const sortOption:SortOption = {}
 
     const { page, request:_request } = useListRequest<T>(url)
     const request = ()=>_request({
@@ -165,8 +172,17 @@ export function usePageList<T>(url: string,listOptions={}) {
      * @param sorter 
      */
     const onChangeSorter = (sorter:Sorter)=>{
+
+        console.log('sorter',sorter);
         const sorterTransformed = transformOrderTypeToEndInSorter(sorter)
-        sortOption[keyRevertToPrevious(sorter.field)] = sorterTransformed.order
+        if(sorter.column?.isRelation){
+            sortOption[keyRevertToPrevious(sorter.field)] = {
+                id: sorterTransformed.order
+            }
+        }else {
+            sortOption[keyRevertToPrevious(sorter.field)] = sorterTransformed.order
+        }
+        
         if(!sortOption[keyRevertToPrevious(sorter.field)]){
             delete sortOption[keyRevertToPrevious(sorter.field)]
         }

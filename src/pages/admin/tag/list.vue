@@ -10,7 +10,7 @@
     >
       <template #bodyCell="{ column, text, record }">
         <template v-if="['name'].includes(column.dataIndex)">
-          <div @click="$router.push('/admin/category/edit/' + record.id)">
+          <div @click="$router.push('/admin/tag/edit/' + record.id)">
             <span>{{ text }}</span>
           </div>
         </template>
@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { usePageList } from "@/modules/http/useList";
-import type { CategoryDfe } from "@/modules/category/interfaces/CategoryDfe";
+import type { TagDfe } from "@/modules/tag/interfaces/TagDfe";
 import RemoveIcon from "@/components/RemoveIcon.vue";
 
 const columns = [
@@ -47,7 +47,7 @@ const columns = [
   },
 ];
 const { currentList, onTableChange, remove, pagination, loading } =
-  usePageList<CategoryDfe>("/categories");
+  usePageList<TagDfe>("/tags");
 </script>
 
 <style scoped></style>

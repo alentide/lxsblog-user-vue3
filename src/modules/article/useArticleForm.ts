@@ -34,6 +34,7 @@ const emptyArticleForm = () => ({
     coverImage: null,
     content: '',
     category: null,
+    tags: null,
 })
 
 /**
