@@ -97,11 +97,13 @@ const columns = [
     key: "title",
     sorter: true,
     sortDirections: ["descend", "ascend"],
+    width: '400px',
   },
   {
     title: "概述",
     dataIndex: "summary",
     key: "summary",
+    width: '400px',
   },
   {
     title: "分类",
