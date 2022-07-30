@@ -86,14 +86,27 @@ import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
 import ImageUploader from "@/components/base/ImageUploader.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
-
+const { currentTab } = useAdminTabs();
 const adminTabs=useAdminTabs()
+
 const { loading, form, save, fetch } = inject("articleForm", ()=>useArticleNewForm(),true);
 
 const endEdit = async ()=>{
   await save()
   adminTabs.pop()
 }
+
+
+watch(
+  () => form.value.title,
+  (newVal: string) => {
+    if(currentTab()){
+      currentTab().title = newVal||'无标题';
+    }
+    
+  },
+);
+
 
 onMounted(fetch);
 

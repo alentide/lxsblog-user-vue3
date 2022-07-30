@@ -1,31 +1,12 @@
 
+import router from "@/router"
 import { computed, onMounted, ref, watch, type Ref } from "vue"
 import { useRoute } from "vue-router"
 import useAdminTabs from "../adminTabs/useAdminTabs"
 import { http } from "../http"
 import { emptyImage } from "../upload/useImageUploader"
-import type { CreateArticleDto, UpdateArticleDto } from "./article.interfaces"
+import type { ArticleDfe, CreateArticleDto, UpdateArticleDto } from "./article.interfaces"
 
-export const useArticleForm = () => {
-    const form: Ref<CreateArticleDto> = ref({
-        title: '',
-        summary: '',
-        coverImage: {
-            id: 0,
-            src: '',
-        },
-        content: '',
-    })
-    const save = async () => {
-        const res = await http.post('/articles', form.value)
-        console.log('res', res);
-        return res
-    }
-    return {
-        form,
-        save,
-    }
-}
 
 /**
  * 从缓存中提取草稿文章
@@ -61,15 +42,15 @@ const emptyArticleForm = () => ({
 export const useArticleNewForm = () => {
     const form: Ref<CreateArticleDto> = ref({
         ...emptyArticleForm(),
-        content: getArticleFormFromCache(),
+        // content: getArticleFormFromCache(),
     })
-    cacheArticleForm(form)
+    // cacheArticleForm(form)
 
     const loading = ref(false)
     const save = async () => {
         loading.value = true
         try {
-            const res = await http.post('/articles', form.value)
+            const res = await http.post<ArticleDfe>('/articles', form.value)
             return res
         } finally {
             loading.value = false
@@ -81,7 +62,7 @@ export const useArticleNewForm = () => {
      * 对于新建表单来说，fetch啥也不做
      */
     const fetch = async () => {
-
+        return form.value
     }
 
     return {
@@ -91,6 +72,7 @@ export const useArticleNewForm = () => {
         fetch,
     }
 }
+
 
 
 
@@ -119,7 +101,7 @@ export const useArticleEditForm = () => {
                 ...res.data,
                 // coverImage: res.data.coverImage || emptyImage()
             }
-            return res
+            return res.data
         } finally {
             initLoading.value = false
         }
@@ -128,7 +110,7 @@ export const useArticleEditForm = () => {
     const save = async () => {
         loading.value = true
         try {
-            const res = await http.patch('/articles/' + form.value.id, form.value)
+            const res = await http.patch<ArticleDfe>('/articles/' + form.value.id, form.value)
             return res
         } finally {
             loading.value = false
@@ -143,4 +125,55 @@ export const useArticleEditForm = () => {
         fetch,
         initLoading,
     }
+}
+
+
+const enum ArticleFormType {
+    'NEW',
+    'EDIT'
+}
+
+type  NewFormType = ReturnType <typeof useArticleNewForm>
+
+export function useAutoCreateArticleForm():NewFormType {
+    const type = ref(ArticleFormType.NEW)
+
+    const createForm = useArticleNewForm()
+    const editForm = useArticleEditForm()
+
+    const adminTabs =  useAdminTabs()
+    const getCurrentForm = ()=>{
+        if(type.value===ArticleFormType.NEW) return createForm
+        if(type.value===ArticleFormType.EDIT) return editForm
+        else return editForm
+    }
+    const form = computed(()=>{
+        return getCurrentForm().form.value
+    })
+
+    const save = async ()=>{
+        const res = await getCurrentForm().save()
+        if(type.value===ArticleFormType.NEW){
+            editForm.form.value=res.data
+            type.value=ArticleFormType.EDIT
+            const newFullPath = '/admin/article/edit/'+res.data.id
+            history.replaceState(null,'',newFullPath)
+            adminTabs.tabs.value[adminTabs.currentIndex.value].fullPath = newFullPath
+            // router.replace(newFullPath)
+        }
+        return res
+        
+    }
+    const loading = computed(()=>getCurrentForm().loading.value)
+    const fetch = ()=>{
+        return getCurrentForm().fetch()
+    }
+
+    return {
+        form,
+        save,
+        loading,
+        fetch,
+    }
+
 }

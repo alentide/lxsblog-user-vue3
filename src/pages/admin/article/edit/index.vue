@@ -3,12 +3,22 @@
 </template>
 
 <script setup lang="ts">
-import { useArticleNewForm } from "@/modules/article/useArticleForm";
+import { useAutoCreateArticleForm,useArticleNewForm } from "@/modules/article/useArticleForm";
 import ArticleForm from "./components/ArticleForm.vue";
-import {provide} from 'vue'
-
-const articleForm = useArticleNewForm()
+import {provide,watch} from 'vue'
+import router from "@/router";
+import { watchDebounced } from '@vueuse/core'
+const articleForm = useAutoCreateArticleForm()
 provide('articleForm',articleForm)
+
+
+const {form,save} = articleForm
+watchDebounced(
+  form,
+  save,
+  { debounce: 500, maxWait: 1000 ,deep:true},
+)
+
 </script>
 
 <style scoped></style>
