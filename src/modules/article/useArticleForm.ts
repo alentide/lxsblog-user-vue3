@@ -65,16 +65,11 @@ export const useArticleNewForm = () => {
     })
     cacheArticleForm(form)
 
-    const { pop } = useAdminTabs()
-
-
     const loading = ref(false)
     const save = async () => {
         loading.value = true
         try {
             const res = await http.post('/articles', form.value)
-
-            pop()
             return res
         } finally {
             loading.value = false
@@ -111,7 +106,6 @@ export const useArticleEditForm = () => {
         id: 0,
         ...emptyArticleForm(),
     })
-    const { pop } = useAdminTabs()
 
 
     const loading = ref(false)
@@ -135,7 +129,6 @@ export const useArticleEditForm = () => {
         loading.value = true
         try {
             const res = await http.patch('/articles/' + form.value.id, form.value)
-            pop()
             return res
         } finally {
             loading.value = false

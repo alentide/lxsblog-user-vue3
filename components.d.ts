@@ -60,6 +60,7 @@ declare module '@vue/runtime-core' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']
     BreadCrumb: typeof import('./src/components/BreadCrumb.vue')['default']
+    CacheComponent: typeof import('./src/components/base/CacheComponent.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']

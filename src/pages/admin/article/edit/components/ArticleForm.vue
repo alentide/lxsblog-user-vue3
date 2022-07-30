@@ -19,7 +19,7 @@
       :model="form"
       name="basic"
       autocomplete="off"
-      @finish="save"
+      @finish="endEdit"
       class="form-x"
     >
       <a-form-item
@@ -85,8 +85,15 @@ import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
 import ImageUploader from "@/components/base/ImageUploader.vue";
+import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 
+const adminTabs=useAdminTabs()
 const { loading, form, save, fetch } = inject("articleForm", ()=>useArticleNewForm(),true);
+
+const endEdit = async ()=>{
+  await save()
+  adminTabs.pop()
+}
 
 onMounted(fetch);
 

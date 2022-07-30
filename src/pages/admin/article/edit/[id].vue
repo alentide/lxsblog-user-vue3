@@ -28,11 +28,11 @@ watch(
   },
 );
 
-// watchDebounced(
-//   form,
-//   save,
-//   { debounce: 500, maxWait: 1000 },
-// )
+watchDebounced(
+  form,
+  save,
+  { debounce: 500, maxWait: 1000 ,deep:true},
+)
 
 
 </script>

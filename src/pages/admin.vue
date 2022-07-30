@@ -11,26 +11,34 @@
         margin: 0,
       }"
     >
-        <a-tabs
-          hideAdd
-          v-model:activeKey="current"
-          @tabClick="go"
-          type="editable-card"
-          @edit="remove"
-          
+      <a-tabs
+        hideAdd
+        v-model:activeKey="current"
+        @tabClick="go"
+        type="editable-card"
+        @edit="remove"
+      >
+        <a-tab-pane
+          class="custom-pane"
+          :key="tab.fullPath"
+          :tab="tab.title"
+          v-for="(tab, i) in tabs"
+          style="display: none"
+          :closable="tab.closable"
         >
-          <a-tab-pane
-            class="custom-pane"
-            :key="tab.fullPath"
-            :tab="tab.title"
-            v-for="(tab,i) in tabs"
-            style="display: none"
-            :closable="tab.closable"
-          >
-          </a-tab-pane>
-        </a-tabs>
-      <RouterView style="height: 100%;background:#fff;" v-slot="{ Component, route }">
+        </a-tab-pane>
+      </a-tabs>
+      <RouterView
+        style="height: 100%; background: #fff"
+        v-slot="{ Component, route }"
+      >
+        <!-- <keep-alive>
+          <component :is="Component" :key="route.fullPath" />
+        </keep-alive> -->
+
         <component :is="Component" :key="route.fullPath" />
+
+        <!-- <CacheComponent :component="Component" :fullPath="route.fullPath"/> -->
       </RouterView>
     </a-layout-content>
   </a-layout>
@@ -40,6 +48,7 @@
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import { ref } from "vue";
 import SiderNav from "./admin/components/SiderNav.vue";
+import CacheComponent from "@/components/base/CacheComponent.vue";
 // const current = ref("1");
 
 const { tabs, current, go, remove, currentIndex } = useAdminTabs();

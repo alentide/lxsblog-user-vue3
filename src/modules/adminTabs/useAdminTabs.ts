@@ -2,14 +2,18 @@ import router from "@/router"
 import { type Ref, ref ,computed, watch} from "vue"
 import useAdminMenu from "../adminMenu/useAdminMenu"
 import { useNav } from "../nav/useNav"
+import type { RendererElement, RendererNode, VNode } from 'vue';
 
 const {fetchMenu,menu,findMenu} = useAdminMenu()
 
-
+export type TabComponent = VNode<RendererNode, RendererElement, {
+    [key: string]: any;
+}>
 interface Tab {
     title: string
     fullPath:string 
     closable:boolean
+    component: TabComponent | null
  }
 
 const storeRef = (key:string,data:Ref<any>)=>{
@@ -20,7 +24,8 @@ const storeRef = (key:string,data:Ref<any>)=>{
     {
         title: '首页',
         fullPath: '/admin',
-        closable: false
+        closable: false,
+        component: null
     }
  ])
 
@@ -40,11 +45,20 @@ const add = async (fullPath:string,title:string='无标题')=>{
         tabs.value.push({
             title: (await findMenu(m=>m.key===fullPath))?.title || title,
             fullPath,
-            closable:true
+            closable:true,
+            component: null
         })
+    } 
+}
+
+const addComponent = (fullPath:string,component:TabComponent)=>{
+    let i =tabs.value.findIndex(existsTab=>existsTab.fullPath===fullPath)
+    if(i===-1){
+        add(fullPath)
     }
-    
-    
+    const tab =  tabs.value[i]
+    if(tab.component) return tab.component
+    return tabs.value[i].component = component
 }
 const remove = (fullPath:string)=>{
     console.log(fullPath);
@@ -83,5 +97,6 @@ export default ()=>{
         pop,
         currentIndex,
         currentTab,
+        addComponent,
     }
 }
