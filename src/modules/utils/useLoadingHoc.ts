@@ -4,14 +4,14 @@ export const useLoadingHoc = () => {
     const loading = ref(false)
     const show = () => loading.value = true
     const hide = () => loading.value = false
-    const loadingHoc = (fn:(...args:any[])=>any) => {
-        return async () =>  {
-            loading.value = true;
+    function loadingHoc<T extends (...args: any[]) => Promise<any> >(fn: T):T extends (...args: any[]) => infer Return? (...args: any[]) =>Return : (...args: any[]) =>any{
+        return async (...args: any[]) => {
+            loading.value = true
             try {
-                const res = await fn();
-                return res;
+                const res = await fn(...args) 
+                return res 
             } finally {
-                loading.value = false;
+                loading.value = false
             }
         }
     }

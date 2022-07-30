@@ -50,23 +50,7 @@
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          delete
-          <!-- <div class="editable-row-operations">
-            <span v-if="dataSource[record.key]">
-              <a-typography-link @click="save(record.key)"
-                >Save</a-typography-link
-              >
-              <a-popconfirm
-                title="Sure to cancel?"
-                @confirm="cancel(record.key)"
-              >
-                <a>Cancel</a>
-              </a-popconfirm>
-            </span>
-            <span v-else>
-              <a @click="edit(record.key)">Edit</a>
-            </span>
-          </div> -->
+          <RemoveIcon :remove="() => remove(record.id)" />
         </template>
       </template>
     </a-table>
@@ -80,23 +64,31 @@ import type { ArticleDfe } from "@/modules/article/article.interfaces";
 import { useList, usePageList } from "@/modules/http/useList";
 import { onMounted } from "vue";
 
-const { currentList, refresh, loading, pagination, goPageNum, go } =
-  usePageList<ArticleDfe>("/articles");
+const {
+  currentList,
+  refresh,
+  loading,
+  pagination,
+  goPageNum,
+  go,
+  onTableChange,
+  remove,
+} = usePageList<ArticleDfe>("/articles");
 onMounted(() => {
   console.log(useAdminTabs().current);
 
   refresh();
 });
 
-const onTableChange = ({
-  current,
-}: {
-  current: number;
-  pageSize: number;
-  total: number;
-}) => {
-  goPageNum(current);
-};
+// const onTableChange = ({
+//   current,
+// }: {
+//   current: number;
+//   pageSize: number;
+//   total: number;
+// }) => {
+//   goPageNum(current);
+// };
 
 const columns = [
   {
@@ -110,9 +102,18 @@ const columns = [
     key: "summary",
   },
   {
+    title: "创建的时间",
+    dataIndex: "createTimeDisplayed",
+    key: "createTimeDisplayed",
+    sorter: (a, b) => a - b,
+    sortDirections: ["descend", "ascend"],
+    width: "150px",
+  },
+  {
     title: "操作",
     dataIndex: "operation",
     key: "operation",
+    width: "100px",
   },
 ];
 </script>

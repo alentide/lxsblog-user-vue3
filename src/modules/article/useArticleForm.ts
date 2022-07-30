@@ -33,6 +33,7 @@ const emptyArticleForm = () => ({
     summary: '',
     coverImage: null,
     content: '',
+    category: null,
 })
 
 /**

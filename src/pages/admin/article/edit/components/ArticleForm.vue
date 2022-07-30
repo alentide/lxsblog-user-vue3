@@ -38,6 +38,12 @@
         <a-input v-model:value="form.summary" />
       </a-form-item>
       <a-form-item
+        label="分类"
+        name="categoryId"
+      >
+        <CategorySelector v-model="form.category" />
+      </a-form-item>
+      <a-form-item
         label="封面"
         name="coverImage.src"
         :rules="[
@@ -51,7 +57,7 @@
       >
         <ImageUploader
           style="width: 100%; height: 100px"
-          v-model="form.coverImage"
+          v-model="(form.coverImage as null)"
         />
       </a-form-item>
 
@@ -86,8 +92,10 @@ import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
 import ImageUploader from "@/components/base/ImageUploader.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
+import CategorySelector from '@/modules/category/components/CategorySelector.vue'
 const { currentTab } = useAdminTabs();
 const adminTabs = useAdminTabs();
+
 
 const { loading, form, save, fetch } = inject(
   "articleForm",

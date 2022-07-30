@@ -6,28 +6,16 @@ export interface CreateArticleDto {
         id: number
         src: string
     } | null
-}
-
-
-export interface UpdateArticleDto {
-    id: number
-    title: string;
-    summary: string;
-    content: string;
-    coverImage: {
-        id: number
-        src: string
+    category: {
+        id:number
+        name: string
     }|null
 }
 
-export interface ArticleDfe {
+export type UpdateArticleDto = CreateArticleDto & {
     id: number
-    title: string;
-    summary: string;
-    content: string;
-    coverImage: {
-        id: number
-        src: string
-    }|null
+}
+
+export type  ArticleDfe = UpdateArticleDto & {
     createTimeDisplayed: string;
 }

@@ -31,6 +31,9 @@ class Http {
     get<T>(url: string, params?: any):Promise<ProjectResponse<T>> {
         return this._axios.get(url, {params}).then((res: { data: any }) => res.data)
     }
+    list<T>(url: string, params?: any):Promise<ProjectResponse<ListResponseData<T>>> {
+        return this._axios.get(url, {params}).then((res: { data: any }) => res.data)
+    }
     post<T>(url: string, params?: any):Promise<ProjectResponse<T>>  {
         return this._axios.post(url, params).then((res: { data: any }) => res.data)
     }

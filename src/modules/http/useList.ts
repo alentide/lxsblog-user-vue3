@@ -40,8 +40,28 @@ interface Sorter {
     field: string;
     order?: 'descend'|'ascend';
 }
+const defaultOptions = {
+    all:false
+}
+export function usePageList<T>(url: string,listOptions={}) {
+    listOptions = Object.assign(listOptions,defaultOptions)
+    function useListRequest<T>(url: string) {
+        const page = ref(defaultPage())
+        const request = async (options:any={}) => {
+            const { data } = await http.get<ListResponseData<T>>(url, {
+                pageNum: page.value.num,
+                pageLimit: page.value.limit,
+                ...options,
+            })
+            return data
+        }
+        return {
+            page,
+            request,
+        }
+    }
 
-export function usePageList<T>(url: string, _useListRequest = useListRequest) {
+
 
     
     const list: Ref<T[][]> = ref([])
@@ -53,7 +73,7 @@ export function usePageList<T>(url: string, _useListRequest = useListRequest) {
         [key:string]: 'DESC'|'ASC'|undefined
     } = {}
 
-    const { page, request:_request } = _useListRequest<T>(url)
+    const { page, request:_request } = useListRequest<T>(url)
     const request = ()=>_request({
         sort: sortOption,
     })
@@ -79,7 +99,7 @@ export function usePageList<T>(url: string, _useListRequest = useListRequest) {
         try {
             const data = await request();
             updatePagination(data)
-            list.value = [[], data.list]
+            list.value[page.value.num] = data.list
             return data.list
         } finally {
             loading.value = false
