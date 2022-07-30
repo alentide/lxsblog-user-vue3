@@ -18,11 +18,11 @@
 
 @for $i from 0 through 100 {
     .my#{$i} {
-        margin-top: $i * 1px;
-        margin-bottom: $i * 1px;
+        margin-top: $i * 1px !important;
+        margin-bottom: $i * 1px !important;
     }
     .mr#{$i} {
-        margin-right: $i * 1px;
+        margin-right: $i * 1px !important;
     }
 }
 

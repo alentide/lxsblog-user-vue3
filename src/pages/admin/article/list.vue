@@ -46,8 +46,14 @@
       <template #bodyCell="{ column, text, record }">
         <template v-if="['title'].includes(column.dataIndex)">
           <div @click="go(record)">
-            <span>{{ text }}</span>
+            <span>{{ text||'无标题' }}</span>
           </div>
+        </template>
+        <template v-else-if="['category'].includes(column.dataIndex)">
+          <a-tag v-if="text?.name" @click="go(record)" color="green">{{ text?.name }}</a-tag>
+        </template>
+        <template v-else-if="['tags'].includes(column.dataIndex)">
+          <a-tag class="my6" @click="go(record)" color="orange" v-for="tag in record.tags">{{tag.name}}</a-tag>
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <RemoveIcon :remove="() => remove(record.id)" />
@@ -74,21 +80,8 @@ const {
   onTableChange,
   remove,
 } = usePageList<ArticleDfe>("/articles");
-onMounted(() => {
-  console.log(useAdminTabs().current);
+onMounted(refresh);
 
-  refresh();
-});
-
-// const onTableChange = ({
-//   current,
-// }: {
-//   current: number;
-//   pageSize: number;
-//   total: number;
-// }) => {
-//   goPageNum(current);
-// };
 
 const columns = [
   {
@@ -101,11 +94,27 @@ const columns = [
     dataIndex: "summary",
     key: "summary",
   },
+    {
+    title: "分类",
+    dataIndex: "category",
+    key: "category",
+    sorter: true,
+    sortDirections: ["descend", "ascend"],
+    width: "100px",
+  },
+      {
+    title: "标签",
+    dataIndex: "tags",
+    key: "tags",
+    sorter: true,
+    sortDirections: ["descend", "ascend"],
+    width: "200px",
+  },
   {
     title: "创建的时间",
     dataIndex: "createTimeDisplayed",
     key: "createTimeDisplayed",
-    sorter: (a, b) => a - b,
+    sorter: true,
     sortDirections: ["descend", "ascend"],
     width: "150px",
   },
