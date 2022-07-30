@@ -1,13 +1,13 @@
 <template>
   <a-layout class="page-x">
     <Nav />
-    <a-layout-content class="content-x" :style="{marginTop: '64px' }">
+    <a-layout-content class="content-x " :style="{marginTop: '64px' }">
       <!-- <BreadCrumb /> -->
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
-        <RouterView class="view-x" />
+      <div class="view-x" :style="{ background: '#fff', padding: '24px' }">
+        <RouterView class="view-x"  />
       </div>
     </a-layout-content>
-    <a-layout-footer :style="{ textAlign: 'center' }">
+    <a-layout-footer :style="{ textAlign: 'center' }" v-if="footerVisible">
       <Footer />
     </a-layout-footer>
   </a-layout>
@@ -17,11 +17,27 @@
 import Nav from "./components/Nav.vue";
 import BreadCrumb from "./components/BreadCrumb.vue";
 import Footer from "@/components/Footer.vue";
+import { useRoute } from "vue-router";
+import { ref, watch } from "vue";
+
+const footerVisible = ref(true)
+const route = useRoute()
+
+watch(() => route.fullPath,()=>{
+  if(route.fullPath.startsWith('/admin')){
+    footerVisible.value=false
+  }else {
+    footerVisible.value=true
+  }
+},{
+  immediate: true
+})
 </script>
 
 <style>
 .content-x {
   padding: 20px 50px;
+  background-color: #f5f5f5;
 }
 
 @media screen and (max-width:992px) {
@@ -65,7 +81,7 @@ html {
 </style>
 <style scoped lang="scss">
 .view-x {
-  min-height: calc(100vh - 64px - 70px - 40px - 48px);
+  min-height: calc(100vh - 64px  - 40px - 48px);
 }
 .page-x {
   // width: 100vw;

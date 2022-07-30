@@ -1,6 +1,6 @@
 <template>
     <div>
-        edit
+404
     </div>
 </template>
 

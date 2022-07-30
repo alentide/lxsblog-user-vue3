@@ -47,6 +47,7 @@ declare module '@vue/runtime-core' {
     ArticleItem: typeof import('./src/components/article/ArticleItem.vue')['default']
     ArticleSearch: typeof import('./src/components/article/ArticleSearch.vue')['default']
     ASpin: typeof import('ant-design-vue/es')['Spin']
+    AStatistic: typeof import('ant-design-vue/es')['Statistic']
     AStep: typeof import('ant-design-vue/es')['Step']
     ASteps: typeof import('ant-design-vue/es')['Steps']
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
@@ -71,6 +72,7 @@ declare module '@vue/runtime-core' {
     ListEmpty: typeof import('./src/components/base/ListEmpty.vue')['default']
     ListLoading: typeof import('./src/components/base/ListLoading.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
+    RemoveIcon: typeof import('./src/components/RemoveIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

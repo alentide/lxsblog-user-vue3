@@ -38,7 +38,7 @@ const currentIndex = computed(() => {
     return tabs.value.findIndex(existsTab => existsTab.fullPath === current.value)
 })
 
-const currentTab = () => tabs.value[currentIndex.value]
+const currentTab = computed(()=>tabs.value[currentIndex.value])
 
 
 
