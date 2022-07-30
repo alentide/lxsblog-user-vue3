@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <a-form
       :model="form"
       name="basic"
@@ -23,20 +22,14 @@
       >
         <a-input v-model:value="form.summary" />
       </a-form-item>
-      <a-form-item
-        label="分类"
-        name="category"
-      >
+      <a-form-item label="分类" name="category">
         <CategorySelector v-model="form.category" />
       </a-form-item>
 
-      <a-form-item
-        label="标签"
-        name="tag"
-      >
+      <a-form-item label="标签" name="tag">
         <TagSelector v-model="form.tags" />
       </a-form-item>
-      
+
       <a-form-item
         label="封面"
         name="coverImage.src"
@@ -56,7 +49,13 @@
       </a-form-item>
 
       <a-form-item name="remember">
-        <MdEditor class="editor-x" v-model="form.content" />
+        <a-spin :spinning="uploadingImages">
+          <MdEditor
+            class="editor-x"
+            v-model="form.content"
+            @onUploadImg="onUploadImg"
+          />
+        </a-spin>
       </a-form-item>
 
       <a-form-item>
@@ -86,11 +85,11 @@ import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
 import ImageUploader from "@/components/base/ImageUploader.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
-import CategorySelector from '@/components/category/CategorySelector.vue'
-import TagSelector from '@/components/tag/TagSelector.vue'
+import CategorySelector from "@/components/category/CategorySelector.vue";
+import TagSelector from "@/components/tag/TagSelector.vue";
+import { upload, useImageUploader } from "@/modules/upload/useImageUploader";
 const { currentTab } = useAdminTabs();
 const adminTabs = useAdminTabs();
-
 
 const { loading, form, save, fetch } = inject(
   "articleForm",
@@ -107,14 +106,27 @@ watch(
   () => form.value.title,
   (newVal: string) => {
     if (currentTab.value) {
-      currentTab.value.title = (newVal || "无标题")+'-编辑文章';
+      currentTab.value.title = (newVal || "无标题") + "-编辑文章";
     }
   }
 );
 
 onMounted(fetch);
 
-// onBeforeUnmount(save);
+const uploadingImages = ref(false)
+
+/**
+ * 编辑器处理图片上传
+ */
+const onUploadImg = async (
+  files: File[],
+  callback: (...args: any[]) => any
+) => {
+  uploadingImages.value=true
+  const resList = await Promise.all(files.map((file) => upload(file)));
+  uploadingImages.value=false
+  callback(resList.map((res) => res.data.src));
+};
 </script>
 
 <style scoped lang="scss">

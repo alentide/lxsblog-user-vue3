@@ -63,6 +63,16 @@ export const emptyImage:()=>ProjectImage =()=>({
     createTime: '',
     updateTime: '',
 })
+
+export const upload = async (file: File)=>{
+    const token = await getToken()
+    const uploader = getUploader(token)
+    const newFileName = randomFileName(file)
+    const res = await uploader.put(newFileName, file);
+    return await http.post<ProjectImage>('/images',{
+        src: res.url
+    })
+}
 export const useImageUploader = () => {
     const loading = ref(false)
     const image:Ref<ProjectImage|null> = ref(null)
