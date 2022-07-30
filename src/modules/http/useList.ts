@@ -3,6 +3,7 @@ import { http } from "."
 import useAdminTabs from "../adminTabs/useAdminTabs"
 import type { ArticleDfe } from "../article/article.interfaces"
 import IgnoreError from "../error/IgnoreError"
+import type { FilterOption } from "../list/interfaces/FilterOption.interface"
 import type { ListResponseData } from "./http.interfaces"
 
 export const defaultPage = () => ({
@@ -36,6 +37,7 @@ interface Sorter {
         sorter: (a: any, b: any) => number;
         title: string;
         sortKey?: string,
+        filterKey?:string
     };
     columnKey?: undefined;
     field: string;
@@ -80,9 +82,14 @@ export function usePageList<T>(url: string,listOptions={}) {
 
     let sortOption:SortOption = {}
 
+    let filterOption = {
+
+    }
+
     const { page, request:_request } = useListRequest<T>(url)
     const request = ()=>_request({
         sort: sortOption,
+        filter:filterOption,
     })
 
 
@@ -208,6 +215,18 @@ export function usePageList<T>(url: string,listOptions={}) {
     }
 
     /**
+     * 当改变筛选条件时
+     * @param  filter 
+     */
+    const onChangeFilter = (filter:FilterOption,sorter:Sorter)=>{
+        // if(sorter.column?.filterKey){
+        //     filterOption = 
+        // }
+        filterOption = filter
+        console.log('filter',filter);
+    }
+
+    /**
      * 使用a-table时，onChange事件传递该函数即可
      * @param param0 
      */
@@ -219,6 +238,7 @@ export function usePageList<T>(url: string,listOptions={}) {
         const {
             current,
         }=e
+        onChangeFilter(filter,sorter)
         onChangeSorter(sorter)
         goPageNum(current);
     };
