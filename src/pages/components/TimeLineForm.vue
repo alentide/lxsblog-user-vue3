@@ -13,8 +13,9 @@
         label="内容"
         name="content"
         :rules="[{ required: true, message: '请输入内容！' }]"
+         @paste="onPaste"
       >
-        <a-textarea  v-model:value="form.content" />
+        <a-textarea v-model:value="form.content" />
       </a-form-item>
 
       <a-form-item>
@@ -26,12 +27,13 @@
         >
       </a-form-item>
     </a-form>
+
   </a-modal>
 </template>
 
 <script setup lang="ts">
 import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 
 
 const log = console.log
@@ -41,6 +43,13 @@ const { title, form, save, visible, loading } = inject(
   () => useTimeLineForm(),
   true
 );
+
+
+const onPaste = (e)=>{
+  console.log('e',e);
+  console.log('e.clipboardData',e.clipboardData.files);
+}
+
 
 </script>
 

@@ -1,6 +1,39 @@
 # lxsblog-user-vue3
 
-This template should help get you started developing with Vue 3 in Vite.
+这是我的个人博客。
+
+前端技术栈：vue3，typescript，ant-design-vue。
+
+这个项目是用户端和管理端融合在一起的（懒得拆开了）。
+
+后端项目地址（待上传中）
+
+## 项目界面
+
+
+## 如何启动？
+建议使用vscode编辑器。
+### 安装依赖
+
+```sh
+npm install
+```
+
+除此以外你需要安装[volar插件](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)，
+
+### 开发环境编译
+
+```sh
+npm run dev
+```
+
+### 打包编译
+
+```sh
+npm run build
+```
+### 单元测试
+没有写单元测试。。。（虽然有相关依赖。）
 
 ## Recommended IDE Setup
 
