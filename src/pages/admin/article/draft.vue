@@ -177,6 +177,7 @@ const columns = computed(() => {
         value: category.id,
         text: category.name,
       })),
+      filterSearch: true,
       width: "100px",
     },
     {
@@ -188,6 +189,7 @@ const columns = computed(() => {
         value: tag.id,
         text: tag.name,
       })),
+      filterSearch: true,
       //   filteredValue: filtered.name || null,
       //   onFilter: (value: string, record: DataItem) =>
       //     record.name.includes(value),
