@@ -2,7 +2,7 @@
   <div style="padding: 8px">
     <a-input
       ref="input"
-      :placeholder="`Search ${column.dataIndex}`"
+      :placeholder="`搜索${column.title}`"
       :value="selectedKeys[0]"
       style="width: 188px; margin-bottom: 8px; display: block"
       @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"

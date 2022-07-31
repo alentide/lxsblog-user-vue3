@@ -24,6 +24,9 @@
     .mr#{$i} {
         margin-right: $i * 1px !important;
     }
+    .ml#{$i} {
+        margin-left: $i * 1px !important;
+    }
 }
 
 .wh100p{

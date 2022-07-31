@@ -1,3 +1,4 @@
+import { mergeDeepLeft } from "ramda"
 import { computed, onMounted, provide, ref, type Ref } from "vue"
 import { http } from "."
 import useAdminTabs from "../adminTabs/useAdminTabs"
@@ -51,7 +52,7 @@ interface SortOption {
 
 
 const defaultOptions = {
-    all:false
+    
 }
 export function usePageList<T extends {id:number} >(url: string,listOptions={}) {
     listOptions = Object.assign(listOptions,defaultOptions)
@@ -61,7 +62,7 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
             const { data } = await http.get<ListResponseData<T>>(url, {
                 pageNum: page.value.num,
                 pageLimit: page.value.limit,
-                ...options,
+                ...mergeDeepLeft(options,listOptions,)
             })
             return {
                 ...data,
@@ -258,7 +259,7 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
 
             if(column && !column.isRelationFilter) {
                 let resultValue = value
-                if(type==='SingleLike'){
+                if(type==='SingleLike'||type==='SingleEqual'){
                     if(Array.isArray(resultValue)){
                         resultValue = resultValue[0]
                     }

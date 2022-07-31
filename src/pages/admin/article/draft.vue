@@ -1,10 +1,23 @@
 <template>
   <div class="wh100p">
-    <RemoveIcon
+    <div class="my10">
+      批量操作：
+      <RemoveIcon
       type="primary"
       :disabled="removeDisabled"
       :remove="removeSelected"
     />
+    <a-popconfirm
+      title="确定发布吗？"
+      ok-text="是"
+      cancel-text="否"
+      
+      @confirm="releaseMany"
+    >
+      <a-button :disabled="removeDisabled" type="primary" class="ml10"> 发布 </a-button>
+    </a-popconfirm>
+    </div>
+
     <a-table
       size="small"
       :pagination="pagination"
@@ -62,6 +75,14 @@
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <RemoveIcon :remove="() => remove(record.id)" />
+          <a-popconfirm
+            title="确定发布吗？"
+            ok-text="是"
+            cancel-text="否"
+            @confirm="() => release(record.id)"
+          >
+            <a-button type="link"> 发布 </a-button>
+          </a-popconfirm>
         </template>
       </template>
     </a-table>
@@ -81,6 +102,13 @@ import { andThen, pipe, tap } from "ramda";
 import { computed, onMounted, provide, ref, type Ref } from "vue";
 import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
 
+ enum ArticleReleaseStatus{
+  DRAFT = 'DRAFT',//草稿
+  // IN_REVIEW='inReview',//审核中
+  RELEASED = 'released',//已发布
+  OFF_SHELF = 'offShelf', //已下架
+}
+
 const {
   currentList,
   refresh,
@@ -90,7 +118,14 @@ const {
   go,
   onTableChange: _onTableChange,
   remove,
-} = usePageList<ArticleDfe>("/articles");
+} = usePageList<ArticleDfe>("/articles",{
+  filter: {
+    releaseStatus: {
+      value: [ArticleReleaseStatus.DRAFT],
+      type: 'SingleEqual'
+    }
+  }
+});
 
 const selectedRowKeys: Ref<any[]> = ref([]);
 const onSelectChange = (changedSelectedRowKeys: any[]) => {
@@ -132,9 +167,8 @@ const removeSelected = removeLoading.loadingHoc(async () => {
   return await refresh();
 });
 
-
-const searchInput = ref(null)
-provide('searchInput',searchInput)
+const searchInput = ref(null);
+provide("searchInput", searchInput);
 
 const columns = computed(() => {
   return [
@@ -146,7 +180,7 @@ const columns = computed(() => {
       sortDirections: ["descend", "ascend"],
       width: "400px",
       customFilterDropdown: true,
-      filterKey: 'name',
+      filterKey: "name",
       // onFilter: (value, record) =>
       //   record.address.toString().toLowerCase().includes(value.toLowerCase()),
       // onFilterDropdownVisibleChange: (visible) => {
@@ -155,7 +189,7 @@ const columns = computed(() => {
       //       if(searchInput.value){
       //         searchInput.value.focus();
       //       }
-            
+
       //     }, 100);
       //   }
       // },
@@ -166,13 +200,19 @@ const columns = computed(() => {
       key: "summary",
       width: "400px",
     },
+    // {
+    //   title: "发布状态",
+    //   dataIndex: "releaseStatus",
+    //   key: "releaseStatus",
+    //   width: "100px",
+    // },
     {
       title: "分类",
       dataIndex: "category",
       key: "category",
       sorter: true,
       sortKey: "name",
-      sortDirections: ["ascend","descend",],
+      sortDirections: ["ascend", "descend"],
       filters: categoriesFilterOptions.value.map((category) => ({
         value: category.id,
         text: category.name,
@@ -199,7 +239,7 @@ const columns = computed(() => {
       dataIndex: "createTimeDisplayed",
       key: "createTimeDisplayed",
       sorter: true,
-      sortDirections:  ["ascend","descend",],
+      sortDirections: ["ascend", "descend"],
       width: "150px",
     },
     {
@@ -210,6 +250,19 @@ const columns = computed(() => {
     },
   ];
 });
+
+/**
+ * 发布
+ */
+const release = (id: number) => {
+  return http.patch("/articles/release/" + id);
+};
+
+const releaseMany = () => {
+  return http.patch("/articles/release", {
+    ids:selectedRowKeys.value
+  });
+};
 </script>
 
 <style scoped lang="scss"></style>
