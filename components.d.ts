@@ -67,6 +67,7 @@ declare module '@vue/runtime-core' {
     BreadCrumb: typeof import('./src/components/BreadCrumb.vue')['default']
     CacheComponent: typeof import('./src/components/base/CacheComponent.vue')['default']
     CategorySelector: typeof import('./src/components/category/CategorySelector.vue')['default']
+    CustomFilterDropdown: typeof import('./src/components/article/CustomFilterDropdown.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']

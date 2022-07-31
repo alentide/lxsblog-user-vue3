@@ -98,6 +98,21 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
         filter:filterOption,
     })
 
+    const columns = [
+        {
+            title: "标题",
+            dataIndex: "title",
+            key: "title",
+            sorter: true,
+            sortDirections: ["descend", "ascend"],
+            width: "400px",
+            customFilterDropdown: true,
+            filterKey: 'title',
+            filterType: 'SingleLike',
+            isRelationFilter: false
+        }
+    ]
+
 
 
 
@@ -228,8 +243,57 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
         // if(sorter.column?.filterKey){
         //     filterOption = 
         // }
-        filterOption = filter
-        console.log('filter',filter);
+
+        
+        filterOption = Object.fromEntries(Object.entries(filter).filter(([key,value])=>value).map(([key,value])=>{
+            
+            const column = columns.find(m=>m.dataIndex===key)
+
+            let type
+            if(column && column.filterType){
+                type = column.filterType
+            }else {
+                type = 'InArray'
+            }
+
+            if(column && !column.isRelationFilter) {
+                let resultValue = value
+                if(type==='SingleLike'){
+                    if(Array.isArray(resultValue)){
+                        resultValue = resultValue[0]
+                    }
+                }
+
+                console.log('column.filterKey',column.filterKey);
+                return [
+                    column.filterKey || 'id',
+                    {
+                        type,
+                        value: resultValue
+                    }
+                ]
+            }
+            let filterKey 
+            if(column && column.filterKey) {
+                filterKey=column.filterKey
+            }else {
+                filterKey = 'id'
+            }
+            
+
+            if(type==='SingleLike'){
+                if(Array.isArray(value)){
+                    value = value[0]
+                }
+            }
+            return [key,{
+                [filterKey]: {
+                    value: value,
+                    type,
+                }
+            }]
+        }))
+        console.log('filter',filter,'======',sorter);
     }
 
     /**
@@ -240,7 +304,7 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
         current: number;
         pageSize: number;
         total: number;
-    },filter,sorter:Sorter) => {
+    },filter:FilterOption,sorter:Sorter) => {
         const {
             current,
         }=e

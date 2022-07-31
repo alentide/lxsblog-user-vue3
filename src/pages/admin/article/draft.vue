@@ -1,6 +1,10 @@
 <template>
   <div class="wh100p">
-    <RemoveIcon type="primary" :disabled="removeDisabled" :remove="removeSelected" />
+    <RemoveIcon
+      type="primary"
+      :disabled="removeDisabled"
+      :remove="removeSelected"
+    />
     <a-table
       size="small"
       :pagination="pagination"
@@ -16,6 +20,26 @@
         selections: true,
       }"
     >
+      <template
+        #customFilterDropdown="{
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters,
+          column,
+        }"
+      >
+        <CustomFilterDropdown
+          v-bind="{
+            inputKey: 'searchInput',
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        />
+      </template>
       <template #bodyCell="{ column, text, record }">
         <template v-if="['title'].includes(column.dataIndex)">
           <div @click="go(record)">
@@ -54,7 +78,8 @@ import { useList, usePageList } from "@/modules/http/useList";
 import type { TagDfe } from "@/modules/tag/interfaces/TagDfe";
 import { useLoadingHoc } from "@/modules/utils/useLoadingHoc";
 import { andThen, pipe, tap } from "ramda";
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, provide, ref, type Ref } from "vue";
+import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
 
 const {
   currentList,
@@ -63,7 +88,7 @@ const {
   pagination,
   goPageNum,
   go,
-  onTableChange:_onTableChange,
+  onTableChange: _onTableChange,
   remove,
 } = usePageList<ArticleDfe>("/articles");
 
@@ -73,12 +98,11 @@ const onSelectChange = (changedSelectedRowKeys: any[]) => {
   selectedRowKeys.value = changedSelectedRowKeys;
 };
 
-
 const onTableChange = pipe(
   _onTableChange,
   // andThen(tap(res=>console.log(res))),
-  andThen(tap(()=>selectedRowKeys.value=[]))
-)
+  andThen(tap(() => (selectedRowKeys.value = [])))
+);
 onMounted(refresh);
 
 const tagsFilterOptions: Ref<TagDfe[]> = ref([]);
@@ -91,8 +115,6 @@ const categoriesFilterOptions: Ref<CategoryDfe[]> = ref([]);
 //   return res
 // }
 
-
-
 onMounted(() => {
   http
     .list<TagDfe>("/tags")
@@ -102,18 +124,17 @@ onMounted(() => {
     .then((res) => (categoriesFilterOptions.value = res.data.list));
 });
 
+const removeDisabled = computed(() => !selectedRowKeys.value.length);
 
-const removeDisabled = computed(()=>!selectedRowKeys.value.length)
+const removeLoading = useLoadingHoc();
+const removeSelected = removeLoading.loadingHoc(async () => {
+  await http.delete("/articles", selectedRowKeys.value);
+  return await refresh();
+});
 
 
-
-
-
-const removeLoading = useLoadingHoc()
-const removeSelected = removeLoading.loadingHoc(async ()=>{
-    await http.delete('/articles',selectedRowKeys.value)
-    return await refresh()
-})
+const searchInput = ref(null)
+provide('searchInput',searchInput)
 
 const columns = computed(() => {
   return [
@@ -124,6 +145,20 @@ const columns = computed(() => {
       sorter: true,
       sortDirections: ["descend", "ascend"],
       width: "400px",
+      customFilterDropdown: true,
+      filterKey: 'name',
+      // onFilter: (value, record) =>
+      //   record.address.toString().toLowerCase().includes(value.toLowerCase()),
+      // onFilterDropdownVisibleChange: (visible) => {
+      //   if (visible) {
+      //     setTimeout(() => {
+      //       if(searchInput.value){
+      //         searchInput.value.focus();
+      //       }
+            
+      //     }, 100);
+      //   }
+      // },
     },
     {
       title: "概述",

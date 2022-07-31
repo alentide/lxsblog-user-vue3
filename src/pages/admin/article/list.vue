@@ -42,8 +42,8 @@
       :data-source="currentList"
       bordered
       :loading="loading"
-
     >
+
       <template #bodyCell="{ column, text, record }">
         <template v-if="['title'].includes(column.dataIndex)">
           <div @click="go(record)">
@@ -75,6 +75,7 @@
 <script setup lang="ts">
 import ArticleItem from "@/components/article/ArticleItem.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
+
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
 import { useList, usePageList } from "@/modules/http/useList";
 import { onMounted, ref } from "vue";
@@ -90,8 +91,6 @@ const {
   remove,
 } = usePageList<ArticleDfe>("/articles");
 onMounted(refresh);
-
-
 
 const columns = [
   {
