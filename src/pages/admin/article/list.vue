@@ -42,6 +42,7 @@
       :data-source="currentList"
       bordered
       :loading="loading"
+
     >
       <template #bodyCell="{ column, text, record }">
         <template v-if="['title'].includes(column.dataIndex)">
@@ -76,7 +77,7 @@ import ArticleItem from "@/components/article/ArticleItem.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
 import { useList, usePageList } from "@/modules/http/useList";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 const {
   currentList,
@@ -90,6 +91,8 @@ const {
 } = usePageList<ArticleDfe>("/articles");
 onMounted(refresh);
 
+
+
 const columns = [
   {
     title: "标题",
@@ -97,13 +100,13 @@ const columns = [
     key: "title",
     sorter: true,
     sortDirections: ["descend", "ascend"],
-    width: '400px',
+    width: "400px",
   },
   {
     title: "概述",
     dataIndex: "summary",
     key: "summary",
-    width: '400px',
+    width: "400px",
   },
   {
     title: "分类",

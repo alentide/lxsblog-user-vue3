@@ -53,7 +53,7 @@ interface SortOption {
 const defaultOptions = {
     all:false
 }
-export function usePageList<T>(url: string,listOptions={}) {
+export function usePageList<T extends {id:number} >(url: string,listOptions={}) {
     listOptions = Object.assign(listOptions,defaultOptions)
     function useListRequest<T>(url: string) {
         const page = ref(defaultPage())
@@ -63,7 +63,13 @@ export function usePageList<T>(url: string,listOptions={}) {
                 pageLimit: page.value.limit,
                 ...options,
             })
-            return data
+            return {
+                ...data,
+                list: data.list.map(m=>({
+                    ...m,
+                    key: m.id,
+                }))
+            }
         }
         return {
             page,
@@ -240,7 +246,7 @@ export function usePageList<T>(url: string,listOptions={}) {
         }=e
         onChangeFilter(filter,sorter)
         onChangeSorter(sorter)
-        goPageNum(current);
+        return  goPageNum(current);
     };
 
 
