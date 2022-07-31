@@ -172,7 +172,7 @@ const columns = computed(() => {
       key: "category",
       sorter: true,
       sortKey: "name",
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ["ascend","descend",],
       filters: categoriesFilterOptions.value.map((category) => ({
         value: category.id,
         text: category.name,
@@ -199,7 +199,7 @@ const columns = computed(() => {
       dataIndex: "createTimeDisplayed",
       key: "createTimeDisplayed",
       sorter: true,
-      sortDirections: ["descend", "ascend"],
+      sortDirections:  ["ascend","descend",],
       width: "150px",
     },
     {
