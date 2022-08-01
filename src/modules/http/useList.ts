@@ -31,7 +31,7 @@ export function useListRequest<T>(url: string) {
 
 
 
-interface Sorter {
+export interface Sorter {
     column?: {
         dataIndex: string;
         sortDirections: string[];

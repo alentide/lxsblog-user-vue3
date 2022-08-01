@@ -13,8 +13,8 @@
             ><img :src="Logo" alt="" style="width: 30px; height: 30px"
           /></a-menu-item>
           <!-- <a-menu-item key="1">首页</a-menu-item> -->
-          <a-menu-item key="/article">文章</a-menu-item>
-          <a-menu-item key="/projects">项目</a-menu-item>
+          <a-menu-item key="/user/article">文章</a-menu-item>
+          <a-menu-item key="/user/projects">项目</a-menu-item>
         </a-menu></a-col
       >
       <a-col>
