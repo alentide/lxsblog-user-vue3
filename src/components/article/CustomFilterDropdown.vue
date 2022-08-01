@@ -1,7 +1,6 @@
 <template>
   <div style="padding: 8px">
     <a-input
-      ref="input"
       :placeholder="`搜索${column.title}`"
       :value="selectedKeys[0]"
       style="width: 188px; margin-bottom: 8px; display: block"
@@ -31,7 +30,6 @@
 import { inject, reactive, toRef, toRefs } from "vue";
 
 const props = defineProps({
-    inputKey: String,
   setSelectedKeys: {
     type: Function,
     default: () => {},
@@ -57,7 +55,6 @@ const selectedKeys = toRef(props, "selectedKeys");
 const column = toRef(props, "column");
 const { confirm, clearFilters } = props;
 
-const input = inject(props.inputKey)
 
 const state = reactive({
     searchText: '',

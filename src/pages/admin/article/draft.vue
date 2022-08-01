@@ -3,19 +3,20 @@
     <div class="my10">
       批量操作：
       <RemoveIcon
-      type="primary"
-      :disabled="removeDisabled"
-      :remove="removeSelected"
-    />
-    <a-popconfirm
-      title="确定发布吗？"
-      ok-text="是"
-      cancel-text="否"
-      
-      @confirm="releaseMany"
-    >
-      <a-button :disabled="removeDisabled" type="primary" class="ml10"> 发布 </a-button>
-    </a-popconfirm>
+        type="primary"
+        :disabled="matchOperationDisabled"
+        :remove="removeSelected"
+      />
+      <a-popconfirm
+        title="确定发布吗？"
+        ok-text="是"
+        cancel-text="否"
+        @confirm="releaseMany"
+      >
+        <a-button :disabled="matchOperationDisabled" type="primary" class="ml10">
+          发布
+        </a-button>
+      </a-popconfirm>
     </div>
 
     <a-table
@@ -27,11 +28,7 @@
       bordered
       :loading="loading"
       class="ovflat"
-      :row-selection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange,
-        selections: true,
-      }"
+      :row-selection="rowSelection"
     >
       <template
         #customFilterDropdown="{
@@ -44,7 +41,6 @@
       >
         <CustomFilterDropdown
           v-bind="{
-            inputKey: 'searchInput',
             setSelectedKeys,
             selectedKeys,
             confirm,
@@ -90,88 +86,44 @@
 </template>
 
 <script setup lang="ts">
-import ArticleItem from "@/components/article/ArticleItem.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
-import type { CategoryDfe } from "@/modules/category/interfaces/CategoryDfe";
 import { http } from "@/modules/http";
-import { useList, usePageList } from "@/modules/http/useList";
-import type { TagDfe } from "@/modules/tag/interfaces/TagDfe";
-import { useLoadingHoc } from "@/modules/utils/useLoadingHoc";
-import { andThen, pipe, tap } from "ramda";
-import { computed, onMounted, provide, ref, type Ref } from "vue";
+import {  onMounted } from "vue";
 import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
+import { FilterType, useLoadingPageList } from "@/modules/http/useTableListNew";
 
- enum ArticleReleaseStatus{
-  DRAFT = 'DRAFT',//草稿
+const adminTabs = useAdminTabs();
+const go = (record: ArticleDfe) => {
+  adminTabs.go("/admin/article/edit/" + record.id, record.title);
+};
+
+enum ArticleReleaseStatus {
+  DRAFT = "DRAFT", //草稿
   // IN_REVIEW='inReview',//审核中
-  RELEASED = 'released',//已发布
-  OFF_SHELF = 'offShelf', //已下架
+  RELEASED = "released", //已发布
+  OFF_SHELF = "offShelf", //已下架
 }
 
 const {
   currentList,
-  refresh,
   loading,
+  refresh,
   pagination,
-  goPageNum,
-  go,
-  onTableChange: _onTableChange,
+  onTableChange,
+  matchOperationDisabled,
   remove,
-} = usePageList<ArticleDfe>("/articles",{
+  columns,
+  rowSelection,
+  removeSelected,
+} = useLoadingPageList<ArticleDfe>("/articles", {
   filter: {
     releaseStatus: {
       value: [ArticleReleaseStatus.DRAFT],
-      type: 'SingleEqual'
-    }
-  }
-});
-
-const selectedRowKeys: Ref<any[]> = ref([]);
-const onSelectChange = (changedSelectedRowKeys: any[]) => {
-  console.log("changedSelectedRowKeys", changedSelectedRowKeys);
-  selectedRowKeys.value = changedSelectedRowKeys;
-};
-
-const onTableChange = pipe(
-  _onTableChange,
-  // andThen(tap(res=>console.log(res))),
-  andThen(tap(() => (selectedRowKeys.value = [])))
-);
-onMounted(refresh);
-
-const tagsFilterOptions: Ref<TagDfe[]> = ref([]);
-const categoriesFilterOptions: Ref<CategoryDfe[]> = ref([]);
-
-// const remove=async (id:number)=>{
-//   const res = await _remove(id)
-//   const i = selectedRowKeys.value.findIndex(m=>m.id===id)
-//   if(i!==-1) selectedRowKeys.value.splice(i,1)
-//   return res
-// }
-
-onMounted(() => {
-  http
-    .list<TagDfe>("/tags")
-    .then((res) => (tagsFilterOptions.value = res.data.list));
-  http
-    .list<CategoryDfe>("/categories")
-    .then((res) => (categoriesFilterOptions.value = res.data.list));
-});
-
-const removeDisabled = computed(() => !selectedRowKeys.value.length);
-
-const removeLoading = useLoadingHoc();
-const removeSelected = removeLoading.loadingHoc(async () => {
-  await http.delete("/articles", selectedRowKeys.value);
-  return await refresh();
-});
-
-const searchInput = ref(null);
-provide("searchInput", searchInput);
-
-const columns = computed(() => {
-  return [
+      type: "SingleEqual",
+    },
+  },
+  columns: [
     {
       title: "标题",
       dataIndex: "title",
@@ -180,32 +132,19 @@ const columns = computed(() => {
       sortDirections: ["descend", "ascend"],
       width: "400px",
       customFilterDropdown: true,
-      filterKey: "name",
-      // onFilter: (value, record) =>
-      //   record.address.toString().toLowerCase().includes(value.toLowerCase()),
-      // onFilterDropdownVisibleChange: (visible) => {
-      //   if (visible) {
-      //     setTimeout(() => {
-      //       if(searchInput.value){
-      //         searchInput.value.focus();
-      //       }
-
-      //     }, 100);
-      //   }
-      // },
+      filter: {
+        value: 'title'
+      },
+      filterType: FilterType.SINGLE_LIKE,
     },
+
     {
       title: "概述",
       dataIndex: "summary",
       key: "summary",
       width: "400px",
     },
-    // {
-    //   title: "发布状态",
-    //   dataIndex: "releaseStatus",
-    //   key: "releaseStatus",
-    //   width: "100px",
-    // },
+
     {
       title: "分类",
       dataIndex: "category",
@@ -213,10 +152,11 @@ const columns = computed(() => {
       sorter: true,
       sortKey: "name",
       sortDirections: ["ascend", "descend"],
-      filters: categoriesFilterOptions.value.map((category) => ({
-        value: category.id,
-        text: category.name,
-      })),
+      filter: {
+        resource: "categories",
+        value: "id",
+        text: "name",
+      },
       filterSearch: true,
       width: "100px",
     },
@@ -225,15 +165,14 @@ const columns = computed(() => {
       dataIndex: "tags",
       key: "tags",
       width: "200px",
-      filters: tagsFilterOptions.value.map((tag) => ({
-        value: tag.id,
-        text: tag.name,
-      })),
+      filter: {
+        resource: "tags",
+        value: "id",
+        text: "name",
+      },
       filterSearch: true,
-      //   filteredValue: filtered.name || null,
-      //   onFilter: (value: string, record: DataItem) =>
-      //     record.name.includes(value),
     },
+
     {
       title: "创建的时间",
       dataIndex: "createTimeDisplayed",
@@ -248,8 +187,13 @@ const columns = computed(() => {
       key: "operation",
       width: "100px",
     },
-  ];
+  ],
 });
+
+
+onMounted(refresh)
+
+
 
 /**
  * 发布
@@ -260,7 +204,7 @@ const release = (id: number) => {
 
 const releaseMany = () => {
   return http.patch("/articles/release", {
-    ids:selectedRowKeys.value
+    ids: rowSelection.selectedRowKeys,
   });
 };
 </script>
