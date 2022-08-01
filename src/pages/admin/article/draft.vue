@@ -13,7 +13,11 @@
         cancel-text="否"
         @confirm="releaseMany"
       >
-        <a-button :disabled="matchOperationDisabled" type="primary" class="ml10">
+        <a-button
+          :disabled="matchOperationDisabled"
+          type="primary"
+          class="ml10"
+        >
           发布
         </a-button>
       </a-popconfirm>
@@ -89,21 +93,16 @@
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
 import { http } from "@/modules/http";
-import {  onMounted } from "vue";
+import { onMounted } from "vue";
 import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
-import { FilterType, useLoadingPageList } from "@/modules/http/useTableListNew";
+import { useTableList } from "@/modules/list/useTableList.js";
+import { FilterType } from "@/modules/list/useBaseTableList.js";
+import { ArticleReleaseStatus } from "@/modules/article/ArticleReleaseStatus.js";
 
 const adminTabs = useAdminTabs();
 const go = (record: ArticleDfe) => {
   adminTabs.go("/admin/article/edit/" + record.id, record.title);
 };
-
-enum ArticleReleaseStatus {
-  DRAFT = "DRAFT", //草稿
-  // IN_REVIEW='inReview',//审核中
-  RELEASED = "released", //已发布
-  OFF_SHELF = "offShelf", //已下架
-}
 
 const {
   currentList,
@@ -116,11 +115,11 @@ const {
   columns,
   rowSelection,
   removeSelected,
-} = useLoadingPageList<ArticleDfe>("/articles", {
+} = useTableList<ArticleDfe>("/articles", {
   filter: {
     releaseStatus: {
       value: [ArticleReleaseStatus.DRAFT],
-      type: "SingleEqual",
+      type: FilterType.SINGLE_EQUAL,
     },
   },
   columns: [
@@ -133,9 +132,9 @@ const {
       width: "400px",
       customFilterDropdown: true,
       filter: {
-        value: 'title'
+        value: "title",
+        type: FilterType.SINGLE_LIKE,
       },
-      filterType: FilterType.SINGLE_LIKE,
     },
 
     {
@@ -190,10 +189,7 @@ const {
   ],
 });
 
-
-onMounted(refresh)
-
-
+onMounted(refresh);
 
 /**
  * 发布

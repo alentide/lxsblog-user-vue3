@@ -39,6 +39,10 @@ class Http {
                 toast.error(error.response.data.msg)
                 return Promise.reject(error.response.data);
             }
+            if(error.code==='ERR_NETWORK'){
+                toast.error('未发现相关的网络服务，请检查请求路径和服务器状态！',3000)
+                return Promise.reject(error);
+            }
             // Any status codes that falls outside the range of 2xx cause this function to trigger
             // Do something with response error
             return Promise.reject(error);
