@@ -1,4 +1,4 @@
-import { mergeDeepLeft } from "ramda";
+import { clone, mergeDeepLeft } from "ramda";
 import { computed, ref, type Ref } from "vue";
 import { http } from "../http";
 import type { ListResponseData } from "../http/http.interfaces";
@@ -44,17 +44,26 @@ export function usePageList<T>(url: string,) {
     const refresh = async (option?: any) => {
         const data = await request(option);
         updatePagination(data)
-        list.value[page.value.num] = data.list
-        return data.list
+        const _list = data.list.map(m=>({
+            ...m,
+            key:m.id
+        }))
+        list.value[page.value.num] = _list
+        return _list
     }
 
     const goPageNum = async (num: number, option?: any) => {
         page.value.num = num
         const data = await request(option);
         updatePagination(data)
-        list.value[page.value.num] = data.list
-        return data.list
+        const _list = data.list.map(m=>({
+            ...m,
+            key:m.id
+        }))
+        list.value[page.value.num] = _list
+        return _list
     }
+
 
     return {
         list,

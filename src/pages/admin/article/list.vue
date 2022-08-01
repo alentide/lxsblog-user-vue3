@@ -21,6 +21,20 @@
           发布
         </a-button>
       </a-popconfirm>
+      <a-popconfirm
+        title="确定下架吗？"
+        ok-text="是"
+        cancel-text="否"
+        @confirm="offMany"
+      >
+        <a-button
+          :disabled="matchOperationDisabled"
+          type="primary"
+          class="ml10"
+        >
+          下架
+        </a-button>
+      </a-popconfirm>
     </div>
 
     <a-table
@@ -60,7 +74,14 @@
           </div>
         </template>
         <template v-else-if="['releaseStatus'].includes(column.dataIndex)">
-          <a-switch :checked="text === 'released'" />
+          <a-switch
+            checkedChildren="已发布"
+            unCheckedChildren="已下架"
+            :checkedValue="ArticleReleaseStatus.RELEASED"
+            :unCheckedValue="ArticleReleaseStatus.OFF_SHELF"
+            v-model:checked="record.releaseStatus"
+            @change="(e) => onChangeArticleReleaseStatus(record.id, e)"
+          />
         </template>
         <template v-else-if="['category'].includes(column.dataIndex)">
           <a-tag v-if="text?.name" @click="go(record)" color="green">{{
@@ -143,6 +164,20 @@ const {
       dataIndex: "releaseStatus",
       key: "releaseStatus",
       width: "100px",
+      filter: {
+        value: "releaseStatus",
+        type: FilterType.SINGLE_EQUAL,
+        options: [
+          {
+            value: ArticleReleaseStatus.RELEASED,
+            text: "已发布",
+          },
+          {
+            value: ArticleReleaseStatus.OFF_SHELF,
+            text: "已下架",
+          },
+        ],
+      },
     },
 
     {
@@ -199,10 +234,36 @@ const release = (id: number) => {
   return http.patch("/articles/release/" + id);
 };
 
-const releaseMany = () => {
-  return http.patch("/articles/release", {
+const releaseMany = async () => {
+  await http.patch("/articles/release", {
     ids: rowSelection.selectedRowKeys,
   });
+  return await refresh();
+};
+
+/**
+ * 下架
+ */
+const off = (id: number) => {
+  return http.patch("/articles/off/" + id);
+};
+
+const offMany = async () => {
+  await http.patch("/articles/off", {
+    ids: rowSelection.selectedRowKeys,
+  });
+  return await refresh();
+};
+
+const onChangeArticleReleaseStatus = (
+  id: number,
+  value: ArticleReleaseStatus
+) => {
+  if (value === ArticleReleaseStatus.OFF_SHELF) {
+    return off(id);
+  } else if (value === ArticleReleaseStatus.RELEASED) {
+    return release(id);
+  }
 };
 </script>
 

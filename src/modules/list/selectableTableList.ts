@@ -18,6 +18,7 @@ export function selectableTableList<T extends (...args: any[]) => any>(useHook: 
 } & ReturnType<T> {
     const selectedRowKeys: Ref<any[]> = ref([]);
     const onSelectChange = (changedSelectedRowKeys: any[]) => {
+        console.log("changedSelectedRowKeys", changedSelectedRowKeys);
         selectedRowKeys.value = changedSelectedRowKeys;
     };
     const matchOperationDisabled = computed(() => !selectedRowKeys.value.length);
@@ -25,7 +26,7 @@ export function selectableTableList<T extends (...args: any[]) => any>(useHook: 
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange,
         selections: true,
-    })
+    });
     return function (...args: any[]) {
         const hook = useHook(...args)
         const onTableChange = pipe(

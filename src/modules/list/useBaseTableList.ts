@@ -51,6 +51,10 @@ export interface CustomFilter {
      */
     type: FilterType
     /**
+     * 如果提供了默认选项，就不会发请求获取。
+     */
+    options: any[]
+    /**
      * 用于存储所有选项的数组。不需要主动设定，内部自己添加该字段。
      */
     refOptions?: Ref<unknown[]>
@@ -226,17 +230,26 @@ const initListConfig = (config: ListConfig) => {
             const filter = column.filter
             filter.refOptions = ref([])
             const refOptions = filter.refOptions
-            fetchRelations.push(() => {
-                return http
-                    .list("/" + filter.resource)
-                    .then((res) => (refOptions.value = res.data.list));
-            })
+
+            //没有默认选项，才会发请求获取
+            if(!filter.options){
+                fetchRelations.push(() => {
+                    return http
+                        .list("/" + filter.resource)
+                        .then((res) => (refOptions.value = res.data.list));
+                })
+            }
+
         }
     })
     const columns = computed(() => {
         return columnsOrigin.map(m => {
+            if (m?.filter?.options) return {
+                ...m,
+                filters: m?.filter?.options
+            }
 
-            if (m?.filter?.resource) return {
+            if (m?.filter?.refOptions) return {
                 ...m,
                 filters: m.filter.refOptions.value.map((m1) => ({
                     value: m1[m.filter.value],
