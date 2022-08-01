@@ -76,9 +76,10 @@ html {
 /*定义滚动条轨道
  内阴影+圆角*/
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 0px rgba(255,255,255,1);
+  /* -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,1); */
   border-radius: 10px;
-  background-color: #f5f5f5;
+  background-color: #fff;
 }
 /*定义滑块
  内阴影+圆角*/
