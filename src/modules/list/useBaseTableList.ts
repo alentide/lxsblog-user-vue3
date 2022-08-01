@@ -25,6 +25,8 @@ export const enum FilterType {
      * 判断是否包含某内容，比如 like '%a%'
      */
     'SINGLE_LIKE' = 'SingleLike',
+    
+    BETWEEN = 'Between'
 }
 
 /**
@@ -330,6 +332,7 @@ export function useBaseTableList<T extends { id: number }>(url: string, config: 
      * @param param0 
      */
     const onTableChange = ({ current }: Pagination, filter: FiltersValues, sorter: Sorter) => {
+        console.log('filter',filter);
         filterOption = onChangeFilter(filter, columns.value)
         sortOption = onChangeSorter(sorter)
         return baseTableList.goPageNum(current,requestExtraOptions());

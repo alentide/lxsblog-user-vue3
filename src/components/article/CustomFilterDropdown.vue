@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 8px">
+  <div style="padding: 8px" v-if="column.filterDownType === 'search'">
     <a-input
       :placeholder="`搜索${column.title}`"
       :value="selectedKeys[0]"
@@ -24,10 +24,17 @@
       重置
     </a-button>
   </div>
+  <div v-else-if="column.filterDownType === 'date'">
+    <a-range-picker :disabledDate="disabledDate" valueFormat="YYYY-MM-DD HH:mm:ss" :value="selectedKeys" @change="onDateRangeChange" />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { inject, reactive, toRef, toRefs } from "vue";
+import { SearchOutlined } from "@ant-design/icons-vue";
+import { inject, reactive, ref, toRef, toRefs } from "vue";
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+// import dayjs from "ant-design-vue/es/time-picker/dayjs.js";
 
 const props = defineProps({
   setSelectedKeys: {
@@ -55,24 +62,47 @@ const selectedKeys = toRef(props, "selectedKeys");
 const column = toRef(props, "column");
 const { confirm, clearFilters } = props;
 
-
 const state = reactive({
-    searchText: '',
-    searchedColumn:'',
-    
-})
+  searchText: "",
+  searchedColumn: "",
+});
 
-const handleSearch = (selectedKeys, confirm, dataIndex) => {
-
-    console.log('selectedKeys, confirm, dataIndex',selectedKeys, confirm, dataIndex);
+const handleSearch = () => {
+  console.log(
+    "selectedKeys, confirm, dataIndex",
+    selectedKeys,
+    confirm,
+    // dataIndex
+  );
   confirm();
   state.searchText = selectedKeys[0];
-  state.searchedColumn = dataIndex;
+  // state.searchedColumn = dataIndex;
 };
 
 const handleReset = (clearFilters) => {
   clearFilters({ confirm: true });
   state.searchText = "";
+};
+
+const transformDateRangeForAntDesign = (dateRange:[string,string])=>{
+  return dateRange.map(m=>dayjs(m))
+}
+
+const disabledDate = (currentDate: ReturnType<typeof dayjs>) => {
+  
+  return currentDate.isAfter('2022-01-01', 'year')
+}
+
+const onDateRangeChange = (
+  dates: [string, string],
+  dateStrings: [string, string]
+) => {
+  const [start,end] =dates
+
+  console.log('start,end',start,end);
+  props.setSelectedKeys([start.split(' ')[0]+' 00:00:00' ,end.split(' ')[0]+' 23:59:59'])
+  // console.log(selectedKeys, column, confirm, clearFilters);
+  confirm()
 };
 </script>
 

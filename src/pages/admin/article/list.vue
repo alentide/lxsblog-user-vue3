@@ -147,6 +147,9 @@ const {
       sortDirections: ["descend", "ascend"],
       width: "400px",
       customFilterDropdown: true,
+      filterDownType: "search",
+      ellipsis: true,
+      fixed: "left",
       filter: {
         value: "title",
         type: FilterType.SINGLE_LIKE,
@@ -158,6 +161,7 @@ const {
       dataIndex: "summary",
       key: "summary",
       width: "400px",
+      ellipsis: true,
     },
     {
       title: "状态",
@@ -187,6 +191,7 @@ const {
       sorter: true,
       sortKey: "name",
       sortDirections: ["ascend", "descend"],
+      ellipsis: true,
       filter: {
         resource: "categories",
         value: "id",
@@ -205,6 +210,7 @@ const {
         value: "id",
         text: "name",
       },
+      ellipsis: true,
       filterSearch: true,
     },
 
@@ -215,12 +221,95 @@ const {
       sorter: true,
       sortDirections: ["ascend", "descend"],
       width: "150px",
+      ellipsis: true,
+      customFilterDropdown: true,
+      filterDownType: "date",
+      filter: {
+        value: "createTime",
+        type: FilterType.BETWEEN,
+      },
+    },
+    {
+      title: "更新的时间",
+      dataIndex: "updateTime",
+      key: "updateTime",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      width: "150px",
+      ellipsis: true,
+      customFilterDropdown: true,
+      filterDownType: "date",
+      filter: {
+        value: "updateTime",
+        type: FilterType.BETWEEN,
+      },
+    },
+    {
+      title: "首次发布时间",
+      dataIndex: "firstReleaseTime",
+      key: "firstReleaseTime",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      width: "150px",
+      ellipsis: true,
+      customFilterDropdown: true,
+      filterDownType: "date",
+      filter: {
+        value: "firstReleaseTime",
+        type: FilterType.BETWEEN,
+      },
+    },
+    {
+      title: "最近一次发布时间",
+      dataIndex: "lastReleaseTime",
+      key: "lastReleaseTime",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      width: "150px",
+      ellipsis: true,
+      customFilterDropdown: true,
+      filterDownType: "date",
+      filter: {
+        value: "lastReleaseTime",
+        type: FilterType.BETWEEN,
+      },
+    },
+    {
+      title: "首次下架时间",
+      dataIndex: "firstOffTime",
+      key: "firstOffTime",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      width: "150px",
+      ellipsis: true,
+      customFilterDropdown: true,
+      filterDownType: "date",
+      filter: {
+        value: "firstOffTime",
+        type: FilterType.BETWEEN,
+      },
+    },
+    {
+      title: "最近一次下架时间",
+      dataIndex: "lastOffTime",
+      key: "lastOffTime",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      width: "150px",
+      ellipsis: true,
+      customFilterDropdown: true,
+      filterDownType: "date",
+      filter: {
+        value: "lastOffTime",
+        type: FilterType.BETWEEN,
+      },
     },
     {
       title: "操作",
       dataIndex: "operation",
       key: "operation",
       width: "100px",
+      fixed: "right",
     },
   ],
 });
@@ -231,7 +320,7 @@ onMounted(refresh);
  * 发布
  */
 const release = (id: number) => {
-  return http.patch("/articles/release/" + id);
+  return http.patch("/articles/release/" + id).then(refresh);
 };
 
 const releaseMany = async () => {

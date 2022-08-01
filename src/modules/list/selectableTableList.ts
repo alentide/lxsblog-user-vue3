@@ -36,7 +36,9 @@ export function selectableTableList<T extends (...args: any[]) => any>(useHook: 
         );
 
         const removeSelected = async () => {
-            await http.delete(args[0], selectedRowKeys.value);
+            await http.delete(args[0], {
+                ids:selectedRowKeys.value
+            });
             return await hook.refresh();
         }
         return {

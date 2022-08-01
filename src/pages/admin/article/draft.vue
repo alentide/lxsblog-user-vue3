@@ -181,6 +181,14 @@ const {
       width: "150px",
     },
     {
+      title: "更新的时间",
+      dataIndex: "updateTime",
+      key: "updateTime",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      width: "150px",
+    },
+    {
       title: "操作",
       dataIndex: "operation",
       key: "operation",
