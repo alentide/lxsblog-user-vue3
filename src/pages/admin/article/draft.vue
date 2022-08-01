@@ -131,6 +131,7 @@ const {
       sortDirections: ["descend", "ascend"],
       width: "400px",
       customFilterDropdown: true,
+      filterDownType: "search",
       filter: {
         value: "title",
         type: FilterType.SINGLE_LIKE,
@@ -203,13 +204,13 @@ onMounted(refresh);
  * 发布
  */
 const release = (id: number) => {
-  return http.patch("/articles/release/" + id);
+  return http.patch("/articles/release/" + id).then(refresh);
 };
 
 const releaseMany = () => {
   return http.patch("/articles/release", {
     ids: rowSelection.selectedRowKeys,
-  });
+  }).then(refresh);
 };
 </script>
 

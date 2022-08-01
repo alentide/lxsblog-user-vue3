@@ -170,7 +170,7 @@ const {
       width: "100px",
       filter: {
         value: "releaseStatus",
-        type: FilterType.SINGLE_EQUAL,
+        type: FilterType.IN_ARRAY,
         options: [
           {
             value: ArticleReleaseStatus.RELEASED,

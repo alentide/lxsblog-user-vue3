@@ -19,6 +19,25 @@
       class="ovflat"
       :row-selection="rowSelection"
     >
+      <template
+        #customFilterDropdown="{
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters,
+          column,
+        }"
+      >
+        <CustomFilterDropdown
+          v-bind="{
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        />
+      </template>
       <template #bodyCell="{ column, text, record }">
         <template v-if="['name'].includes(column.dataIndex)">
           <div @click="$router.push('/admin/category/edit/' + record.id)">
@@ -41,7 +60,7 @@ import RemoveIcon from "@/components/RemoveIcon.vue";
 import { useTableList } from "@/modules/list/useTableList.js";
 import { onMounted } from "vue";
 import { FilterType } from "@/modules/list/useBaseTableList.js";
-
+import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
 const {
   currentList,
   rowSelection,
@@ -58,9 +77,10 @@ const {
     {
       title: "名字",
       dataIndex: "name",
+
+      ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "search",
-      ellipsis: true,
       fixed: "left",
       filter: {
         value: "name",
