@@ -1,6 +1,6 @@
 import OSS from "ali-oss"
 import { ref, type Ref } from "vue"
-import { http } from "../http"
+import { adminHttp } from "../http"
 import { nanoid } from 'nanoid'
 
 interface OSSToken {
@@ -15,7 +15,7 @@ interface OSSToken {
  * @returns 
  */
 const getToken = async () => {
-    const res = await http.get<OSSToken>('/images/token')
+    const res = await adminHttp.get<OSSToken>('/images/token')
     return res.data
 }
 
@@ -69,7 +69,7 @@ export const upload = async (file: File)=>{
     const uploader = getUploader(token)
     const newFileName = randomFileName(file)
     const res = await uploader.put(newFileName, file);
-    return await http.post<ProjectImage>('/images',{
+    return await adminHttp.post<ProjectImage>('/images',{
         src: res.url
     })
 }
@@ -83,7 +83,7 @@ export const useImageUploader = () => {
             const uploader = getUploader(token)
             const newFileName = randomFileName(file)
             const res = await uploader.put(newFileName, file);
-            ({data:image.value} = await http.post<ProjectImage>('/images',{
+            ({data:image.value} = await adminHttp.post<ProjectImage>('/images',{
                 src: res.url
             }));
             return {

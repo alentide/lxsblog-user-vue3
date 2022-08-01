@@ -1,5 +1,5 @@
 import { useRoute } from 'vue-router';
-import { http } from "@/modules/http";
+import { adminHttp } from "@/modules/http";
 import { onMounted, ref } from "vue";
 import { useLoadingHoc } from '../utils/useLoadingHoc';
 import { andThen, pipe } from 'ramda';
@@ -16,7 +16,7 @@ export const useTagEditForm = () => {
     const save = async () => {
         loading.value = true;
         try {
-            const res = await http.patch("/tags/" + form.value.id, form.value);
+            const res = await adminHttp.patch("/tags/" + form.value.id, form.value);
             adminTabs.pop()
             return res;
         } finally {
@@ -29,7 +29,7 @@ export const useTagEditForm = () => {
     }
 
     const fetch = loadingHoc(pipe(
-        () => http.get("/tags/" + form.value.id),
+        () => adminHttp.get("/tags/" + form.value.id),
         andThen(res=>{
             if(!res.data){
                 adminTabs.pop()

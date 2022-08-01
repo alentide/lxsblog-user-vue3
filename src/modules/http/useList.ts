@@ -1,6 +1,6 @@
 import { mergeDeepLeft } from "ramda"
 import { computed, onMounted, provide, ref, type Ref } from "vue"
-import { http } from "."
+import { adminHttp } from "."
 import useAdminTabs from "../adminTabs/useAdminTabs"
 import type { ArticleDfe } from "../article/article.interfaces"
 import IgnoreError from "../error/IgnoreError"
@@ -16,7 +16,7 @@ export const defaultPage = () => ({
 export function useListRequest<T>(url: string) {
     const page = ref(defaultPage())
     const request = async (options:any={}) => {
-        const { data } = await http.get<ListResponseData<T>>(url, {
+        const { data } = await adminHttp.get<ListResponseData<T>>(url, {
             pageNum: page.value.num,
             pageLimit: page.value.limit,
             ...options,
@@ -59,7 +59,7 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
     function useListRequest<T>(url: string) {
         const page = ref(defaultPage())
         const request = async (options:any={}) => {
-            const { data } = await http.get<ListResponseData<T>>(url, {
+            const { data } = await adminHttp.get<ListResponseData<T>>(url, {
                 pageNum: page.value.num,
                 pageLimit: page.value.limit,
                 ...mergeDeepLeft(options,listOptions,)
@@ -318,7 +318,7 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
     const remove = async (id: number) => {
         loading.value = true
         try {
-            await http.delete(url + '/' + id)
+            await adminHttp.delete(url + '/' + id)
         } finally {
             loading.value = false
         }
@@ -360,7 +360,7 @@ export function useList<T>(url: string) {
         loading.value = true
         page.value = defaultPage()
         try {
-            const { data } = await http.get<ListResponseData<T>>(url, {
+            const { data } = await adminHttp.get<ListResponseData<T>>(url, {
                 pageNum: page.value.num,
                 pageLimit: page.value.limit,
             });
@@ -377,7 +377,7 @@ export function useList<T>(url: string) {
         loading.value = true
         page.value.num++
         try {
-            const { data } = await http.get<ListResponseData<T>>(url, {
+            const { data } = await adminHttp.get<ListResponseData<T>>(url, {
                 pageNum: page.value.num,
                 pageLimit: page.value.limit,
             });

@@ -1,4 +1,4 @@
-import { http } from "@/modules/http";
+import { adminHttp } from "@/modules/http";
 import { ref } from "vue";
 import useAdminTabs from "../adminTabs/useAdminTabs";
 
@@ -12,7 +12,7 @@ export const useTagNewForm = () => {
     const save = async () => {
         loading.value = true;
         try {
-            const res = await http.post("/tags", form.value);
+            const res = await adminHttp.post("/tags", form.value);
             adminTabs.pop()
             return res;
         } finally {

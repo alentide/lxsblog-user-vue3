@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
-import { http } from "@/modules/http";
+import { adminHttp } from "@/modules/http";
 import { onMounted } from "vue";
 import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
 import { useTableList } from "@/modules/list/useTableList.js";
@@ -204,11 +204,11 @@ onMounted(refresh);
  * 发布
  */
 const release = (id: number) => {
-  return http.patch("/articles/release/" + id).then(refresh);
+  return adminHttp.patch("/articles/release/" + id).then(refresh);
 };
 
 const releaseMany = () => {
-  return http.patch("/articles/release", {
+  return adminHttp.patch("/articles/release", {
     ids: rowSelection.selectedRowKeys,
   }).then(refresh);
 };

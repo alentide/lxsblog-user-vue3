@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { http } from "@/modules/http";
+import { adminHttp } from "@/modules/http";
 import { useLoadingHoc } from "@/modules/utils/useLoadingHoc";
 import { computed, onMounted, ref, toRefs, watch, type Ref } from "vue";
 import type { CategoryDfe } from "@/modules/category/interfaces/CategoryDfe";
@@ -38,7 +38,7 @@ watch(()=>modelValue,()=>{
 })
 
 const {loading,loadingHoc} = useLoadingHoc()
-const fetch = loadingHoc<typeof http.list<CategoryDfe>>(()=>http.list<CategoryDfe>('/categories'))
+const fetch = loadingHoc<typeof adminHttp.list<CategoryDfe>>(()=>adminHttp.list<CategoryDfe>('/categories'))
 const list:Ref<CategoryDfe[]> = ref([])
 const initDataAsync = async ()=>{
     const res = await fetch()

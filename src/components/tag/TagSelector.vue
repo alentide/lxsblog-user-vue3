@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { http } from "@/modules/http";
+import { adminHttp } from "@/modules/http";
 import { useLoadingHoc } from "@/modules/utils/useLoadingHoc";
 import type { SelectProps } from "ant-design-vue";
 import { computed, onMounted, ref, toRefs, watch, type Ref } from "vue";
@@ -40,7 +40,7 @@ watch(()=>modelValue,()=>{
 })
 
 const {loading,loadingHoc} = useLoadingHoc()
-const fetch = loadingHoc<typeof http.list<TagDfe>>(()=>http.list<TagDfe>('/tags'))
+const fetch = loadingHoc<typeof adminHttp.list<TagDfe>>(()=>adminHttp.list<TagDfe>('/tags'))
 const list:Ref<TagDfe[]> = ref([])
 const initDataAsync = async ()=>{
     const res = await fetch()

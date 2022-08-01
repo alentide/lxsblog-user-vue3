@@ -1,6 +1,6 @@
 import { usePost } from './../http/index';
 import { ref, type Ref } from "vue"
-import { http } from "../http"
+import { adminHttp } from "../http"
 
 // export interface TimeLineItems {
 //     id: number,
@@ -20,7 +20,7 @@ export default () => {
         return addRequest.request(createTimeLineItems).then((res:{data:TimeLineItems}) =>res.data)
     }
     const  remove = async (id:number)=>{
-        return await http.delete('time-lines',{id})
+        return await adminHttp.delete('time-lines',{id})
     }
     return {
         add,

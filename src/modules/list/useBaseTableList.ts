@@ -1,6 +1,6 @@
 import { mergeDeepLeft, pick } from "ramda";
 import { computed, onMounted, ref, type Ref, provide } from "vue";
-import { http } from "../http";
+import { adminHttp } from "../http";
 import { usePageList } from "./usePageList";
 
 export interface SortOption {
@@ -236,7 +236,7 @@ const initListConfig = (config: ListConfig) => {
             //没有默认选项，才会发请求获取
             if(!filter.options){
                 fetchRelations.push(() => {
-                    return http
+                    return adminHttp
                         .list("/" + filter.resource)
                         .then((res) => (refOptions.value = res.data.list));
                 })
@@ -340,7 +340,7 @@ export function useBaseTableList<T extends { id: number }>(url: string, config: 
 
     
     const remove = async (id: number) => {
-        await http.delete(url + '/' + id)
+        await adminHttp.delete(url + '/' + id)
         return await refresh()
     }
 

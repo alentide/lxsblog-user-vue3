@@ -108,7 +108,7 @@
 <script setup lang="ts">
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
-import { http } from "@/modules/http";
+import { adminHttp } from "@/modules/http";
 import { onMounted } from "vue";
 import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue";
 import { useTableList } from "@/modules/list/useTableList.js";
@@ -320,11 +320,11 @@ onMounted(refresh);
  * 发布
  */
 const release = (id: number) => {
-  return http.patch("/articles/release/" + id).then(refresh);
+  return adminHttp.patch("/articles/release/" + id).then(refresh);
 };
 
 const releaseMany = async () => {
-  await http.patch("/articles/release", {
+  await adminHttp.patch("/articles/release", {
     ids: rowSelection.selectedRowKeys,
   });
   return await refresh();
@@ -334,11 +334,11 @@ const releaseMany = async () => {
  * 下架
  */
 const off = (id: number) => {
-  return http.patch("/articles/off/" + id);
+  return adminHttp.patch("/articles/off/" + id);
 };
 
 const offMany = async () => {
-  await http.patch("/articles/off", {
+  await adminHttp.patch("/articles/off", {
     ids: rowSelection.selectedRowKeys,
   });
   return await refresh();

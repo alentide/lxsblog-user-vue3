@@ -1,6 +1,6 @@
 import { clone, mergeDeepLeft } from "ramda";
 import { computed, ref, type Ref } from "vue";
-import { http } from "../http";
+import { adminHttp } from "../http";
 import type { ListResponseData } from "../http/http.interfaces";
 
 export const defaultPage = () => ({
@@ -38,7 +38,7 @@ export function usePageList<T>(url: string,) {
         ({ hasMore: hasMore.value, total: total.value } = data);
     }
 
-    const request = async (option?: any) => http.get<ListResponseData<T>>(url, mergeOptions(page, option)).then(res => res.data)
+    const request = async (option?: any) => adminHttp.get<ListResponseData<T>>(url, mergeOptions(page, option)).then(res => res.data)
 
 
     const refresh = async (option?: any) => {

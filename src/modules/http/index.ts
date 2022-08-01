@@ -9,9 +9,13 @@ import IgnoreError from '../error/IgnoreError';
 const toast = useToast()
 class Http {
     private _axios: any
-    constructor() {
+    constructor({
+        baseURL,
+    }:{
+        baseURL:string
+    }) {
         this._axios = axios.create({
-            baseURL: 'http://localhost:3000'
+            baseURL,
         })
 
         this._axios.interceptors.response.use(function (response) {
@@ -69,7 +73,13 @@ class Http {
         }).then((res: { data: any }) => res.data)
     }
 }
-export const http = new Http()
+export const http = new Http({
+    baseURL: 'http://localhost:3000/api/user'
+})
+
+export const adminHttp = new Http({
+    baseURL: 'http://localhost:3000/api/v1/admin'
+})
 
 
 export const usePost = (url: string, required: any = {}) => {
@@ -77,7 +87,7 @@ export const usePost = (url: string, required: any = {}) => {
     const result = ref()
     const request = (options: any = {}) => {
         loading.value = true
-        return http.post(url, { ...required, ...options, }).then((res: any) => result.value = res).finally(() => {
+        return adminHttp.post(url, { ...required, ...options, }).then((res: any) => result.value = res).finally(() => {
             loading.value = false
         })
     }

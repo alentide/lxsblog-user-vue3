@@ -3,7 +3,7 @@ import router from "@/router"
 import { computed, onMounted, ref, watch, type Ref } from "vue"
 import { useRoute } from "vue-router"
 import useAdminTabs from "../adminTabs/useAdminTabs"
-import { http } from "../http"
+import { adminHttp } from "../http"
 import { emptyImage } from "../upload/useImageUploader"
 import type { ArticleDfe, CreateArticleDto, UpdateArticleDto } from "./article.interfaces"
 
@@ -52,7 +52,7 @@ export const useArticleNewForm = () => {
     const save = async () => {
         loading.value = true
         try {
-            const res = await http.post<ArticleDfe>('/articles', form.value)
+            const res = await adminHttp.post<ArticleDfe>('/articles', form.value)
             return res
         } finally {
             loading.value = false
@@ -98,7 +98,7 @@ export const useArticleEditForm = () => {
     const fetch = async () => {
         initLoading.value = true
         try {
-            const res = await http.get<UpdateArticleDto>('/articles/' + id)
+            const res = await adminHttp.get<UpdateArticleDto>('/articles/' + id)
             form.value = {
                 ...res.data,
                 // coverImage: res.data.coverImage || emptyImage()
@@ -112,7 +112,7 @@ export const useArticleEditForm = () => {
     const save = async () => {
         loading.value = true
         try {
-            const res = await http.patch<ArticleDfe>('/articles/' + form.value.id, form.value)
+            const res = await adminHttp.patch<ArticleDfe>('/articles/' + form.value.id, form.value)
             return res
         } finally {
             loading.value = false

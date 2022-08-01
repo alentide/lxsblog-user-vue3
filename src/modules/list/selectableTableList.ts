@@ -1,6 +1,6 @@
 import { andThen, pipe, tap } from "ramda";
 import { computed, reactive, ref, type ComputedRef, type Ref } from "vue";
-import { http } from "../http";
+import { adminHttp } from "../http";
 
 /**
  * 这个高阶函数，可以让useBaseTableList变成带批量操作的。
@@ -36,7 +36,7 @@ export function selectableTableList<T extends (...args: any[]) => any>(useHook: 
         );
 
         const removeSelected = async () => {
-            await http.delete(args[0], {
+            await adminHttp.delete(args[0], {
                 ids:selectedRowKeys.value
             });
             return await hook.refresh();

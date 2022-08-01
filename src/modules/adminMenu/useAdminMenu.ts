@@ -1,10 +1,10 @@
 import { ref, type Ref } from "vue";
-import { http } from "../http";
+import { adminHttp } from "../http";
 
 
 
 const fetchMenu = async () => {
-    const res = await http.get<MenuItem[]>('/menus')
+    const res = await adminHttp.get<MenuItem[]>('/menus')
     return res.data
 };
 
