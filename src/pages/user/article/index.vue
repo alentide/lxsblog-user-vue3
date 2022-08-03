@@ -22,9 +22,9 @@
       <template #renderItem="{ item }">
         <a-list-item key="item.title">
           <template #actions>
-            <span><StarOutlined />1</span>
-            <span><LikeOutlined />1</span>
+            <span><EyeOutlined />1</span>
             <span><MessageOutlined />1</span>
+            <span><a-rate :value="0" /></span>
           </template>
           <template #extra>
             <img
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import {
-  StarOutlined,
+  EyeOutlined,
   LikeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";

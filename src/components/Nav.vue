@@ -28,7 +28,7 @@
             <template #overlay>
               <a-menu>
                 <a-menu-item key="login">
-                  <a href="javascript:;" @click="openLoginForm">登录</a>
+                  <a href="javascript:;" @click="loginModal.show">登录</a>
                 </a-menu-item>
                 <a-menu-item>
                   <a href="javascript:;">退出</a>
@@ -43,90 +43,26 @@
       </a-col>
     </a-row>
 
-    <a-modal
-      wrapClassName="login-form-x"
-      v-model:visible="visible"
-      centered
-      title="登录"
-      :footer="null"
-    >
-      <a-form
-        :model="formState"
-        name="basic"
-        autocomplete="off"
-        @finish="onFinish"
-        @finishFailed="onFinishFailed"
-      >
-        <a-form-item
-          label="邮箱"
-          name="username"
-          :rules="[{ required: true, message: 'Please input your username!' }]"
-        >
-          <a-input v-model:value="formState.username" />
-        </a-form-item>
-
-        <a-form-item
-          label="密码"
-          name="password"
-          :rules="[{ required: true, message: 'Please input your password!' }]"
-        >
-          <a-input-password v-model:value="formState.password" />
-        </a-form-item>
-
-        <a-form-item name="remember">
-          <a-checkbox v-model:checked="formState.remember"
-            >Remember me</a-checkbox
-          >
-        </a-form-item>
-
-        <a-form-item>
-          <a-button type="primary" html-type="submit">登录</a-button>
-        </a-form-item>
-      </a-form>
-    </a-modal>
+    <LoginModal />
   </a-layout-header>
 </template>
 
 <script setup lang="ts">
 import Logo from "@/assets/logo.png";
+import LoginModal from "./auth/LoginModal.vue";
 import { UserOutlined } from "@ant-design/icons-vue";
-import { reactive, ref } from "vue";
-import router from '@/router';
+
 import { useNav } from "@/modules/nav/useNav";
+import { ref } from "vue";
+import { loginModal } from "@/modules/auth";
 
-
-const nav = useNav()
+const nav = useNav();
 const clickMenu = ({ key }: { key: string }) => {
-  nav.go(key)
+  nav.go(key);
 };
 
-const selectedKeys =ref([])
+const selectedKeys = ref([]);
 
-const visible = ref(false);
-const openLoginForm = () => (visible.value = true);
-
-const value = ref<string>("");
-
-interface FormState {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-
-const formState = reactive<FormState>({
-  username: "",
-  password: "",
-  remember: true,
-});
-const onFinish = (values: any) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
-};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

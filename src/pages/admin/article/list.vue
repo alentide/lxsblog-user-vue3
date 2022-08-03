@@ -155,7 +155,6 @@ const {
         type: FilterType.SINGLE_LIKE,
       },
     },
-
     {
       title: "概述",
       dataIndex: "summary",
