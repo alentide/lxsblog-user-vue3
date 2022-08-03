@@ -24,30 +24,35 @@
 </template>
 
 <script setup lang="ts">
-import { usePageList } from "@/modules/http/useList";
+import { usePageList } from "@/modules/list";
 import type { TagDfe } from "@/modules/tag/interfaces/TagDfe";
 import RemoveIcon from "@/components/RemoveIcon.vue";
+import { useTableList } from "@/modules/list/useTableList.js";
+import { onMounted } from "vue";
 
-const columns = [
-  {
-    title: "名字",
-    dataIndex: "name",
-  },
-  {
-    title: "创建的时间",
-    dataIndex: "createTimeDisplayed",
-    sorter: true,
-    sortDirections: ["descend", "ascend"],
-    width: "180px",
-  },
-  {
-    title: "操作",
-    dataIndex: "operation",
-    width: "100px",
-  },
-];
-const { currentList, onTableChange, remove, pagination, loading } =
-  usePageList<TagDfe>("/tags");
+const { currentList, onTableChange, remove, pagination, loading, refresh ,columns} =
+  useTableList<TagDfe>("/tags", {
+    columns: [
+      {
+        title: "名字",
+        dataIndex: "name",
+      },
+      {
+        title: "创建的时间",
+        dataIndex: "createTimeDisplayed",
+        sorter: true,
+        sortDirections: ["descend", "ascend"],
+        width: "180px",
+      },
+      {
+        title: "操作",
+        dataIndex: "operation",
+        width: "100px",
+      },
+    ],
+  });
+
+onMounted(refresh);
 </script>
 
 <style scoped></style>

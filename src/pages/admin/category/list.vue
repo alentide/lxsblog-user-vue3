@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { usePageList } from "@/modules/http/useList";
+import { usePageList } from "@/modules/list";
 import type { CategoryDfe } from "@/modules/category/interfaces/CategoryDfe";
 import RemoveIcon from "@/components/RemoveIcon.vue";
 import { useTableList } from "@/modules/list/useTableList.js";

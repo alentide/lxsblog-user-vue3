@@ -1,7 +1,7 @@
 import type { ArticleDfe } from "@/modules/article/article.interfaces"
 import { adminHttp } from "@/modules/http"
 import type { ListResponseData } from "@/modules/http/http.interfaces"
-import { defaultPage, usePageList } from "@/modules/http/useList"
+import { defaultPage, usePageList } from "@/modules/list"
 import { ref } from "vue"
 
 

@@ -12,7 +12,7 @@ import { authModal } from '../auth';
 export * from './useAdminPost'
 
 const toast = useToast()
-class Http {
+export class Http {
     private _axios: ReturnType<typeof axios.create>
     constructor({
         baseURL,
@@ -97,9 +97,28 @@ class Http {
 export const http = new Http({
     baseURL: 'http://localhost:3000/api/v1/user'
 })
-
+export const userHttp = new Http({
+    baseURL: 'http://localhost:3000/api/v1/user'
+})
 export const adminHttp = new Http({
     baseURL: 'http://localhost:3000/api/v1/admin'
 })
 
 
+
+
+export function useUserPost<T>(url: string, required: any = {}) {
+    const loading = ref(false);
+    const result: Ref<ProjectResponse<T> | undefined> = ref();
+    const request = (options: any = {}) => {
+        loading.value = true;
+        return adminHttp.post<T>(url, { ...required, ...options, }).then((res: any) => result.value = res).finally(() => {
+            loading.value = false;
+        });
+    };
+    return {
+        loading,
+        result,
+        request,
+    };
+}

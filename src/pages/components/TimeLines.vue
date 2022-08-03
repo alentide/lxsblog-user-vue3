@@ -33,8 +33,8 @@
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 import { onMounted, inject } from "vue";
 
-import ListLoading from "@/components/base/ListLoading.vue";
-import ListEmpty from "@/components/base/ListEmpty.vue";
+import ListLoading from "@/components/list/ListLoading.vue";
+import ListEmpty from "@/components/list/ListEmpty.vue";
 
 import useTimeLines from "@/modules/timeLine/useTimeLines";
 import timeLineRepo from "@/modules/timeLine/timeLineRepo";

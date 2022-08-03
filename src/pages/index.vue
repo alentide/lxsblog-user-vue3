@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { onReachBottom } from "@/modules/list";
 import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
 import useTimeLines from "@/modules/timeLine/useTimeLines";
 import { onMounted, provide, reactive, ref, onBeforeUnmount } from "vue";
@@ -31,22 +32,8 @@ const { openCreate, openEdit } = timeLineForm;
 const timeLines = useTimeLines();
 provide("timeLines", timeLines);
 
-const onReachBottom = () => {
-  if (
-    document.documentElement.scrollHeight -
-      window.innerHeight -
-      document.documentElement.scrollTop <
-    50
-  ) {
-    timeLines.nextPage();
-  }
-};
-onMounted(() => {
-  window.addEventListener("scroll", onReachBottom);
-});
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", onReachBottom);
-});
+onReachBottom(timeLines.nextPage)
+
 </script>
 
 <style scoped lang="scss">

@@ -3,7 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { useList } from "@/modules/http/useList";
+// import { useList } from "@/modules/list";
+import { useList } from "@/modules/list";
 import { inject } from "vue";
 
 const { loading, hasMore ,list} = inject("list", () => useList(""), true);

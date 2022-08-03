@@ -10,74 +10,72 @@
       class="articles-x"
       item-layout="vertical"
       size="default"
-      :pagination="pagination"
-      :data-source="listData"
+      :data-source="list"
+      :loading="loading"
     >
-      <!-- <template #footer>
-      <div>
-        <b>ant design vue</b>
-        footer part
-      </div>
-    </template> -->
       <template #renderItem="{ item }">
-        <a-list-item key="item.title">
+        <a-list-item :key="item.id">
+        
           <template #actions>
+            
             <span><EyeOutlined />1</span>
             <span><MessageOutlined />1</span>
             <span><a-rate :value="0" /></span>
           </template>
           <template #extra>
             <img
+              style="object-fit: contain"
+              v-if="item.coverImage?.src"
               width="272"
+              height="120"
               alt="logo"
-              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+              :src="item.coverImage.src"
             />
           </template>
-          <a-list-item-meta :description="item.description">
+          <a-list-item-meta :description="item.summary">
             <template #title>
-              <RouterLink :to="item.href">{{ item.title }}</RouterLink>
+              <RouterLink :to="'article/' + item.id">{{
+                item.title
+              }}</RouterLink>
             </template>
           </a-list-item-meta>
 
           <div class="ellipsis_2" style="width: 100%">
             {{ item.content }}
           </div>
+          <a-tag class="my4" color="rgba(0,0,0,0.2)" v-if="item.category">{{
+              item.category.name
+            }}</a-tag>
+            <a-tag class="my4" color="rgba(0,0,0,0.2)" v-for="tag in item.tags">{{
+              tag.name
+            }}</a-tag>
         </a-list-item>
       </template>
     </a-list>
+    <ListLoadMore />
   </div>
 </template>
 
 <script setup lang="ts">
+import { getHomeArticleList } from "@/modules/article/index.js";
 import {
   EyeOutlined,
   LikeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
+import { onMounted } from "vue";
+import ListLoadMore from "@/components/list/ListLoadMore.vue";
+import ListEmpty from "@/components/list/ListEmpty.vue";
+import { onReachBottom } from "@/modules/list/index.js";
 
-const listData: Record<string, string>[] = [];
+const homeArticleList = getHomeArticleList();
+const { list, loading, nextPage } = homeArticleList;
+onMounted(homeArticleList.refresh);
 
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: "/article/1",
-    title: `ant design vue part ${i}`,
-    avatar: "https://joeschmoe.io/api/v1/random",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-  });
-}
+onReachBottom(nextPage);
 
 const onChange = (current: number) => {
   console.log(current);
-};
-
-const pagination = {
-  onChange: (page: number) => {
-    console.log(page);
-  },
-  pageSize: 10,
 };
 </script>
 

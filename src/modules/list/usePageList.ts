@@ -1,6 +1,6 @@
 import { clone, mergeDeepLeft } from "ramda";
 import { computed, ref, type Ref } from "vue";
-import { adminHttp } from "../http";
+import { adminHttp, Http } from "../http";
 import type { ListResponseData } from "../http/http.interfaces";
 
 export const defaultPage = () => ({
@@ -12,7 +12,7 @@ export const mergeOptions = (page: Ref<{
     num: number;
     limit: number;
 }>, { options, config }: { options: any, config: any } = { options: {}, config: {} }) => {
-    console.log('options,config',options,config);
+    console.log('options,config', options, config);
     return {
         pageNum: page.value.num,
         pageLimit: page.value.limit,
@@ -23,7 +23,14 @@ export const mergeOptions = (page: Ref<{
 
 
 
-export function usePageList<T>(url: string,) {
+export function usePageList<T>(url: string, {
+    http,
+}: {
+    http: Http
+} = {
+        http: adminHttp
+    }) {
+    http = http || adminHttp
     const list: Ref<T[][]> = ref([]);
     const page = ref(defaultPage());
     const currentList = computed(() => list.value[page.value.num]);
@@ -38,15 +45,25 @@ export function usePageList<T>(url: string,) {
         ({ hasMore: hasMore.value, total: total.value } = data);
     }
 
-    const request = async (option?: any) => adminHttp.get<ListResponseData<T>>(url, mergeOptions(page, option)).then(res => res.data)
+    const loading = ref(false)
+
+    const request = async (option?: any) => {
+        try {
+            loading.value=true
+            return await http.get<ListResponseData<T>>(url, mergeOptions(page, option)).then(res => res.data)
+        }finally{
+            loading.value=false
+        }
+
+    }
 
 
     const refresh = async (option?: any) => {
         const data = await request(option);
         updatePagination(data)
-        const _list = data.list.map(m=>({
+        const _list = data.list.map(m => ({
             ...m,
-            key:m.id
+            key: m.id
         }))
         list.value[page.value.num] = _list
         return _list
@@ -56,9 +73,9 @@ export function usePageList<T>(url: string,) {
         page.value.num = num
         const data = await request(option);
         updatePagination(data)
-        const _list = data.list.map(m=>({
+        const _list = data.list.map(m => ({
             ...m,
-            key:m.id
+            key: m.id
         }))
         list.value[page.value.num] = _list
         return _list
@@ -73,5 +90,6 @@ export function usePageList<T>(url: string,) {
         pagination,
         currentList,
         goPageNum,
+        loading,
     }
 }

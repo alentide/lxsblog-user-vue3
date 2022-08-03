@@ -1,21 +1,21 @@
-import { usePost } from './../http/index';
+// import { usePost } from './../http/index';
 import { ref, type Ref } from "vue"
-import { adminHttp } from "../http"
+import { adminHttp, useUserPost } from "../http"
 
-// export interface TimeLineItems {
-//     id: number,
-//     title: string,
-//     content: string,
-//     createTime: string,
-//     iconColor: string,
-//     createTimeDisplayed?:string,
-// }
+export interface TimeLineItems {
+    id: number,
+    title: string,
+    content: string,
+    createTime: string,
+    iconColor: string,
+    createTimeDisplayed?:string,
+}
 
-// export type CreateTimeLineItems = Pick<TimeLineItems, "title" | "content">;
+export type CreateTimeLineItems = Pick<TimeLineItems, "title" | "content">;
 
 
 export default () => {
-    const addRequest = usePost('time-lines')
+    const addRequest = useUserPost('time-lines')
     async function add(createTimeLineItems: CreateTimeLineItems) {
         return addRequest.request(createTimeLineItems).then((res:{data:TimeLineItems}) =>res.data)
     }
