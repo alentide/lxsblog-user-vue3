@@ -32,7 +32,8 @@ const { openCreate, openEdit } = timeLineForm;
 const timeLines = useTimeLines();
 provide("timeLines", timeLines);
 
-onReachBottom(timeLines.nextPage)
+onReachBottom(timeLines.nextPage);
+
 
 </script>
 

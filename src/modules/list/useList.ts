@@ -1,15 +1,27 @@
+import { mergeLeft } from 'ramda';
 import { userHttp } from './../http/index';
+import type { Http } from './../http/index';
 import { provide, ref, type Ref } from "vue"
 import { adminHttp } from "../http"
 import type { ListResponseData } from "../http/http.interfaces"
+import { identity } from 'ramda';
 
-export function useList<T>(url: string,{
-    http
-}:{
-    http: Http
-}={
-    http: adminHttp
-}) {
+interface UseListOption<T,R> {
+    http: Http,
+    transform(data:T[]): (T|R)[]
+}
+
+function defaultUseListOption<T>() {
+    return {
+        http: adminHttp,
+        transform: identity<T[]>
+    }
+}
+
+export function useList<T,R>(url: string,originOption:Partial<UseListOption<T,R>> ={}) {
+    const options = mergeLeft(originOption,defaultUseListOption<R>())
+    const {http,transform} = options
+
     const list: Ref<T[]> = ref([])
     const loading = ref(false)
     const hasMore = ref(true)
@@ -21,15 +33,29 @@ export function useList<T>(url: string,{
 
     const page = ref(defaultPage())
 
+
+    const _request = async ()=>{
+        const { data:_data } = await http.get<ListResponseData<T>>(url, {
+            pageNum: page.value.num,
+            pageLimit: page.value.limit,
+        });
+        const data = {
+            ..._data,
+            list: transform(_data.list)
+        };
+        ({ hasMore: hasMore.value, total: total.value } = data);
+        return data
+    }
+
+    /**
+     * 刷新
+     * @returns 
+     */
     const refresh = async () => {
         loading.value = true
         page.value = defaultPage()
         try {
-            const { data } = await http.get<ListResponseData<T>>(url, {
-                pageNum: page.value.num,
-                pageLimit: page.value.limit,
-            });
-            ({ hasMore: hasMore.value, total: total.value } = data);
+            const data = await _request()
             list.value = data.list
             return data.list
         } finally {
@@ -37,17 +63,18 @@ export function useList<T>(url: string,{
         }
     }
 
+
+    /**
+     * 下一页
+     * @returns 
+     */
     const nextPage = async () => {
         if (!hasMore.value) return []
         if(loading.value) return []
         loading.value = true
         page.value.num++
         try {
-            const { data } = await http.get<ListResponseData<T>>(url, {
-                pageNum: page.value.num,
-                pageLimit: page.value.limit,
-            });
-            ({ hasMore: hasMore.value } = data);
+            const data = await _request()
             list.value.push(...data.list)
             return data.list
         } finally {

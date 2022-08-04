@@ -18,28 +18,7 @@
         </a-menu></a-col
       >
       <a-col>
-        <div style="align-items: center; display: flex">
-          <a-dropdown placement="bottomRight">
-            <a-avatar style="flex-shrink: 0; margin-left: 20px" :size="40">
-              <template #icon>
-                <UserOutlined />
-              </template>
-            </a-avatar>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="login">
-                  <a href="javascript:;" @click="loginModal.show">登录</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:;">退出</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <RouterLink to="/admin">管理</RouterLink>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </div>
+        <AvatarDropdownMenu />
       </a-col>
     </a-row>
 
@@ -50,11 +29,11 @@
 <script setup lang="ts">
 import Logo from "@/assets/logo.png";
 import LoginModal from "./auth/LoginModal.vue";
-import { UserOutlined } from "@ant-design/icons-vue";
+import AvatarDropdownMenu from "./auth/AvatarDropdownMenu.vue";
 
 import { useNav } from "@/modules/nav/useNav";
 import { ref } from "vue";
-import { loginModal } from "@/modules/auth";
+
 
 const nav = useNav();
 const clickMenu = ({ key }: { key: string }) => {

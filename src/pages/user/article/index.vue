@@ -6,6 +6,7 @@
       <div><h3>3</h3></div>
       <div><h3>4</h3></div>
     </a-carousel>
+
     <a-list
       class="articles-x"
       item-layout="vertical"
@@ -15,12 +16,32 @@
     >
       <template #renderItem="{ item }">
         <a-list-item :key="item.id">
-        
           <template #actions>
-            
             <span><EyeOutlined />1</span>
             <span><MessageOutlined />1</span>
-            <span><a-rate :value="0" /></span>
+            <span
+              ><a-tooltip>
+                <template #title>
+                  <div v-if="item.scoreUserNum">
+                    平均分为：{{ item.averageScore }}({{
+                      item.scoreUserNum
+                    }}人打分)
+                  </div>
+                  <div v-else>尚未有人打分</div>
+                  <div v-if="item.currentUserScore">
+                    你的打分是：{{ item.currentUserScore.score }}
+                  </div>
+                </template>
+                <div>
+                  <a-spin :spinning="item.giveScoreLoading" :delay="300">
+                    <a-rate
+                      v-model:value="item.averageScore"
+                      :disabled="!!item.currentUserScore"
+                      @change="item.giveScore"
+                    />
+                  </a-spin>
+                </div> </a-tooltip
+            ></span>
           </template>
           <template #extra>
             <img
@@ -44,11 +65,11 @@
             {{ item.content }}
           </div>
           <a-tag class="my4" color="rgba(0,0,0,0.2)" v-if="item.category">{{
-              item.category.name
-            }}</a-tag>
-            <a-tag class="my4" color="rgba(0,0,0,0.2)" v-for="tag in item.tags">{{
-              tag.name
-            }}</a-tag>
+            item.category.name
+          }}</a-tag>
+          <a-tag class="my4" color="rgba(0,0,0,0.2)" v-for="tag in item.tags">{{
+            tag.name
+          }}</a-tag>
         </a-list-item>
       </template>
     </a-list>
@@ -57,13 +78,13 @@
 </template>
 
 <script setup lang="ts">
-import { getHomeArticleList } from "@/modules/article/index.js";
+import { getHomeArticleList, scoreArticle } from "@/modules/article/index.js";
 import {
   EyeOutlined,
   LikeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
-import { onMounted } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import ListLoadMore from "@/components/list/ListLoadMore.vue";
 import ListEmpty from "@/components/list/ListEmpty.vue";
 import { onReachBottom } from "@/modules/list/index.js";
@@ -73,10 +94,6 @@ const { list, loading, nextPage } = homeArticleList;
 onMounted(homeArticleList.refresh);
 
 onReachBottom(nextPage);
-
-const onChange = (current: number) => {
-  console.log(current);
-};
 </script>
 
 <style scoped lang="scss">

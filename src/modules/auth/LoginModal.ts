@@ -1,5 +1,6 @@
 import { reactive, ref } from 'vue';
 import { http } from '../http';
+import type { User } from '../user';
 export class LoginModal {
     form = ref({
         email: '',
@@ -14,11 +15,7 @@ export class LoginModal {
                 token: {
                     access_token:string,
                 },
-                user: {
-                    id:number,
-                    email: string,
-                    username: string,
-                }
+                user: User
             }>('auth/login',this.form.value)
             return res
         } finally {

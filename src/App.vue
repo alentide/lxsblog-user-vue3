@@ -20,10 +20,11 @@ import Nav from "./components/Nav.vue";
 import BreadCrumb from "./components/BreadCrumb.vue";
 import Footer from "@/components/Footer.vue";
 import { useRoute } from "vue-router";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import { auth } from "./modules/auth";
 
 
 const footerVisible = ref(true);
@@ -42,6 +43,18 @@ watch(
     immediate: true,
   }
 );
+
+onMounted(() => {
+  if(!auth.isLogin){
+      auth.prepareTouristAccount()
+  }else {
+    if(auth.isTourist){
+      auth.notifyUsingTouristAccount()
+    }
+  }
+
+})
+
 </script>
 
 <style>
