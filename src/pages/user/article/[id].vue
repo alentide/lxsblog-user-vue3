@@ -33,11 +33,11 @@
         </a-affix>
       </a-layout-sider>
       <a-layout-content style="padding: 10px">
-          <md-editor
-    v-model="source"
-    previewOnly
-  />
-      /></a-layout-content>
+        <h1>{{article.title.value}}</h1>
+        <img style="height: 100px" :src="article.coverImage?.value?.src" alt="">
+        <md-editor v-model="article.content.value" previewOnly />
+        /></a-layout-content
+      >
     </a-layout>
 
     <a-drawer
@@ -63,14 +63,15 @@ import {
   LikeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
-import { ref } from "vue";
-import Comments from './components/Comments.vue'
+import { onMounted, ref } from "vue";
+import Comments from "./components/Comments.vue";
 
 import type { DrawerProps } from "ant-design-vue";
 
-import MdEditor from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
-
+import MdEditor from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
+import { useArticle } from "@/modules/article";
+import { useRoute } from "vue-router";
 
 const placement = ref<DrawerProps["placement"]>("left");
 const visible = ref<boolean>(false);
@@ -83,7 +84,6 @@ const onClose = () => {
   visible.value = false;
 };
 
-
 const source = `11111111123213123大幅度十分士大夫十分犯得上地方的上述代码
 \`\`\`mermaid
 flowchart TD 
@@ -91,6 +91,14 @@ flowchart TD
 \`\`\`
 \`\`
 意思是？发`;
+
+const article = useArticle();
+
+const route = useRoute();
+
+onMounted(() => {
+  article.initAsync(route.params.id);
+});
 </script>
 
 <style scoped></style>

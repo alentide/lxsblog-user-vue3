@@ -35,7 +35,7 @@
                 <div>
                   <a-spin :spinning="item.giveScoreLoading" :delay="300">
                     <a-rate
-                      v-model:value="item.averageScore"
+                      v-model="item.averageScore"
                       :disabled="!!item.currentUserScore"
                       @change="item.giveScore"
                     />
