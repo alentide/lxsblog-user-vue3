@@ -17,8 +17,8 @@
       <template #renderItem="{ item }">
         <a-list-item :key="item.id">
           <template #actions>
-            <span><EyeOutlined />1</span>
-            <span><MessageOutlined />1</span>
+            <span><EyeOutlined class="mr3" />{{item.viewNum}}</span>
+            <span><MessageOutlined class="mr3" />1</span>
             <span
               ><ArticleScore :article="item"/></span>
           </template>

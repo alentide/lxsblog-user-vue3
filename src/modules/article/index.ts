@@ -60,7 +60,8 @@ export const useArticle = (article={}) => {
         tags: [],
         category: '',
         coverImage: '',
-        currentUserScore: ''
+        currentUserScore: '',
+        viewNum: 0,
     })
     Object.assign(state,article)
     const refState = toRefs(state)
@@ -111,4 +112,12 @@ export function scoreArticle(id: number, score: number) {
         articleId: id,
         score,
     })
+}
+
+
+/**
+ * 加文章阅读量
+ */
+export const addArticleViewNum = (id:number|string)=>{
+   return  userHttp.get('articles/view/'+id)
 }

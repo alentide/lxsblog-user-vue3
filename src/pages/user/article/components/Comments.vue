@@ -15,7 +15,7 @@
               type="primary"
               @click="handleSubmit"
             >
-              Add Comment
+              评价
             </a-button>
           </a-form-item>
         </template>

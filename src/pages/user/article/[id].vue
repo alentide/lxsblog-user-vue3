@@ -1,11 +1,5 @@
 <template>
   <div>
-    <!-- :zeroWidthTriggerStyle="{
-          position: 'fixed',
-          left: '22px',
-          top: '110px',
-          right: 'auto',
-        }" -->
     <a-layout>
       <a-layout-sider
         breakpoint="lg"
@@ -26,9 +20,9 @@
 
             <a-button-group class="my40">
               <a-button type="primary">
-                <template #icon><EyeOutlined /></template>1</a-button
+                <template #icon><EyeOutlined /></template>{{article.viewNum}}</a-button
               >
-              <a-button type="primary">
+              <a-button type="primary" @click="showDrawer">
                 <template #icon><MessageOutlined /></template>1</a-button
               >
               <ArticleScore class="ml10" :article="article" />
@@ -59,13 +53,9 @@
       :width="500"
       title="评论"
       :placement="placement"
-      :visible="visible"
+      v-model:visible="visible"
       @close="onClose"
     >
-      <!-- <template #extra>
-        <a-button style="margin-right: 8px" @click="onClose">Cancel</a-button>
-        <a-button type="primary" @click="onClose">Submit</a-button>
-      </template> -->
       <Comments />
     </a-drawer>
   </div>
@@ -88,7 +78,7 @@ import type { DrawerProps } from "ant-design-vue";
 
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
-import { useArticle } from "@/modules/article";
+import { addArticleViewNum, useArticle } from "@/modules/article";
 import { useRoute } from "vue-router";
 
 const placement = ref<DrawerProps["placement"]>("left");
@@ -106,20 +96,21 @@ const onClose = () => {
   visible.value = false;
 };
 
-const source = `11111111123213123大幅度十分士大夫十分犯得上地方的上述代码
-\`\`\`mermaid
-flowchart TD 
-  Start --> Stop
-\`\`\`
-\`\`
-意思是？发`;
 
 const article = reactive(useArticle());
+
+
 
 const route = useRoute();
 
 onMounted(() => {
-  article.initAsync(route.params.id);
+
+  const {id} = route.params as {
+    id: string |undefined
+  }
+  if(!id) return
+  article.initAsync(id);
+  addArticleViewNum(id)
 });
 
 //生成文章目录
@@ -135,15 +126,6 @@ class CatalogueItem {
     this.parent = parent;
   }
 }
-
-// const render = ref(false);
-
-// render.value = true;
-// onMounted(() => {
-//   setTimeout(() => {
-//     render.value = true;
-//   }, 4000);
-// });
 
 onMounted(() => {
   window.onhashchange = (e) => {
@@ -201,34 +183,6 @@ const onGetCatalog = (e) => {
   );
   catalogueList.value = links.filter((m) => !m.parent);
 };
-// onMounted(() => {
-//         const dom = document.querySelector(".md-content");
-//       if (!dom) return;
-//       console.log("dom", dom);
-
-//       const forEachElement = (
-//         dom: Element,
-//         parent: Element | null,
-//         callback: (ele: Element) => void
-//       ) =>
-//         ([] as Element[]).forEach.call(dom.children, (ele) => {
-//           console.log("ele.tagName", ele, ele.children && ele.children.length);
-//           if (ele.children && ele.children.length) {
-//             forEachElement(ele, dom, callback);
-//           }
-//         });
-
-//       let flatElements = [];
-//       forEachElement(dom, null, (ele) => {
-//         if (!ele.tagName.toLocaleLowerCase().startsWith("h")) return;
-//         flatElements.push({
-//           element: ele,
-//           parent: dom,
-//         });
-//       });
-
-//       console.log("flatElements", flatElements);
-// });
 </script>
 
 <style scoped lang="scss">
@@ -254,6 +208,10 @@ const onGetCatalog = (e) => {
 </style>
 
 <style>
+
+body {
+  overflow: visible!important;
+}
 h1,
 h2,
 h3,
