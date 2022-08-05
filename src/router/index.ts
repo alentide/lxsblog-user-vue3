@@ -17,11 +17,11 @@ router.beforeEach(async (to, from) => {
   }
 
 
-  window.scrollTo({
-    left: 0,
-    top: 0,
-    behavior: 'smooth'
-  })
+  // window.scrollTo({
+  //   left: 0,
+  //   top: 0,
+  //   behavior: 'smooth'
+  // })
 })
 
 export default router

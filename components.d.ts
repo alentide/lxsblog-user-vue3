@@ -8,6 +8,8 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAffix: typeof import('ant-design-vue/es')['Affix']
+    AAnchor: typeof import('ant-design-vue/es')['Anchor']
+    AAnchorLink: typeof import('ant-design-vue/es')['AnchorLink']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
@@ -71,6 +73,8 @@ declare module '@vue/runtime-core' {
     AvatarDropdownMenu: typeof import('./src/components/auth/AvatarDropdownMenu.vue')['default']
     BreadCrumb: typeof import('./src/components/BreadCrumb.vue')['default']
     CacheComponent: typeof import('./src/components/base/CacheComponent.vue')['default']
+    Catalogue: typeof import('./src/components/article/Catalogue.vue')['default']
+    CatalogueList: typeof import('./src/components/article/CatalogueList.vue')['default']
     CategorySelector: typeof import('./src/components/category/CategorySelector.vue')['default']
     CustomFilterDropdown: typeof import('./src/components/article/CustomFilterDropdown.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
