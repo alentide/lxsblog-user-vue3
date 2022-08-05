@@ -1,3 +1,4 @@
+import { computed } from 'vue';
 import router from '@/router';
 import { userHttp } from './../http/index';
 import { useStorage, type RemovableRef } from '@vueuse/core';
@@ -87,8 +88,14 @@ class Auth {
         this.setToken(res.data.token.access_token)
 
     }
-    get isTourist() {
+    isTourist() {
         return this.isLogin && this.user.value.type === UserTypes.TOURIST
+    }
+    isAdmin() {
+        return this.isLogin && this.user.value.type === UserTypes.ADMIN
+    }
+    isUser() {
+        return this.isLogin && this.user.value.type === UserTypes.USER
     }
     logout() {
         this.user.value = new EmptyUser()
@@ -105,7 +112,7 @@ class AuthComponent extends Auth {
     /**
      * 警告正在使用游客账户
      */
-    notifyUsingTouristAccount(){
+    notifyUsingTouristAccount() {
         notification.warning({
             message: '警告！',
             description:
@@ -115,13 +122,90 @@ class AuthComponent extends Auth {
     }
 }
 
-export const auth = new AuthComponent()
+// export const auth = new AuthComponent()
 
+export const useAuth = () => {
+    const user: RemovableRef<User> = useStorage('user', new EmptyUser)
+    const token = useStorage('token', '')
+    const isLogin = computed(() => !!token.value)
+    /**
+     * 获取一个游客账号
+     * @returns 
+     */
+    async function fetchTourist() {
+        return await userHttp.post<{
+            user: User,
+            token: {
+                access_token: string
+            }
+        }>('auth/register/tourist')
+    }
+    /**
+     * 设置token
+     * @param data 
+     */
+    function setToken(data: string) {
+        token.value = 'Bearer ' + data
+    }
+    const hasToken = computed(() => token.value !== 'Bearer ' && token.value)
+    function clearToken() {
+        token.value = ''
+    }
+    /**
+     * 准备好游客账号：获取游客账号，并保存。
+     */
+    async function prepareTouristAccount() {
+        const res = await fetchTourist()
+        user.value = new User(res.data.user)
+        setToken(res.data.token.access_token)
 
+    }
+    const isTourist = computed(() => isLogin && user.value.type === UserTypes.TOURIST)
+    const isAdmin = computed(() => isLogin && user.value.type === UserTypes.ADMIN)
+    const isUser = computed(() => isLogin && user.value.type === UserTypes.USER)
 
+    function logout() {
+        user.value = new EmptyUser()
+        clearToken()
+        router.replace('/')
+    }
 
-
-
-class AvatarDropDownMenu {
-
+    return {
+        user,
+        token,
+        isLogin,
+        setToken,
+        hasToken,
+        clearToken,
+        prepareTouristAccount,
+        isTourist,
+        isAdmin,
+        isUser,
+        logout,
+    }
 }
+
+export const useAuthView = (auth: ReturnType<typeof useAuth>) => {
+    async function prepareTouristAccount() {
+        await auth.prepareTouristAccount()
+        notifyUsingTouristAccount()
+    }
+    /**
+     * 警告正在使用游客账户
+     */
+    function notifyUsingTouristAccount() {
+        notification.warning({
+            message: '警告！',
+            description:
+                '您正在使用游客账号。您可以点赞，评论。如果不转为正式账号，一旦清空缓存，无法找回。',
+            duration: 0,
+        });
+    }
+    return {
+        ...auth,
+        prepareTouristAccount,
+        notifyUsingTouristAccount,
+    }
+}
+
+export const auth = useAuthView(useAuth())

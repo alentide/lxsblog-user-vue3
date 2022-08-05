@@ -35,7 +35,7 @@
                 <div>
                   <a-spin :spinning="item.giveScoreLoading" :delay="300">
                     <a-rate
-                      v-model="item.averageScore"
+                      :value="item.averageScore"
                       :disabled="!!item.currentUserScore"
                       @change="item.giveScore"
                     />
@@ -73,7 +73,8 @@
         </a-list-item>
       </template>
     </a-list>
-    <ListLoadMore />
+    <ListLoading />
+    <!-- <ListLoadMore /> -->
   </div>
 </template>
 
@@ -86,6 +87,7 @@ import {
 } from "@ant-design/icons-vue";
 import { onMounted, ref, type Ref } from "vue";
 import ListLoadMore from "@/components/list/ListLoadMore.vue";
+import ListLoading from "@/components/list/ListLoading.vue";
 import ListEmpty from "@/components/list/ListEmpty.vue";
 import { onReachBottom } from "@/modules/list/index.js";
 
