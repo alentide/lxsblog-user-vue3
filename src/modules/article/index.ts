@@ -8,6 +8,7 @@ import type { ArticleDfe } from './article.interfaces';
 
 
 const useArticleScore = (article) => {
+
     const scoreUserNum = ref(article.scoreUserNum)
     const averageScore = ref(article.averageScore)
     const currentUserScore = ref(article.currentUserScore)
@@ -15,7 +16,7 @@ const useArticleScore = (article) => {
     const giveScoreLoading = ref(false)
 
     const giveScore = async (score: number) => {
-        if (currentUserScore.value) throw '您已经打过分了！'
+        if (article.currentUserScore) throw '您已经打过分了！'
         if (giveScoreLoading.value) return Promise.reject('打分中')
         giveScoreLoading.value = true
         try {
@@ -23,9 +24,9 @@ const useArticleScore = (article) => {
                 articleId: article.id,
                 score,
             })
-            scoreUserNum.value = res.data.scoreUserNum
-            averageScore.value = res.data.averageScore
-            currentUserScore.value = res.data.currentUserScore
+            article.scoreUserNum = res.data.scoreUserNum
+            article.averageScore = res.data.averageScore
+            article.currentUserScore = res.data.currentUserScore
         } finally {
             giveScoreLoading.value = false
         }
@@ -33,9 +34,9 @@ const useArticleScore = (article) => {
 
     return {
         giveScore,
-        scoreUserNum,
-        averageScore,
-        currentUserScore,
+        // scoreUserNum,
+        // averageScore,
+        // currentUserScore,
         giveScoreLoading,
     }
 
@@ -57,9 +58,9 @@ export const useArticle = (article={}) => {
         scoreUserNum: 0,
         averageScore: 0,
         tags: [],
-        category: null,
-        coverImage: null,
-        currentUserScore: null
+        category: '',
+        coverImage: '',
+        currentUserScore: ''
     })
     Object.assign(state,article)
     const refState = toRefs(state)
@@ -69,7 +70,7 @@ export const useArticle = (article={}) => {
     }
 
     const [loading, initAsync] = loadingMethod(async (id: number) => {
-        const res = await _fetch(id)
+        const res = await _fetch(id)   
         Object.assign(state,res.data)
         return res
     })

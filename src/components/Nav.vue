@@ -1,7 +1,33 @@
 <template>
-  <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+  <a-layout-header :style="{ position: 'fixed', zIndex: 100, width: '100%' }">
     <a-row type="flex" justify="space-between" align="middle">
-      <a-col>
+      <a-col
+        :xs="{
+          span: 20,
+          pull: 2,
+          push: 2,
+        }"
+        :sm="{
+          span: 20,
+          pull: 2,
+          push: 2,
+        }"
+        :md="{
+          span: 20,
+          pull: 2,
+          push: 2,
+        }"
+        :lg="{
+          span: 20,
+          pull: 2,
+          push: 2,
+        }"
+        :xl="{
+          span: 20,
+          pull: 2,
+          push: 2,
+        }"
+      >
         <a-menu
           v-model:selectedKeys="selectedKeys"
           theme="dark"
@@ -34,14 +60,12 @@ import AvatarDropdownMenu from "./auth/AvatarDropdownMenu.vue";
 import { useNav } from "@/modules/nav/useNav";
 import { ref } from "vue";
 
-
 const nav = useNav();
 const clickMenu = ({ key }: { key: string }) => {
   nav.go(key);
 };
 
 const selectedKeys = ref([]);
-
 </script>
 
 <style scoped lang="scss"></style>

@@ -1,42 +1,58 @@
 <template>
   <div>
+    <!-- :zeroWidthTriggerStyle="{
+          position: 'fixed',
+          left: '22px',
+          top: '110px',
+          right: 'auto',
+        }" -->
     <a-layout>
-      <a-layout-sider style="background: #fff; padding: 10px" :width="300">
-        <a-affix :offset-top="100">
-          <a-anchor>
-            <CatalogueList  :catalogueList="catalogueList" />
-          </a-anchor>
+      <a-layout-sider
+        breakpoint="lg"
+        collapsed-width="0"
+        class="sider"
+        :width="300"
+        v-model:collapsed="sider.collapsed"
+      >
+        <div class="sider-content-x">
+          <a-affix
+            :style="{ width: 'auto' }"
+            :offset-top="100"
+            style="padding-left: 20px"
+          >
+            <a-anchor>
+              <CatalogueList :catalogueList="catalogueList" />
+            </a-anchor>
 
-          <a-button-group>
-            <a-button type="primary">
-              <template #icon><StarOutlined /></template>1</a-button
-            >
-            <a-button type="primary">
-              <template #icon><LikeOutlined /></template>2</a-button
-            >
-            <a-button type="primary" @click="showDrawer">
-              <template #icon><MessageOutlined /></template>3</a-button
-            >
-          </a-button-group>
-        </a-affix>
+            <a-button-group class="my40">
+              <a-button type="primary">
+                <template #icon><EyeOutlined /></template>1</a-button
+              >
+              <a-button type="primary">
+                <template #icon><MessageOutlined /></template>1</a-button
+              >
+              <ArticleScore class="ml10" :article="article" />
+            </a-button-group>
+          </a-affix>
+        </div>
       </a-layout-sider>
       <a-layout-content class="article-content" style="padding: 10px">
         <div class="article-title">
-          <h1>{{ article.title.value }}</h1>
+          <h1>{{ article.title }}</h1>
+          <p class="article-summary">{{ article.summary }}</p>
           <img
-            v-if="article.coverImage?.value?.src"
+            v-if="article.coverImage?.src"
             class="article-cover-image"
-            :src="article.coverImage?.value?.src"
+            :src="article.coverImage?.src"
             alt=""
           />
         </div>
         <md-editor
           @onGetCatalog="onGetCatalog"
-          v-model="article.content.value"
+          v-model="article.content"
           previewOnly
         />
-        /></a-layout-content
-      >
+      </a-layout-content>
     </a-layout>
 
     <a-drawer
@@ -60,9 +76,10 @@ import Markdown from "vue3-markdown-it";
 import {
   StarOutlined,
   LikeOutlined,
+  EyeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, reactive } from "vue";
 import Comments from "./components/Comments.vue";
 
 import CatalogueList from "@/components/article/CatalogueList.vue";
@@ -76,6 +93,10 @@ import { useRoute } from "vue-router";
 
 const placement = ref<DrawerProps["placement"]>("left");
 const visible = ref<boolean>(false);
+
+const sider = reactive({
+  collapsed: false,
+});
 
 const showDrawer = () => {
   visible.value = true;
@@ -93,7 +114,7 @@ flowchart TD
 \`\`
 意思是？发`;
 
-const article = useArticle();
+const article = reactive(useArticle());
 
 const route = useRoute();
 
@@ -115,14 +136,14 @@ class CatalogueItem {
   }
 }
 
-const render = ref(false);
+// const render = ref(false);
 
-render.value = true;
-onMounted(() => {
-  setTimeout(() => {
-    render.value = true;
-  }, 4000);
-});
+// render.value = true;
+// onMounted(() => {
+//   setTimeout(() => {
+//     render.value = true;
+//   }, 4000);
+// });
 
 onMounted(() => {
   window.onhashchange = (e) => {
@@ -213,6 +234,7 @@ const onGetCatalog = (e) => {
 <style scoped lang="scss">
 .article-content {
   background: #fff;
+  z-index: 10;
 }
 .article-cover-image {
   width: 80%;
@@ -223,6 +245,12 @@ const onGetCatalog = (e) => {
 .article-title {
   text-align: center;
 }
+
+.sider {
+  padding-top: 100px;
+  background-color: #fff;
+}
+
 </style>
 
 <style>
@@ -243,4 +271,8 @@ h5:target {
   padding-top: 100px;
   color: blue;
 } */
+
+.article-summary {
+  color: rgba(0, 0, 0, 0.3);
+}
 </style>

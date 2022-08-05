@@ -51,6 +51,7 @@ declare module '@vue/runtime-core' {
     ARow: typeof import('ant-design-vue/es')['Row']
     ArticleForm: typeof import('./src/components/article/ArticleForm.vue')['default']
     ArticleItem: typeof import('./src/components/article/ArticleItem.vue')['default']
+    ArticleScore: typeof import('./src/components/article/ArticleScore.vue')['default']
     ArticleSearch: typeof import('./src/components/article/ArticleSearch.vue')['default']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASpin: typeof import('ant-design-vue/es')['Spin']

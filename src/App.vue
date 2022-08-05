@@ -2,11 +2,45 @@
   <a-config-provider :locale="zhCN">
     <a-layout class="page-x">
       <Nav />
-      <a-layout-content class="content-x" :style="{ marginTop: '64px' }">
+      <a-layout-content :style="{ marginTop: '64px' }">
         <!-- <BreadCrumb /> -->
-        <div class="view-x" :style="{ background: '#fff', padding: '24px' }">
-          <RouterView class="view-x" />
-        </div>
+        <!-- <div :style="{ padding: '24px' }">
+          <RouterView class="view-x user-page-content-x" />
+        </div> -->
+        <a-row>
+          <a-col
+            class="view-x"
+            :xs="{
+              span: 22,
+              pull: 1,
+              push: 1,
+            }"
+            :sm="{
+              span: 22,
+              pull: 1,
+              push: 1,
+            }"
+            :md="{
+              span: 20,
+              pull: 2,
+              push: 2,
+            }"
+            :lg="{
+              span: 20,
+              pull: 2,
+              push: 2,
+            }"
+            :xl="{
+              span: 18,
+              pull: 3,
+              push: 3,
+            }"
+          >
+            <div :style="{ paddingTop: '24px' }">
+              <RouterView class="view" />
+            </div>
+          </a-col>
+        </a-row>
       </a-layout-content>
       <a-layout-footer :style="{ textAlign: 'center' }" v-if="footerVisible">
         <Footer />
@@ -22,10 +56,8 @@ import Footer from "@/components/Footer.vue";
 import { useRoute } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 
-
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { auth } from "./modules/auth";
-
 
 const footerVisible = ref(true);
 const route = useRoute();
@@ -45,25 +77,37 @@ watch(
 );
 
 onMounted(() => {
-  if(!auth.isLogin.value){
-      auth.prepareTouristAccount()
-  }else {
-    if(auth.isTourist.value){
-      auth.notifyUsingTouristAccount()
+  if (!auth.isLogin.value) {
+    auth.prepareTouristAccount();
+  } else {
+    if (auth.isTourist.value) {
+      auth.notifyUsingTouristAccount();
     }
   }
-
-})
-
+});
 </script>
 
 <style>
-.content-x {
-  padding: 20px 50px;
+/* .content-x {
   background-color: #f5f5f5;
+} */
+
+/* .user-page-content-x {
+  padding: 20px 50px;
+  width: 1200px;
+  background-color: #fff;
+}
+
+@media screen and (max-width: 1200px) {
+  .user-page-content-x {
+    width: 1200px;
+  }
 }
 
 @media screen and (max-width: 992px) {
+  .user-page-content-x {
+    width: 1200px;
+  }
   .content-x {
     padding: 20px 40px;
   }
@@ -73,7 +117,7 @@ onMounted(() => {
   .content-x {
     padding: 20px 10px;
   }
-}
+} */
 
 html {
   overflow-x: hidden;
@@ -89,7 +133,7 @@ html {
 /*定义滚动条轨道
  内阴影+圆角*/
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 0px rgba(255,255,255,1);
+  -webkit-box-shadow: inset 0 0 0px rgba(255, 255, 255, 1);
   /* -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,1); */
   border-radius: 10px;
   background-color: #fff;
@@ -104,25 +148,13 @@ html {
 </style>
 <style scoped lang="scss">
 .view-x {
+  // margin: 0 auto;
   min-height: calc(100vh - 64px - 40px - 48px);
+  
 }
-.page-x {
-  // width: 100vw;
 
-  // height: 100vh;
+.view {
+  padding: 20px;
+  background-color: #fff;
 }
-// #components-layout-demo-fixed .logo {
-//   width: 120px;
-//   height: 31px;
-//   background: rgba(255, 255, 255, 0.2);
-//   margin: 16px 24px 16px 0;
-//   float: left;
-// }
-// .site-layout .site-layout-background {
-//   background: #fff;
-// }
-
-// [data-theme='dark'] .site-layout .site-layout-background {
-//   background: #141414;
-// }
 </style>

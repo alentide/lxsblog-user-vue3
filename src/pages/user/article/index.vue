@@ -20,28 +20,7 @@
             <span><EyeOutlined />1</span>
             <span><MessageOutlined />1</span>
             <span
-              ><a-tooltip>
-                <template #title>
-                  <div v-if="item.scoreUserNum">
-                    平均分为：{{ item.averageScore }}({{
-                      item.scoreUserNum
-                    }}人打分)
-                  </div>
-                  <div v-else>尚未有人打分</div>
-                  <div v-if="item.currentUserScore">
-                    你的打分是：{{ item.currentUserScore.score }}
-                  </div>
-                </template>
-                <div>
-                  <a-spin :spinning="item.giveScoreLoading" :delay="300">
-                    <a-rate
-                      :value="item.averageScore"
-                      :disabled="!!item.currentUserScore"
-                      @change="item.giveScore"
-                    />
-                  </a-spin>
-                </div> </a-tooltip
-            ></span>
+              ><ArticleScore :article="item"/></span>
           </template>
           <template #extra>
             <img
@@ -73,7 +52,7 @@
         </a-list-item>
       </template>
     </a-list>
-    <ListLoading />
+    <ListLoading v-if="homeArticleList.list.value.length" />
     <!-- <ListLoadMore /> -->
   </div>
 </template>

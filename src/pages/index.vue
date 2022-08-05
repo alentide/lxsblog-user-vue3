@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user-page-content-x">
     <div class="xyc my20">
       <a-button type="primary" size="small" @click="openCreate"
         >添加时间线节点</a-button
