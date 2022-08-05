@@ -32,9 +32,15 @@
           </a-button-group>
         </a-affix>
       </a-layout-sider>
-      <a-layout-content style="padding: 10px">
-        <h1>{{article.title.value}}</h1>
-        <img style="height: 100px" :src="article.coverImage?.value?.src" alt="">
+      <a-layout-content class="article-content" style="padding: 10px">
+        <div class="article-title">
+          <h1>{{ article.title.value }}</h1>
+          <img
+            class="article-cover-image"
+            :src="article.coverImage?.value?.src"
+            alt=""
+          />
+        </div>
         <md-editor v-model="article.content.value" previewOnly />
         /></a-layout-content
       >
@@ -101,4 +107,17 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.article-content {
+  background: #fff;
+}
+.article-cover-image {
+  width: 80%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.article-title {
+  text-align: center;
+}
+</style>
