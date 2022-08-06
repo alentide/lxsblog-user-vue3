@@ -91,10 +91,10 @@ watch(
 );
 
 onMounted(() => {
-  if (!auth.isLogin.value) {
+  if (!auth.isLogin) {
     auth.prepareTouristAccount();
   } else {
-    if (auth.isTourist.value) {
+    if (auth.isTourist) {
       auth.notifyUsingTouristAccount();
     }
   }

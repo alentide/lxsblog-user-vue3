@@ -5,7 +5,7 @@ import { ref, type Ref } from 'vue'
 import useToast from '../toast/useToast'
 import type { ListResponseData, ProjectResponse } from './http.interfaces';
 import IgnoreError from '../error/IgnoreError';
-import { authModal } from '../auth';
+import { auth } from '../auth';
 
 
 
@@ -32,19 +32,6 @@ export class Http {
         });
         
         this._axios.interceptors.response.use(function (response) {
-            // Any status code that lie within the range of 2xx cause this function to trigger
-            // Do something with response data
-            //             config: {transitional: {…}, transformRequest: Array(1), transformResponse: Array(1), timeout: 0, adapter: ƒ, …}
-            // data:
-            // code: 0
-            // data: {raw: Array(0), affected: 1}
-            // msg: "删除成功"
-            // needTipMsg: true
-            // [[Prototype]]: Object
-            // headers: {content-length: '80', content-type: 'application/json; charset=utf-8'}
-            // request: XMLHttpRequest {onreadystatechange: null, readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, …}
-            // status: 200
-            // statusText: "OK"
             if (response?.data?.needTipMsg) {
                 toast.success(response.data.msg)
             }
@@ -52,6 +39,9 @@ export class Http {
             return response;
         }, function (error) {
             if (error.response?.data?.msg) {
+                if(error.response?.data?.code===2){
+                    // auth.clearToken()
+                }
                 toast.error(error.response.data.msg, 3)
                 return Promise.reject(error.response.data);
             }
@@ -59,18 +49,17 @@ export class Http {
                 toast.error('未发现相关的网络服务，请检查请求路径和服务器状态！', 3)
                 return Promise.reject(error);
             }
-            // Any status codes that falls outside the range of 2xx cause this function to trigger
-            // Do something with response error
             return Promise.reject(error);
         });
     }
     getHeaders(){
         return {
             headers: {
-                Authorization: authModal.token.value
+                Authorization: auth.token
             }
         }
     }
+    
     get<T>(url: string, params?: any): Promise<ProjectResponse<T>> {
         return this._axios.get(url, { params,...this.getHeaders()}).then((res: { data: any }) => res.data)
     }
@@ -111,7 +100,7 @@ export function useUserPost<T>(url: string, required: any = {}) {
     const result: Ref<ProjectResponse<T> | undefined> = ref();
     const request = (options: any = {}) => {
         loading.value = true;
-        return adminHttp.post<T>(url, { ...required, ...options, }).then((res: any) => result.value = res).finally(() => {
+        return userHttp.post<T>(url, { ...required, ...options, }).then((res: any) => result.value = res).finally(() => {
             loading.value = false;
         });
     };

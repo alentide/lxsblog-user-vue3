@@ -1,18 +1,18 @@
 <template>
   <a-modal
     wrapClassName="login-form-x"
-    v-model:visible="visible"
+    v-model:visible="authModal.visible"
     centered
-    title="登录"
+    :title="authModal.title"
     :footer="null"
   >
-    <a-form :model="form" name="basic" autocomplete="on" @finish="()=>loginModal.login()">
+    <a-form :model="authModal.form" name="basic" autocomplete="on" @finish="authModal.submit">
       <a-form-item
         label="邮箱"
         name="email"
         :rules="[{ required: true, message: '请输入邮箱' }]"
       >
-        <a-input v-model:value="form.email" />
+        <a-input v-model:value="authModal.form.email" />
       </a-form-item>
 
       <a-form-item
@@ -20,12 +20,12 @@
         name="password"
         :rules="[{ required: true, message: '请输入密码' }]"
       >
-        <a-input-password v-model:value="form.password" />
+        <a-input-password v-model:value="authModal.form.password" />
       </a-form-item>
 
       <a-form-item>
-        <a-button type="primary" :loading="loading" html-type="submit"
-          >登录</a-button
+        <a-button type="primary" :loading="authModal.loading" html-type="submit"
+          >{{authModal.submitBtnName}}</a-button
         >
       </a-form-item>
     </a-form>
@@ -33,10 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import { loginModal } from "@/modules/auth/index.js";
-import { onMounted } from "vue";
+import { authModal} from "@/modules/auth";
 
-const { visible, form, loading} = loginModal;
 
 </script>
 
