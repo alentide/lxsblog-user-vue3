@@ -5,6 +5,7 @@ export interface CommentDto {
     id: number
     content: string
     user: CommentUser
+    createTime: string
 }
 
 
@@ -17,6 +18,7 @@ export interface CommentUser {
 export const useComment = (commentDto:CommentDto)=>{
     const id = ref(commentDto.id)
     const content = ref(commentDto.content)
+    const createTime = ref(commentDto.createTime)
     const user:Ref<CommentUser> = ref( commentDto.user)
 
     
@@ -24,6 +26,6 @@ export const useComment = (commentDto:CommentDto)=>{
         id,
         content,
         user,
-
+        createTime
     })
 }

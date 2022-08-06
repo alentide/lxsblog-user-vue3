@@ -1,4 +1,4 @@
-import { onBeforeUnmount, onMounted } from 'vue';
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref, type Ref } from 'vue';
 
 export * from './useList'
 export * from './usePageList'
@@ -6,21 +6,27 @@ export * from './usePageList'
 
 
 
-export const onReachBottom = (callback: (...args: any[]) => any) => {
-    const handler = () => {
+export const onReachBottom = (callback: (...args: any[]) => any,el:Ref<HTMLElement|null>  =ref(document.documentElement)) => {
+    
+    const handler = (e) => {
+        console.log('e',e);
+        if(!el.value) return
         if (
-            document.documentElement.scrollHeight -
-            window.innerHeight -
-            document.documentElement.scrollTop <
+            el.value.scrollHeight -
+            el.value.clientHeight -
+            el.value.scrollTop <
             50
         ) {
             callback()
         }
     };
     onMounted(() => {
-        window.addEventListener("scroll", handler);
+        if(!el.value) return
+        console.log('el',el);
+        el.value.addEventListener("scroll", handler);
     });
     onBeforeUnmount(() => {
-        window.removeEventListener("scroll", handler);
+        if(!el.value) return
+        // el.value.removeEventListener("scroll", handler);
     });
 }

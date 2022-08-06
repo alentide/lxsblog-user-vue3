@@ -10,8 +10,10 @@ export interface User {
 export const useUser = ()=>{
     const user = useStorage('user',{})
     const avatar = ref(user.value.avatar)
+    const nickname = ref(user.value.nickname)
     
     return reactive({
         avatar,
+        nickname,
     })
 }

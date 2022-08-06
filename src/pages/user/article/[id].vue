@@ -55,6 +55,10 @@
       :placement="placement"
       v-model:visible="visible"
       @close="onClose"
+      class="drawer-x"
+      :bodyStyle="{
+        padding: 0
+      }"
     >
       <Comments />
     </a-drawer>
@@ -205,6 +209,10 @@ const onGetCatalog = (e) => {
   background-color: #fff;
 }
 
+
+.drawer-x{
+
+}
 </style>
 
 <style>
