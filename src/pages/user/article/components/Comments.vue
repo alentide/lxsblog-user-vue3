@@ -35,7 +35,6 @@
           <p>{{ comment.content }}</p>
         </template>
         <template #actions>
-          <span key="comment-nested-reply-to">{{ comment.id }}楼</span>
           <span key="ml10">{{ comment.createTime }}</span>
         </template>
       </a-comment>

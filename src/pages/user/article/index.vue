@@ -18,7 +18,7 @@
         <a-list-item :key="item.id">
           <template #actions>
             <span><EyeOutlined class="mr3" />{{item.viewNum}}</span>
-            <span><MessageOutlined class="mr3" />1</span>
+            <span><MessageOutlined class="mr3" />{{item.commentsNum}}</span>
             <span
               ><ArticleScore :article="item"/></span>
           </template>
@@ -72,9 +72,11 @@ import { onReachBottom } from "@/modules/list/index.js";
 
 const homeArticleList = getHomeArticleList();
 const { list, loading, nextPage } = homeArticleList;
-onMounted(homeArticleList.refresh);
 
+onMounted(homeArticleList.refresh);
 onReachBottom(nextPage);
+
+
 </script>
 
 <style scoped lang="scss">
