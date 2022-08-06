@@ -8,6 +8,7 @@ import { LoginModal } from './LoginModal';
 //好像没能自动加入notification的css，所以需要手动加载这个css
 import 'ant-design-vue/lib/notification/style/css'
 import { notification } from 'ant-design-vue';
+import useToast from '../toast/useToast';
 
 
 
@@ -31,20 +32,27 @@ class UserDto {
 
 
 class AuthModal extends LoginModal {
+
     user: RemovableRef<User> = useStorage('user', new EmptyUser)
     token = useStorage('token', '')
+    toast = useToast()
+    constructor(user, token) {
+        super()
+        this.user = user
+        this.token = token
+    }
     async login() {
         return super.login().then(res => {
             this.user.value = new User(res.data.user)
             this.token.value = 'Bearer ' + res.data.token.access_token
+            this.toast.success('登录成功')
             this.hide()
             return res
         })
     }
 }
 
-export const authModal = new AuthModal()
-export const loginModal = authModal
+
 
 
 
@@ -209,3 +217,7 @@ export const useAuthView = (auth: ReturnType<typeof useAuth>) => {
 }
 
 export const auth = useAuthView(useAuth())
+
+
+export const authModal = new AuthModal(auth.user,auth.token)
+export const loginModal = authModal

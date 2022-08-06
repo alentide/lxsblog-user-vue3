@@ -23,12 +23,6 @@
         <a-input-password v-model:value="form.password" />
       </a-form-item>
 
-      <!-- <a-form-item name="remember">
-          <a-checkbox v-model:checked="form.remember"
-            >Remember me</a-checkbox
-          >
-        </a-form-item> -->
-
       <a-form-item>
         <a-button type="primary" :loading="loading" html-type="submit"
           >登录</a-button
