@@ -8,13 +8,13 @@ import { identity } from 'ramda';
 
 interface UseListOption<T,R> {
     http: Http,
-    transform(data:T[]): (T|R)[]
+    transform(data:T): (T|R)
 }
 
 function defaultUseListOption<T>() {
     return {
         http: adminHttp,
-        transform: identity<T[]>
+        transform: identity<T>
     }
 }
 
@@ -41,7 +41,7 @@ export function useList<T,R>(url: string,originOption:Partial<UseListOption<T,R>
         });
         const data = {
             ..._data,
-            list: transform(_data.list)
+            list: _data.list.map(transform)
         };
         ({ hasMore: hasMore.value, total: total.value } = data);
         return data

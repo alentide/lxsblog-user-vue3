@@ -88,10 +88,7 @@ export const useArticle = (article={}) => {
 export function getHomeArticleList() {
     return useList('/articles/home', {
         http: userHttp,
-        transform(list) {
-
-            return list.map(useArticle)
-        }
+        transform:useArticle
     })
 }
 

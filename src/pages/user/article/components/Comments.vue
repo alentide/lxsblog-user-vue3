@@ -1,132 +1,66 @@
 <template>
-    <div>
-        <a-comment>
-        <template #avatar>
-          <a-avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-        </template>
-        <template #content>
-          <a-form-item>
-            <a-textarea v-model:value="value" :rows="4" />
-          </a-form-item>
-          <a-form-item>
-            <a-button
-              html-type="submit"
-              :loading="submitting"
-              type="primary"
-              @click="handleSubmit"
-            >
-              评价
-            </a-button>
-          </a-form-item>
-        </template>
-      </a-comment>
-      <a-comment>
-        <template #actions>
-          <span key="comment-nested-reply-to">Reply to</span>
-        </template>
-        <template #author>
-          <a>Han Solo</a>
-        </template>
-        <template #avatar>
-          <a-avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-        </template>
-        <template #content>
-          <p>
-            We supply a series of design principles, practical patterns and high
-            quality design resources (Sketch and Axure).
-          </p>
-        </template>
-        <a-comment>
-          <template #actions>
-            <span>Reply to</span>
-          </template>
-          <template #author>
-            <a>Han Solo</a>
-          </template>
-          <template #avatar>
-            <a-avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-          </template>
-          <template #content>
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure).
-            </p>
-          </template>
-
-          <a-comment>
-            <template #actions>
-              <span>Reply to</span>
-            </template>
-            <template #author>
-              <a>Han Solo</a>
-            </template>
-            <template #avatar>
-              <a-avatar
-                src="https://joeschmoe.io/api/v1/random"
-                alt="Han Solo"
-              />
-            </template>
-            <template #content>
-              <p>
-                We supply a series of design principles, practical patterns and
-                high quality design resources (Sketch and Axure).
-              </p>
-            </template>
-          </a-comment>
-          <a-comment>
-            <template #actions>
-              <span>Reply to</span>
-            </template>
-            <template #author>
-              <a>Han Solo</a>
-            </template>
-            <template #avatar>
-              <a-avatar
-                src="https://joeschmoe.io/api/v1/random"
-                alt="Han Solo"
-              />
-            </template>
-            <template #content>
-              <p>
-                We supply a series of design principles, practical patterns and
-                high quality design resources (Sketch and Axure).
-              </p>
-            </template>
-          </a-comment>
-        </a-comment>
-      </a-comment>
-    </div>
+  <div>
+    <a-comment>
+      <template #avatar>
+        <a-avatar :src="user.avatar" />
+      </template>
+      <template #content>
+        <a-form-item>
+          <a-textarea v-model:value="commentForm.content" :rows="4" />
+        </a-form-item>
+        <a-form-item>
+          <a-button
+            html-type="submit"
+            :loading="commentForm.submitLoading"
+            type="primary"
+            @click="commentForm.submit"
+          >
+            评价
+          </a-button>
+        </a-form-item>
+      </template>
+    </a-comment>
+    <a-comment v-for="comment in commentList.list.value">
+      <template #author>
+        <a>{{comment.user.nickname}}</a>
+      </template>
+      <template #avatar>
+        <a-avatar :src="comment.user.avatar" />
+      </template>
+      <template #content>
+        <p>{{comment.content}}</p>
+      </template>
+      <template #actions>
+        <span key="comment-nested-reply-to">{{comment.id}}楼</span>
+      </template>
+    </a-comment>
+    <ListLoading />
+    <ListEmpty />
+  </div>
 </template>
 
-<script setup lang="ts">import { ref } from 'vue';
-import dayjs from "dayjs";
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { onReachBottom } from "@/modules/list/index.js";
+import { useUser } from "@/modules/user/index.js";
+import { useArticleCommentList, useUserCommentForm } from "@/modules/comment";
+import ListLoading from '@/components/list/ListLoading.vue'
+import ListEmpty from '@/components/list/ListEmpty.vue'
+import { useRoute } from "vue-router";
+const route = useRoute()
+const {id} = route.params as {
+  id: string
+}
 
-const comments = ref<Comment[]>([]);
-const submitting = ref<boolean>(false);
-const value = ref<string>("");
-const handleSubmit = () => {
-  if (!value.value) {
-    return;
-  }
+const user = useUser()
+const commentList = useArticleCommentList(+id)
+onMounted(commentList.refresh)
+onReachBottom(commentList.nextPage)
 
-  submitting.value = true;
 
-  setTimeout(() => {
-    submitting.value = false;
-    comments.value = [
-      {
-        author: "Han Solo",
-        avatar: "https://joeschmoe.io/api/v1/random",
-        content: value.value,
-        datetime: dayjs().fromNow(),
-      },
-      ...comments.value,
-    ];
-    value.value = "";
-  }, 1000);
-};
+const commentForm = useUserCommentForm(+id,res=>commentList.list.value.unshift(res.data))
+
+
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
