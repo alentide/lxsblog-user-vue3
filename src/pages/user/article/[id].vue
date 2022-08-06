@@ -12,18 +12,24 @@
           <a-affix
             :style="{ width: 'auto' }"
             :offset-top="100"
-            style="padding-left: 20px"
+            
           >
+            <a-page-header
+              class="back"
+              title="文章详情"
+              @back="$router.back"
+            />
             <a-anchor>
               <CatalogueList :catalogueList="catalogueList" />
             </a-anchor>
 
             <a-button-group class="my40">
               <a-button type="primary">
-                <template #icon><EyeOutlined /></template>{{article.viewNum}}</a-button
+                <template #icon><EyeOutlined /></template
+                >{{ article.viewNum }}</a-button
               >
               <a-button type="primary" @click="showDrawer">
-                <template #icon><MessageOutlined /></template>1</a-button
+                <template #icon><MessageOutlined /></template>{{article.commentsNum}}</a-button
               >
               <ArticleScore class="ml10" :article="article" />
             </a-button-group>
@@ -46,6 +52,10 @@
           v-model="article.content"
           previewOnly
         />
+
+        <div class="bottom-comment-x" v-if="!visible">
+          <Comments />
+        </div>
       </a-layout-content>
     </a-layout>
 
@@ -57,7 +67,7 @@
       @close="onClose"
       class="drawer-x"
       :bodyStyle="{
-        padding: 0
+        padding: 0,
       }"
     >
       <Comments />
@@ -67,13 +77,8 @@
 
 <script setup lang="ts">
 import Markdown from "vue3-markdown-it";
-import {
-  StarOutlined,
-  LikeOutlined,
-  EyeOutlined,
-  MessageOutlined,
-} from "@ant-design/icons-vue";
-import { nextTick, onMounted, ref, reactive } from "vue";
+import { EyeOutlined, MessageOutlined } from "@ant-design/icons-vue";
+import { nextTick, onMounted, ref, reactive, onActivated } from "vue";
 import Comments from "./components/Comments.vue";
 
 import CatalogueList from "@/components/article/CatalogueList.vue";
@@ -100,22 +105,21 @@ const onClose = () => {
   visible.value = false;
 };
 
-
 const article = reactive(useArticle());
-
-
 
 const route = useRoute();
 
-onMounted(() => {
-
-  const {id} = route.params as {
-    id: string |undefined
-  }
-  if(!id) return
+const refresh = ()=>{
+  const { id } = route.params as {
+    id: string | undefined;
+  };
+  if (!id) return;
   article.initAsync(id);
-  addArticleViewNum(id)
-});
+  addArticleViewNum(id);
+}
+
+onActivated(refresh)
+// onMounted(refresh);
 
 //生成文章目录
 // md-content
@@ -184,6 +188,10 @@ const onGetCatalog = (e) => {
 </script>
 
 <style scoped lang="scss">
+
+.back{
+  padding: 10px 0;
+}
 .article-content {
   background: #fff;
   z-index: 10;
@@ -199,20 +207,26 @@ const onGetCatalog = (e) => {
 }
 
 .sider {
-  padding-top: 100px;
+  // padding-top: 100px;
   background-color: #fff;
 }
 
+.drawer-x {
+}
 
-.drawer-x{
+.bottom-comment-x {
+}
 
+@media screen and (min-width: 992px) {
+  .bottom-comment-x {
+    display: none;
+  }
 }
 </style>
 
 <style>
-
 body {
-  overflow: visible!important;
+  overflow: visible !important;
 }
 h1,
 h2,
@@ -234,5 +248,9 @@ h5:target {
 
 .article-summary {
   color: rgba(0, 0, 0, 0.3);
+}
+
+.bottom-comment-x {
+  height: calc(100vh - 55px);
 }
 </style>

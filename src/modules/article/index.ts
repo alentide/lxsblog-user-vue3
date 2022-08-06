@@ -62,6 +62,7 @@ export const useArticle = (article={}) => {
         coverImage: '',
         currentUserScore: '',
         viewNum: 0,
+        commentsNum: 0,
     })
     Object.assign(state,article)
     const refState = toRefs(state)
