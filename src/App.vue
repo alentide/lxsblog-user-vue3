@@ -3,10 +3,6 @@
     <a-layout class="page-x">
       <Nav />
       <a-layout-content :style="{ marginTop: '64px' }">
-        <!-- <BreadCrumb /> -->
-        <!-- <div :style="{ padding: '24px' }">
-          <RouterView class="view-x user-page-content-x" />
-        </div> -->
         <a-row>
           <a-col
             class="view-x"
@@ -37,7 +33,24 @@
             }"
           >
             <div :style="{ paddingTop: '24px' }">
-              <RouterView class="view" />
+              <!-- <RouterView
+                class="view"
+                v-slot="{ Component }"
+                v-if="$route.meta.keepAlive"
+              >
+                <KeepAlive >
+                  <component :is="Component" />
+                </KeepAlive>
+              </RouterView>
+              <RouterView class="view" v-else v-slot="{ Component }">
+                  <component :is="Component" />
+              </RouterView> -->
+
+              <RouterView class="view" v-slot="{ Component }">
+                <!-- <KeepAlive> -->
+                  <component :is="Component" />
+                <!-- </KeepAlive> -->
+              </RouterView>
             </div>
           </a-col>
         </a-row>
@@ -61,6 +74,16 @@ import { auth } from "./modules/auth";
 
 const footerVisible = ref(true);
 const route = useRoute();
+
+watch(
+  route,
+  () => {
+    console.log("route", route);
+  },
+  {
+    deep: true,
+  }
+);
 
 watch(
   () => route.fullPath,
@@ -150,7 +173,6 @@ html {
 .view-x {
   // margin: 0 auto;
   min-height: calc(100vh - 64px - 40px - 48px);
-  
 }
 
 .view {

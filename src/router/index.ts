@@ -1,6 +1,6 @@
 // import Home from '@/views/home/index.vue'
 import useAdminTabs from '@/modules/adminTabs/useAdminTabs'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
 import routes from '~pages'
 
 
@@ -9,6 +9,21 @@ const router = createRouter({
   routes,
 })
 
+
+const isAddPage = () => {
+  console.log('window.history', window.history.state, window.history.state.forward);
+  return !window.history.state.forward
+}
+
+
+
+const refreshNextPage = (to: RouteLocationNormalized) => {
+  to.meta.keepAlive = false
+}
+
+const keepAliveNextPage = (to: RouteLocationNormalized) => {
+  to.meta.keepAlive = true
+}
 
 const adminTabs = useAdminTabs()
 router.beforeEach(async (to, from) => {
@@ -22,6 +37,14 @@ router.beforeEach(async (to, from) => {
   //   top: 0,
   //   behavior: 'smooth'
   // })
+})
+
+router.afterEach((to, from) => {
+  if (isAddPage()) {
+    refreshNextPage(to)
+  } else {
+    keepAliveNextPage(to)
+  }
 })
 
 export default router

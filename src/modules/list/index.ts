@@ -23,10 +23,19 @@ export const onReachBottom = (callback: (...args: any[]) => any,el:Ref<HTMLEleme
     onMounted(() => {
         if(!el.value) return
         console.log('el',el);
-        el.value.addEventListener("scroll", handler);
+        if(el.value === document.documentElement){
+            window.addEventListener("scroll", handler);
+        }else {
+            el.value.addEventListener("scroll", handler);
+        }
+        
     });
     onBeforeUnmount(() => {
         if(!el.value) return
-        // el.value.removeEventListener("scroll", handler);
+        if(el.value === document.documentElement){
+            window.removeEventListener("scroll", handler);
+        }else {
+            el.value.removeEventListener("scroll", handler);
+        }
     });
 }

@@ -99,5 +99,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     TagEdit: typeof import('./src/components/tag/TagEdit.vue')['default']
     TagSelector: typeof import('./src/components/tag/TagSelector.vue')['default']
+    TestNav: typeof import('./src/components/nav/TestNav.vue')['default']
+    TestNav1: typeof import('./src/components/nav/TestNav1.vue')['default']
   }
 }
