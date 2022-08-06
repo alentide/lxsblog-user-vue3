@@ -23,7 +23,7 @@ export class Http {
             baseURL,
         })
         axios.interceptors.request.use(function (config) {
-            // console.log('config',config);
+
             // Do something before request is sent
             return config;
         }, function (error) {
@@ -34,7 +34,6 @@ export class Http {
         this._axios.interceptors.response.use(function (response) {
             // Any status code that lie within the range of 2xx cause this function to trigger
             // Do something with response data
-            // console.log('response', response);
             //             config: {transitional: {…}, transformRequest: Array(1), transformResponse: Array(1), timeout: 0, adapter: ƒ, …}
             // data:
             // code: 0

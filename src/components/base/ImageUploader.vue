@@ -108,7 +108,6 @@ const onChangeFile = async (e: any) => {
 
 const toast = useToast()
 const onPasteImage = async () => {
-  console.log("e", await navigator.clipboard.read());
   const blobs = [];
   const clipboardItems = await navigator.clipboard.read();
   for (const clipboardItem of clipboardItems) {

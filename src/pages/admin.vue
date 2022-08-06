@@ -53,9 +53,6 @@ import CacheComponent from "@/components/base/CacheComponent.vue";
 
 const { tabs, current, go, remove, currentIndex } = useAdminTabs();
 
-const edit = (e) => {
-  console.log(e);
-};
 </script>
 
 <style scoped lang="scss">

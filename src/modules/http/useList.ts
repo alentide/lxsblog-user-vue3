@@ -218,22 +218,7 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
         if(!sortOption[keyRevertToPrevious(sorter.field)]){
             delete sortOption[keyRevertToPrevious(sorter.field)]
         }
-        console.log('sortOption',sorter,sortOption);
 
-        // console.log('sorter',sorter);
-        // const sorterTransformed = transformOrderTypeToEndInSorter(sorter)
-        // if(sorter.column?.sortKey){
-        //     sortOption[keyRevertToPrevious(sorter.field)] = {
-        //         [sorter.column?.sortKey]: sorterTransformed.order
-        //     }
-        // }else {
-        //     sortOption[keyRevertToPrevious(sorter.field)] = sorterTransformed.order
-        // }
-        
-        // if(!sortOption[keyRevertToPrevious(sorter.field)]){
-        //     delete sortOption[keyRevertToPrevious(sorter.field)]
-        // }
-        // console.log('sortOption',sorter,sortOption);
     }
 
     /**
@@ -265,7 +250,6 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
                     }
                 }
 
-                console.log('column.filterKey',column.filterKey);
                 return [
                     column.filterKey || 'id',
                     {
@@ -294,7 +278,6 @@ export function usePageList<T extends {id:number} >(url: string,listOptions={}) 
                 }
             }]
         }))
-        console.log('filter',filter,'======',sorter);
     }
 
     /**

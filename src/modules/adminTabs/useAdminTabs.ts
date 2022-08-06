@@ -64,7 +64,6 @@ const addComponent = (fullPath: string, component: TabComponent) => {
     return tabs.value[i].component = component
 }
 const remove = (fullPath: string) => {
-    console.log(fullPath);
 
     let i
     if ((i = tabs.value.findIndex(existsTab => existsTab.fullPath === fullPath)) !== -1) {
@@ -82,7 +81,6 @@ const pop = () => {
 }
 
 const go = (fullPath: string, title: string) => {
-    // console.log(fullPath);
     // current.value=fullPath
     add(fullPath, title)
     router.push(fullPath)

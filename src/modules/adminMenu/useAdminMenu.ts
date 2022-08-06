@@ -37,11 +37,9 @@ async function findMenu(callback: (...args: any[]) => any, lastMenu = menu.value
             return true;
         }
         if (m.children) {
-            console.log('m', m);
             return result = findMenu(callback, m.children);
         }
     });
-    console.log('result', result);
 
     return result
 }

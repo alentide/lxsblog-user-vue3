@@ -9,7 +9,6 @@ export * from './usePageList'
 export const onReachBottom = (callback: (...args: any[]) => any,el:Ref<HTMLElement|null>  =ref(document.documentElement)) => {
     
     const handler = (e) => {
-        console.log('e',e);
         if(!el.value) return
         if (
             el.value.scrollHeight -
@@ -22,7 +21,6 @@ export const onReachBottom = (callback: (...args: any[]) => any,el:Ref<HTMLEleme
     };
     onMounted(() => {
         if(!el.value) return
-        console.log('el',el);
         if(el.value === document.documentElement){
             window.addEventListener("scroll", handler);
         }else {

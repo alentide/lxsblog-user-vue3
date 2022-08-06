@@ -332,7 +332,6 @@ export function useBaseTableList<T extends { id: number }>(url: string, config: 
      * @param param0 
      */
     const onTableChange = ({ current }: Pagination, filter: FiltersValues, sorter: Sorter) => {
-        console.log('filter',filter);
         filterOption = onChangeFilter(filter, columns.value)
         sortOption = onChangeSorter(sorter)
         return baseTableList.goPageNum(current,requestExtraOptions());

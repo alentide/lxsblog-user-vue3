@@ -68,12 +68,6 @@ const state = reactive({
 });
 
 const handleSearch = () => {
-  console.log(
-    "selectedKeys, confirm, dataIndex",
-    selectedKeys,
-    confirm,
-    // dataIndex
-  );
   confirm();
   state.searchText = selectedKeys[0];
   // state.searchedColumn = dataIndex;
@@ -99,9 +93,7 @@ const onDateRangeChange = (
 ) => {
   const [start,end] =dates
 
-  console.log('start,end',start,end);
   props.setSelectedKeys([start.split(' ')[0]+' 00:00:00' ,end.split(' ')[0]+' 23:59:59'])
-  // console.log(selectedKeys, column, confirm, clearFilters);
   confirm()
 };
 </script>

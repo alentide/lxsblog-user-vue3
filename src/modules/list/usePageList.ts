@@ -12,7 +12,7 @@ export const mergeOptions = (page: Ref<{
     num: number;
     limit: number;
 }>, { options, config }: { options: any, config: any } = { options: {}, config: {} }) => {
-    console.log('options,config', options, config);
+
     return {
         pageNum: page.value.num,
         pageLimit: page.value.limit,

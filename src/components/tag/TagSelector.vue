@@ -48,7 +48,7 @@ const initDataAsync = async ()=>{
 }
 const options = computed(()=>list.value.map(category=>({label: category.name,value: category.id})))
 const handleChange = (value: number[]) => {
-  console.log('value',value);
+  
   emit('update:modelValue',value.map(item=>({
     id:item,
     // name: options.value.find(m=>value.some(m1=>m.value))?.label

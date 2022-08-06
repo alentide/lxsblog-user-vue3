@@ -47,9 +47,9 @@
               </RouterView> -->
 
               <RouterView class="view" v-slot="{ Component }">
-                <!-- <KeepAlive> -->
+                <KeepAlive>
                   <component :is="Component" />
-                <!-- </KeepAlive> -->
+                </KeepAlive>
               </RouterView>
             </div>
           </a-col>
@@ -75,15 +75,6 @@ import { auth } from "./modules/auth";
 const footerVisible = ref(true);
 const route = useRoute();
 
-watch(
-  route,
-  () => {
-    console.log("route", route);
-  },
-  {
-    deep: true,
-  }
-);
 
 watch(
   () => route.fullPath,

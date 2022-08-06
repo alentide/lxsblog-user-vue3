@@ -54,7 +54,7 @@
 import { UserOutlined } from "@ant-design/icons-vue";
 import { auth, loginModal } from "@/modules/auth";
 
-console.log('auth',auth);
+
 
 </script>
 

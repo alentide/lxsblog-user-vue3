@@ -7,48 +7,6 @@ export const Hello = h('div', 'hello1')
 export const H1 = (slots) => h('h1', slots)
 
 
-// export const NavigationView = defineComponent({
-//     props: {
-//         fullPath: String,
-//     },
-//     setup(props, { slots }: SetupContext){
-
-
-//         const {fullPath} = toRefs(props)
-//         let _oldFullPath
-//         watch(fullPath,(newFullPath,oldFullPath)=>{
-//             console.log('slots',props.fullPath);
-//             _oldFullPath = oldFullPath
-//         },{
-//             immediate: true
-//         })
-
-//         onUpdated(() => {
-//             console.log('update:slots',slots);
-//         })
-
-//         const instance = getCurrentInstance()!
-
-//         const map = new Map()
-//         const getVnode = (vnode)=>{
-//             if(!map.has(fullPath.value)){   
-//                 map.set(fullPath.value,vnode)
-//             }
-
-//             return  map.get(fullPath.value)
-//         }
-//         // const a = 
-//         // const b = slots.default()[0]
-
-//         // const cacheViews 
-//         return ()=>{
-//             map.set(_oldFullPath,instance.vnode)
-//             // console.log('instance',_oldFullPath,instance.vnode,slots.default());
-//             return getVnode(slots.default())
-//         }
-//     }
-// })
-
 
 export const NavigationView = defineComponent({
     props: {

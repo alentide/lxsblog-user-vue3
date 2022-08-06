@@ -133,7 +133,6 @@ class CatalogueItem {
 
 onMounted(() => {
   window.onhashchange = (e) => {
-    console.log("e.target", e);
     e.preventDefault();
   };
 });
@@ -152,7 +151,6 @@ const onGetCatalog = (e) => {
 
   e = e.map((m) => ({ href: "#" + m.text, title: m.text, level: m.level }));
   links = [];
-  console.log("e", e);
   e.forEach((link) => {
     if (!lastLink()) {
       links.push(link);
@@ -181,10 +179,6 @@ const onGetCatalog = (e) => {
     }
   });
 
-  console.log(
-    "links",
-    links.filter((m) => !m.parent)
-  );
   catalogueList.value = links.filter((m) => !m.parent);
 };
 </script>
