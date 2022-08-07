@@ -92,6 +92,7 @@ declare module '@vue/runtime-core' {
     ListEmpty: typeof import('./src/components/list/ListEmpty.vue')['default']
     ListLoading: typeof import('./src/components/list/ListLoading.vue')['default']
     ListLoadMore: typeof import('./src/components/list/ListLoadMore.vue')['default']
+    Loading: typeof import('./src/components/feedback/Loading.vue')['default']
     Login: typeof import('./src/components/auth/login.vue')['default']
     LoginModal: typeof import('./src/components/auth/LoginModal.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']

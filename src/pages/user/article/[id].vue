@@ -1,84 +1,85 @@
 <template>
-  <div>
-    <a-layout>
-      <a-layout-sider
-        breakpoint="lg"
-        collapsed-width="0"
-        class="sider"
-        :width="300"
-        v-model:collapsed="sider.collapsed"
-      >
-        <div class="sider-content-x">
-          <a-affix
-            :style="{ width: 'auto' }"
-            :offset-top="100"
-            
-          >
-            <a-page-header
-              class="back"
-              title="文章详情"
-              @back="$router.back"
+  <div class="user-page-content-x">
+    <Loading>
+      <a-layout>
+        <a-layout-sider
+          breakpoint="lg"
+          collapsed-width="0"
+          class="sider"
+          :width="300"
+          v-model:collapsed="sider.collapsed"
+        >
+          <div class="sider-content-x">
+            <a-affix :style="{ width: 'auto' }" :offset-top="100">
+              <a-page-header
+                class="back"
+                title="文章详情"
+                @back="$router.back"
+              />
+              <a-anchor>
+                <CatalogueList :catalogueList="catalogueList" />
+              </a-anchor>
+
+              <a-button-group class="my40">
+                <a-button type="primary">
+                  <template #icon><EyeOutlined /></template
+                  >{{ article.viewNum }}</a-button
+                >
+                <a-button type="primary" @click="showDrawer">
+                  <template #icon><MessageOutlined /></template
+                  >{{ article.commentsNum }}</a-button
+                >
+                <ArticleScore class="ml10" :article="article" />
+              </a-button-group>
+            </a-affix>
+          </div>
+        </a-layout-sider>
+        <a-layout-content class="article-content" style="padding: 10px">
+          <div class="article-title">
+            <h1>{{ article.title }}</h1>
+            <p class="article-summary">{{ article.summary }}</p>
+            <img
+              v-if="article.coverImage?.src"
+              class="article-cover-image"
+              :src="article.coverImage?.src"
+              alt=""
             />
-            <a-anchor>
-              <CatalogueList :catalogueList="catalogueList" />
-            </a-anchor>
-
-            <a-button-group class="my40">
-              <a-button type="primary">
-                <template #icon><EyeOutlined /></template
-                >{{ article.viewNum }}</a-button
-              >
-              <a-button type="primary" @click="showDrawer">
-                <template #icon><MessageOutlined /></template>{{article.commentsNum}}</a-button
-              >
-              <ArticleScore class="ml10" :article="article" />
-            </a-button-group>
-          </a-affix>
-        </div>
-      </a-layout-sider>
-      <a-layout-content class="article-content" style="padding: 10px">
-        <div class="article-title">
-          <h1>{{ article.title }}</h1>
-          <p class="article-summary">{{ article.summary }}</p>
-          <img
-            v-if="article.coverImage?.src"
-            class="article-cover-image"
-            :src="article.coverImage?.src"
-            alt=""
+          </div>
+          <md-editor
+            @onGetCatalog="onGetCatalog"
+            v-model="article.content"
+            previewOnly
           />
-        </div>
-        <md-editor
-          @onGetCatalog="onGetCatalog"
-          v-model="article.content"
-          previewOnly
-        />
 
-        <div class="bottom-comment-x" v-if="!visible">
-          <Comments />
-        </div>
-      </a-layout-content>
-    </a-layout>
+          <div class="bottom-comment-x" v-if="!visible">
+            <Comments />
+          </div>
+        </a-layout-content>
+      </a-layout>
 
-    <a-drawer
-      :width="500"
-      title="评论"
-      :placement="placement"
-      v-model:visible="visible"
-      @close="onClose"
-      class="drawer-x"
-      :bodyStyle="{
-        padding: 0,
-      }"
-    >
-      <Comments />
-    </a-drawer>
+      <a-drawer
+        :width="500"
+        title="评论"
+        :placement="placement"
+        v-model:visible="visible"
+        @close="onClose"
+        class="drawer-x"
+        :bodyStyle="{
+          padding: 0,
+        }"
+      >
+        <Comments />
+      </a-drawer>
+    </Loading>
   </div>
 </template>
 
 <script setup lang="ts">
 import Markdown from "vue3-markdown-it";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons-vue";
-import { nextTick, onMounted, ref, reactive, onActivated } from "vue";
+import { nextTick, onMounted, ref, reactive, onActivated, provide } from "vue";
+import Loading from "@/components/feedback/Loading.vue";
+
 import Comments from "./components/Comments.vue";
 
 import CatalogueList from "@/components/article/CatalogueList.vue";
@@ -107,18 +108,20 @@ const onClose = () => {
 
 const article = reactive(useArticle());
 
+provide("loading", article);
+
 const route = useRoute();
 
-const refresh = ()=>{
+const refresh = () => {
   const { id } = route.params as {
     id: string | undefined;
   };
   if (!id) return;
   article.initAsync(id);
   addArticleViewNum(id);
-}
+};
 
-onActivated(refresh)
+onActivated(refresh);
 // onMounted(refresh);
 
 //生成文章目录
@@ -188,8 +191,7 @@ const onGetCatalog = (e) => {
 </script>
 
 <style scoped lang="scss">
-
-.back{
+.back {
   padding: 10px 0;
 }
 .article-content {
@@ -199,7 +201,7 @@ const onGetCatalog = (e) => {
 .article-cover-image {
   width: 80%;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .article-title {

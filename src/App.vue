@@ -47,9 +47,10 @@
               </RouterView> -->
 
               <RouterView class="view" v-slot="{ Component }">
-                <KeepAlive>
+                <KeepAlive v-if="!$route.path.startsWith('/admin')">
                   <component :is="Component" />
                 </KeepAlive>
+                <component v-else :is="Component" />
               </RouterView>
             </div>
           </a-col>
