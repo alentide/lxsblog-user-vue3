@@ -174,8 +174,10 @@ const onPasteImage = async () => {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .image-uploader-image {
-  width: 100%;
+  // width: 100%;
   height: 100%;
+  object-fit: contain;
+  text-align: center;
 
   &.default-box {
     display: flex;

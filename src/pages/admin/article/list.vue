@@ -1,6 +1,6 @@
 <template>
-  <div class="wh100p">
-    <div class="my10">
+  <div class="content-x">
+    <div class="top-action">
       批量操作：
       <RemoveIcon
         type="primary"
@@ -38,6 +38,8 @@
     </div>
 
     <a-table
+      @resizeColumn="handleResizeColumn"
+      :scroll="{ x: 0 }"
       size="small"
       :pagination="pagination"
       @change="onTableChange"
@@ -45,7 +47,7 @@
       :data-source="currentList"
       bordered
       :loading="loading"
-      class="ovflat"
+      class="table-x"
       :row-selection="rowSelection"
     >
       <template
@@ -120,6 +122,10 @@ const go = (record: ArticleDfe) => {
   adminTabs.go("/admin/article/edit/" + record.id, record.title);
 };
 
+const handleResizeColumn = (w, col) => {
+  col.width = w;
+};
+
 const {
   currentList,
   loading,
@@ -145,7 +151,8 @@ const {
       key: "title",
       sorter: true,
       sortDirections: ["descend", "ascend"],
-      width: "400px",
+      width: 200,
+      resizable: true,
       customFilterDropdown: true,
       filterDownType: "search",
       ellipsis: true,
@@ -159,14 +166,15 @@ const {
       title: "概述",
       dataIndex: "summary",
       key: "summary",
-      width: "400px",
+      width: 200,
+      resizable: true,
       ellipsis: true,
     },
     {
       title: "状态",
       dataIndex: "releaseStatus",
       key: "releaseStatus",
-      width: "100px",
+      width: 100,
       filter: {
         value: "releaseStatus",
         type: FilterType.IN_ARRAY,
@@ -197,13 +205,14 @@ const {
         text: "name",
       },
       filterSearch: true,
-      width: "100px",
+      width: 100,
     },
     {
       title: "标签",
       dataIndex: "tags",
       key: "tags",
-      width: "200px",
+      width: 200,
+      resizable: true,
       filter: {
         resource: "tags",
         value: "id",
@@ -219,7 +228,7 @@ const {
       key: "createTimeDisplayed",
       sorter: true,
       sortDirections: ["ascend", "descend"],
-      width: "150px",
+      width: 150,
       ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "date",
@@ -234,7 +243,7 @@ const {
       key: "updateTime",
       sorter: true,
       sortDirections: ["ascend", "descend"],
-      width: "150px",
+      width: 150,
       ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "date",
@@ -249,7 +258,7 @@ const {
       key: "firstReleaseTime",
       sorter: true,
       sortDirections: ["ascend", "descend"],
-      width: "150px",
+      width: 150,
       ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "date",
@@ -264,7 +273,7 @@ const {
       key: "lastReleaseTime",
       sorter: true,
       sortDirections: ["ascend", "descend"],
-      width: "150px",
+      width: 150,
       ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "date",
@@ -279,7 +288,7 @@ const {
       key: "firstOffTime",
       sorter: true,
       sortDirections: ["ascend", "descend"],
-      width: "150px",
+      width: 150,
       ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "date",
@@ -294,7 +303,7 @@ const {
       key: "lastOffTime",
       sorter: true,
       sortDirections: ["ascend", "descend"],
-      width: "150px",
+      width: 150,
       ellipsis: true,
       customFilterDropdown: true,
       filterDownType: "date",
@@ -307,7 +316,7 @@ const {
       title: "操作",
       dataIndex: "operation",
       key: "operation",
-      width: "100px",
+      width: 100,
       fixed: "right",
     },
   ],
@@ -355,4 +364,17 @@ const onChangeArticleReleaseStatus = (
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.content-x {
+  display: flex;
+  flex-direction: column;
+}
+.top-action {
+  margin: 10px 0;
+}
+
+.table-x {
+  flex: 1;
+  overflow: auto;
+}
+</style>

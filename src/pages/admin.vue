@@ -1,5 +1,5 @@
 <template>
-  <a-layout style="background: #fff">
+  <a-layout class="admin-page-x" style="background: #fff">
     <a-layout-sider width="200" style="background: #fff">
       <SiderNav />
     </a-layout-sider>
@@ -29,16 +29,10 @@
         </a-tab-pane>
       </a-tabs>
       <RouterView
-        style="height: 100%; background: #fff"
+        class="view-x"
         v-slot="{ Component, route }"
       >
-        <!-- <keep-alive>
-          <component :is="Component" :key="route.fullPath" />
-        </keep-alive> -->
-
         <component :is="Component" :key="route.fullPath" />
-
-        <!-- <CacheComponent :component="Component" :fullPath="route.fullPath"/> -->
       </RouterView>
     </a-layout-content>
   </a-layout>
@@ -57,10 +51,23 @@ const { tabs, current, go, remove, currentIndex } = useAdminTabs();
 
 <style scoped lang="scss">
 .admin-content-x {
-  height: calc(100vh - 118px - 70px - 48px);
+  height: calc(100vh - 64px - 20px - 56px);
 }
 
 ::v-deep(.ant-tabs-content-holder) {
+  overflow-y: auto;
+}
+
+.admin-page-x {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 64px;
+  bottom: 0;
+}
+
+.view-x {
+  height: 100%;
   overflow-y: auto;
 }
 </style>
