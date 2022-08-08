@@ -80,20 +80,38 @@
         v-model:collapsed="sider.collapsed"
       >
         <div class="sider-content-x">
-          <a-card title="高阅读量文章" :bordered="false" class="mb10">
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
+          <a-card title="最高阅读" :bordered="false" class="mb10">
+            <RouterLink
+              class="article-link"
+              :to="'article/' + article.id"
+              v-for="article in highestViewNumArticleList.data"
+            >
+              <a-typography-paragraph
+                :ellipsis="{row:1,tooltip:article.title}"
+                :content="article.title"
+            /></RouterLink>
           </a-card>
-          <a-card title="高评分文章" :bordered="false" class="mb10">
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
+          <a-card title="最高评分" :bordered="false" class="mb10">
+            <RouterLink
+              class="article-link"
+              :to="'article/' + article.id"
+              v-for="article in highestViewNumArticleList.data"
+            >
+              <a-typography-paragraph
+                :ellipsis="{row:1,tooltip:article.title}"
+                :content="article.title"
+            /></RouterLink>
           </a-card>
-          <a-card title="高评论文章" :bordered="false" class="mb10">
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
+          <a-card title="最多评论" :bordered="false" class="mb10">
+            <RouterLink
+              class="article-link"
+              :to="'article/' + article.id"
+              v-for="article in highestViewNumArticleList.data"
+            >
+              <a-typography-paragraph
+                :ellipsis="{row:1,tooltip:article.title}"
+                :content="article.title"
+            /></RouterLink>
           </a-card>
         </div>
       </a-layout-sider>
@@ -112,16 +130,31 @@ import { EyeOutlined, MessageOutlined } from "@ant-design/icons-vue";
 import { onMounted, ref, type Ref, reactive } from "vue";
 import ListLoading from "@/components/list/ListLoading.vue";
 import { onReachBottom } from "@/modules/list/index.js";
+import { useUserGet } from "@/modules/http";
+import type { ArticleDfe } from "@/modules/article/article.interfaces";
 
 const homeArticleList = getHomeArticleList();
 const { list, loading, nextPage } = homeArticleList;
+
+onMounted(homeArticleList.refresh);
+onReachBottom(nextPage);
 
 const sider = reactive({
   collapsed: false,
 });
 
-onMounted(homeArticleList.refresh);
-onReachBottom(nextPage);
+const highestViewNumArticleList = useUserGet<ArticleDfe[]>(
+  "articles/high-view-num"
+);
+onMounted(highestViewNumArticleList.request);
+
+const highestScoreArticleList = useUserGet<ArticleDfe[]>("articles/high-score");
+onMounted(highestScoreArticleList.request);
+
+const hightestCommentNumArticleList = useUserGet<ArticleDfe[]>(
+  "articles/high-comment-num"
+);
+onMounted(hightestCommentNumArticleList.request);
 </script>
 
 <style scoped lang="scss">
@@ -162,5 +195,14 @@ onReachBottom(nextPage);
 .sider-x {
   background-color: #f0f2f5;
   margin: 0 10px;
+}
+
+.article-link {
+  color: #000;
+  display: block;
+  margin: 4px;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 </style>

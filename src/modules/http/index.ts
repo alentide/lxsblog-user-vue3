@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 
 import axios from 'axios'
 import { ref, type Ref } from 'vue'
@@ -6,6 +6,7 @@ import useToast from '../toast/useToast'
 import type { ListResponseData, ProjectResponse } from './http.interfaces';
 import IgnoreError from '../error/IgnoreError';
 import { auth } from '../auth';
+import { genUseGet } from './useGet';
 
 
 
@@ -98,6 +99,7 @@ export const adminHttp = new Http({
 export function useUserPost<T>(url: string, required: any = {}) {
     const loading = ref(false);
     const result: Ref<ProjectResponse<T> | undefined> = ref();
+    const data = computed(()=>result.value?.data)
     const request = (options: any = {}) => {
         loading.value = true;
         return userHttp.post<T>(url, { ...required, ...options, }).then((res: any) => result.value = res).finally(() => {
@@ -107,6 +109,10 @@ export function useUserPost<T>(url: string, required: any = {}) {
     return {
         loading,
         result,
+        data,
         request,
     };
 }
+
+
+export const useUserGet = genUseGet(userHttp)

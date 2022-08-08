@@ -72,6 +72,7 @@ declare module '@vue/runtime-core' {
     ATimelineItem: typeof import('ant-design-vue/es')['TimelineItem']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ATypographyLink: typeof import('ant-design-vue/es')['TypographyLink']
+    ATypographyParagraph: typeof import('ant-design-vue/es')['TypographyParagraph']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']
     Avatar: typeof import('./src/components/user/Avatar.vue')['default']
