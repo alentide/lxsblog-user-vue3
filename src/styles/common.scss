@@ -32,6 +32,9 @@
     .mr#{$i} {
         margin-right: $i * 1px !important;
     }
+    .mb#{$i} {
+        margin-bottom: $i * 1px !important;
+    }
     .ml#{$i} {
         margin-left: $i * 1px !important;
     }
@@ -61,4 +64,19 @@
 
 .ovflat {
     overflow: auto;
+}
+
+.fldc {
+    flex-direction: column;
+}
+
+.acsb {
+    align-content: space-between;
+}
+
+.txtr {
+    text-align: right;
+}
+.txtc {
+    text-align:  center;
 }

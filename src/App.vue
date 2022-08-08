@@ -2,7 +2,7 @@
   <a-config-provider :locale="zhCN">
     <a-layout class="page-x">
       <Nav />
-      <a-layout-content :style="{ marginTop: '64px' }">
+      <a-layout-content class="page-content-x">
         <a-row>
           <a-col
             class="view-x"
@@ -33,19 +33,6 @@
             }"
           >
             <div :style="{ paddingTop: '24px' }">
-              <!-- <RouterView
-                class="view"
-                v-slot="{ Component }"
-                v-if="$route.meta.keepAlive"
-              >
-                <KeepAlive >
-                  <component :is="Component" />
-                </KeepAlive>
-              </RouterView>
-              <RouterView class="view" v-else v-slot="{ Component }">
-                  <component :is="Component" />
-              </RouterView> -->
-
               <RouterView class="view" v-slot="{ Component }">
                 <KeepAlive v-if="!$route.path.startsWith('/admin')">
                   <component :is="Component" />
@@ -56,7 +43,7 @@
           </a-col>
         </a-row>
       </a-layout-content>
-      <a-layout-footer :style="{ textAlign: 'center' }" v-if="footerVisible">
+      <a-layout-footer :style="{ textAlign: 'center', }" v-if="footerVisible">
         <Footer />
       </a-layout-footer>
     </a-layout>
@@ -103,39 +90,11 @@ onMounted(() => {
 </script>
 
 <style>
-/* .content-x {
-  background-color: #f5f5f5;
-} */
 
-/* .user-page-content-x {
-  padding: 20px 50px;
-  width: 1200px;
-  background-color: #fff;
-}
-
-@media screen and (max-width: 1200px) {
-  .user-page-content-x {
-    width: 1200px;
-  }
-}
-
-@media screen and (max-width: 992px) {
-  .user-page-content-x {
-    width: 1200px;
-  }
-  .content-x {
-    padding: 20px 40px;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .content-x {
-    padding: 20px 10px;
-  }
-} */
 
 html {
   overflow-x: hidden;
+  background-color: #f0f2f5;
 }
 
 /*定义滚动条高宽及背景
@@ -162,6 +121,14 @@ html {
 }
 </style>
 <style scoped lang="scss">
+.page-x {
+  min-height: 100vh;
+  padding-top: 64px;
+}
+
+.page-content-x{
+  min-height: calc(100vh - 64px);
+}
 .view-x {
   // margin: 0 auto;
   min-height: calc(100vh - 64px - 40px - 48px);

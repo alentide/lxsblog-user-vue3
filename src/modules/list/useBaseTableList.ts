@@ -323,7 +323,7 @@ export function useBaseTableList<T extends { id: number }>(url: string, config: 
             sort: sortOption,
             filter: filterOption,
         },
-        config:pick(['filter'],config),
+        config:pick(['filter','sort'],config),
     })
 
     const refresh = ()=>baseTableList.refresh(requestExtraOptions())

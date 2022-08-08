@@ -145,7 +145,7 @@ const {
     },
   },
   sort: {
-    lastReleaseTime: "DESC",
+    createTime: "DESC",
   },
   columns: [
     {
