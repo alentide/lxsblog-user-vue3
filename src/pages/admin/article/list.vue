@@ -144,6 +144,9 @@ const {
       type: FilterType.IN_ARRAY,
     },
   },
+  sort: {
+    lastReleaseTime: "DESC",
+  },
   columns: [
     {
       title: "标题",
@@ -220,6 +223,22 @@ const {
       },
       ellipsis: true,
       filterSearch: true,
+    },
+    {
+      title: "评分",
+      dataIndex: "averageScore",
+      key: "averageScore",
+      sorter: true,
+      sortDirections: ["descend", "ascend"],
+      width: 50,
+      resizable: true,
+      // filter: {
+      //   resource: "tags",
+      //   value: "id",
+      //   text: "name",
+      // },
+      // ellipsis: true,
+      // filterSearch: true,
     },
 
     {
