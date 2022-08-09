@@ -31,7 +31,7 @@
               <template #icon
                 ><SearchOutlined
                   class="search-icon"
-                  @click="$router.push('search')"
+                  @click="$router.push('/user/search')"
               /></template>
             </a-button>
             <AvatarDropdownMenu />

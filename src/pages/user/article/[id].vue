@@ -20,21 +20,28 @@
                 <CatalogueList :catalogueList="catalogueList" />
               </a-anchor>
 
-              <a-button-group class="my40">
-                <a-button type="primary">
-                  <template #icon><EyeOutlined /></template
-                  >{{ article.viewNum }}</a-button
-                >
-                <a-button type="primary" @click="showDrawer">
-                  <template #icon><MessageOutlined /></template
-                  >{{ article.commentsNum }}</a-button
-                >
-                <ArticleScore class="ml10" :article="article" />
-              </a-button-group>
+              <div class="my40">
+                <a-button-group >
+                  <a-button type="primary">
+                    <template #icon><EyeOutlined /></template
+                    >{{ article.viewNum }}</a-button
+                  >
+                  <a-button type="primary" @click="showDrawer">
+                    <template #icon><MessageOutlined /></template
+                    >{{ article.commentNum }}</a-button
+                  >
+                </a-button-group>
+
+                <ArticleScore
+                class="my10"
+                  v-if="article.id"
+                  :article="article"
+                />
+              </div>
             </a-affix>
           </div>
         </a-layout-sider>
-        <a-layout-content class="article-content" style="padding: 10px">
+        <a-layout-content class="article-content" style="padding: 20px">
           <div class="article-title">
             <h1>{{ article.title }}</h1>
             <p class="article-summary">{{ article.summary }}</p>
@@ -74,15 +81,13 @@
   </div>
 </template>
 
-
 <script lang="ts">
-  export default {
-    name: 'ArticleDetail',
-    inheritAttrs: false,
-    customOptions: {}
-  }
+export default {
+  name: "ArticleDetail",
+  inheritAttrs: false,
+  customOptions: {},
+};
 </script>
-
 
 <script setup lang="ts">
 import Markdown from "vue3-markdown-it";
@@ -116,7 +121,7 @@ const onClose = () => {
   visible.value = false;
 };
 
-const article = reactive(useArticle());
+const article = useArticle();
 
 provide("loading", article);
 
@@ -220,6 +225,7 @@ const onGetCatalog = (e) => {
 
 .sider {
   // padding-top: 100px;
+  margin-right: 10px;
   background-color: #fff;
 }
 
@@ -227,6 +233,18 @@ const onGetCatalog = (e) => {
 }
 
 .bottom-comment-x {
+}
+
+.sider-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sider-content-x {
+  // margin-right: 20px;
+  padding: 20px;
+  
 }
 
 @media screen and (min-width: 992px) {

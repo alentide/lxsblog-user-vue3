@@ -56,6 +56,13 @@ function useAntPageList<T>(url: string) {
   const list: Ref<T[][]> = ref([]);
   const currentList = computed(() => list.value[pageNum.value] || []);
 
+const scrollToTop = ()=>{
+  
+  window.scrollTo({
+    top:0,
+    behavior: 'smooth'
+  })
+}
   const request = () => {
     loading.value = true;
     return userHttp
@@ -69,6 +76,8 @@ function useAntPageList<T>(url: string) {
       .then((res) => {
         list.value[pageNum.value] = res.data.list;
         total.value = res.data.total;
+
+        scrollToTop()
       })
       .finally(() => (loading.value = false));
   };

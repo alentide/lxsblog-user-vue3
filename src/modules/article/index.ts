@@ -70,7 +70,7 @@ export const useArticle = (article={}) => {
         },
         currentUserScore: '',
         viewNum: 0,
-        commentsNum: 0,
+        commentNum: 0,
     })
     Object.assign(state,article)
     const refState = toRefs(state)
@@ -87,7 +87,6 @@ export const useArticle = (article={}) => {
 
     return reactive({
         loading,
-        ...article,
         ...refState,
         initAsync,
         ...useArticleScore(state)
