@@ -74,6 +74,16 @@
   </div>
 </template>
 
+
+<script lang="ts">
+  export default {
+    name: 'ArticleDetail',
+    inheritAttrs: false,
+    customOptions: {}
+  }
+</script>
+
+
 <script setup lang="ts">
 import Markdown from "vue3-markdown-it";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons-vue";
@@ -121,8 +131,8 @@ const refresh = () => {
   addArticleViewNum(id);
 };
 
-onActivated(refresh);
-// onMounted(refresh);
+// onActivated(refresh);
+onMounted(refresh);
 
 //生成文章目录
 // md-content

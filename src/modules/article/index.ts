@@ -5,6 +5,8 @@ import { loadingMethod } from '../loading';
 import type { ArticleDfe } from './article.interfaces';
 
 
+export * from './useArticleSearch'
+
 
 
 const useArticleScore = (article) => {
@@ -58,8 +60,14 @@ export const useArticle = (article={}) => {
         scoreUserNum: 0,
         averageScore: 0,
         tags: [],
-        category: '',
-        coverImage: '',
+        category: {
+            id: 0,
+            name: ''
+        },
+        coverImage: {
+            id: 0,
+            src: ''
+        },
         currentUserScore: '',
         viewNum: 0,
         commentsNum: 0,
@@ -77,13 +85,13 @@ export const useArticle = (article={}) => {
         return res
     })
 
-    return {
+    return reactive({
         loading,
         ...article,
         ...refState,
         initAsync,
         ...useArticleScore(state)
-    }
+    })
 }
 
 export function getHomeArticleList() {
@@ -119,3 +127,4 @@ export function scoreArticle(id: number, score: number) {
 export const addArticleViewNum = (id:number|string)=>{
    return  userHttp.get('articles/view/'+id)
 }
+

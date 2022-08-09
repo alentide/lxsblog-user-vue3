@@ -7,6 +7,15 @@ import routes from '~pages'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+
+    console.log('savedPosition',savedPosition);
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
 })
 
 
@@ -39,12 +48,12 @@ router.beforeEach(async (to, from) => {
   // })
 })
 
-router.afterEach((to, from) => {
-  if (isAddPage()) {
-    refreshNextPage(to)
-  } else {
-    keepAliveNextPage(to)
-  }
-})
+// router.afterEach((to, from) => {
+//   if (isAddPage()) {
+//     refreshNextPage(to)
+//   } else {
+//     keepAliveNextPage(to)
+//   }
+// })
 
 export default router

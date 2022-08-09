@@ -34,7 +34,7 @@
           >
             <div :style="{ paddingTop: '24px' }">
               <RouterView class="view" v-slot="{ Component }">
-                <KeepAlive v-if="!$route.path.startsWith('/admin')">
+                <KeepAlive exclude="ArticleDetail"  v-if="!$route.path.startsWith('/admin')">
                   <component :is="Component" />
                 </KeepAlive>
                 <component v-else :is="Component" />
@@ -119,6 +119,8 @@ html {
   /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   background-color: rgba(0, 0, 0, 0.1);
 }
+
+
 </style>
 <style scoped lang="scss">
 .page-x {

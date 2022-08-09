@@ -2,6 +2,7 @@ import { getCurrentInstance, onBeforeUnmount, onMounted, ref, type Ref } from 'v
 
 export * from './useList'
 export * from './usePageList'
+export * from './usePageList2'
 
 
 
