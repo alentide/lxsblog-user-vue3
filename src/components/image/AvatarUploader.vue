@@ -58,9 +58,10 @@ watch(
       emit("update:modelValue", image?.value?.src);
       return;
     }
-    if(image.value) {
-      image.value.src = newVal
+    if(!image.value){
+      image.value = emptyImage()
     }
+    image.value.src = newVal
   },
   {
     immediate: true,

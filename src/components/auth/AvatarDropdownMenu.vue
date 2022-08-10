@@ -20,7 +20,7 @@
           </a-menu-item>
         </a-menu>
         <a-menu v-else-if="auth.isAdmin">
-          <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="red">管理员</a-tag></div>
+          <div class="my10 w100p dpf jcc px10 "><a-tag class="mr0" color="red">管理员</a-tag></div>
           <a-menu-item key="register">
             <RouterLink to="/admin">管理</RouterLink>
           </a-menu-item>

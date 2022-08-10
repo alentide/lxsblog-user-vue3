@@ -99,5 +99,6 @@ export const useImageUploader = () => {
         image,
         loading,
         upload,
+        emptyImage,
     }
 }

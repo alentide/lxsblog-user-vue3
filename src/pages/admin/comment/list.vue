@@ -91,10 +91,11 @@ import CustomFilterDropdown from "@/components/article/CustomFilterDropdown.vue"
 import { useTableList } from "@/modules/list/useTableList.js";
 import { FilterType } from "@/modules/list/useBaseTableList.js";
 import { ArticleReleaseStatus } from "@/modules/article/ArticleReleaseStatus.js";
+import type { CommentDto } from "@/modules/comment";
 
 const adminTabs = useAdminTabs();
-const go = (record: ArticleDfe) => {
-  adminTabs.go("/admin/article/edit/" + record.id, record.title);
+const go = (record: CommentDto) => {
+  adminTabs.go("/admin/article/edit/" + record.article.id, record.article.title);
 };
 
 const {
@@ -108,7 +109,7 @@ const {
   columns,
   rowSelection,
   removeSelected,
-} = useTableList<ArticleDfe>("/comments", {
+} = useTableList<CommentDto>("/comments", {
   //   filter: {
   //     releaseStatus: {
   //       value: [ArticleReleaseStatus.OFF_SHELF, ArticleReleaseStatus.RELEASED],
