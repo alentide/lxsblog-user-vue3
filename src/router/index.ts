@@ -1,7 +1,10 @@
+
 // import Home from '@/views/home/index.vue'
 import useAdminTabs from '@/modules/adminTabs/useAdminTabs'
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
 import routes from '~pages'
+import useToast from '@/modules/toast/useToast';
+import { auth } from '@/modules/auth';
 
 
 const router = createRouter({
@@ -9,7 +12,7 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
 
-    console.log('savedPosition',savedPosition);
+  
     if (savedPosition) {
       return savedPosition
     } else {
@@ -20,7 +23,6 @@ const router = createRouter({
 
 
 const isAddPage = () => {
-  console.log('window.history', window.history.state, window.history.state.forward);
   return !window.history.state.forward
 }
 
@@ -35,10 +37,19 @@ const keepAliveNextPage = (to: RouteLocationNormalized) => {
 }
 
 const adminTabs = useAdminTabs()
-router.beforeEach(async (to, from) => {
+const toast = useToast()
+router.beforeEach(async (to, from,next) => {
   if (to.fullPath.startsWith('/admin')) {
     await adminTabs.add(to.fullPath)
   }
+
+  if(to.path.startsWith('/admin') && auth.user?.type !=='admin'){
+
+    console.log('user.user',auth.user);
+    toast.error('你不是管理员！')
+    return next('/user/article')
+  }
+  next()
 
 
   // window.scrollTo({

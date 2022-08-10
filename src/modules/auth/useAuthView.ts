@@ -17,7 +17,7 @@ export const useAuthView = (auth: ReturnType<typeof useAuth>) => {
         notification.warning({
             message: '警告！',
             description:
-                '您正在使用游客账号。您可以点赞，评论。如果不转为正式账号，一旦清空缓存，无法找回。',
+                '您正在使用游客账号。您可以点赞，评论。如果不转为正式账号，可能丢失，无法找回。',
             duration: 0,
         });
     }

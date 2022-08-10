@@ -43,8 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useUser } from "@/modules/user/index.js";
+import { onMounted, ref,toRefs } from "vue";
+import { auth } from "@/modules/auth";
 import { useArticleCommentList, useUserCommentForm } from "@/modules/comment";
 import { useRoute } from "vue-router";
 import Avatar from '@/components/user/Avatar.vue'
@@ -54,7 +54,7 @@ const { id } = route.params as {
   id: string;
 };
 
-const user = useUser();
+const {user} = toRefs(auth)
 const commentList = useArticleCommentList(+id);
 onMounted(commentList.refresh);
 

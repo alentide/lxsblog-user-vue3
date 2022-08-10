@@ -9,7 +9,7 @@
 
       <template #overlay>
         <a-menu v-if="auth.isTourist">
-          <a-menu-item key="tip"> (游客身份) </a-menu-item>
+          <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="orange">游客</a-tag></div>
           <a-menu-item key="logout">
             <a href="javascript:;" @click="authModal.showLogin">登录其他账号</a>
           </a-menu-item>
@@ -20,7 +20,7 @@
           </a-menu-item>
         </a-menu>
         <a-menu v-else-if="auth.isAdmin">
-          <a-menu-item key="tip"> (管理员身份) </a-menu-item>
+          <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="red">管理员</a-tag></div>
           <a-menu-item key="register">
             <RouterLink to="/admin">管理</RouterLink>
           </a-menu-item>
@@ -32,7 +32,7 @@
           </a-menu-item>
         </a-menu>
         <a-menu v-else-if="auth.isUser">
-          <a-menu-item key="tip"> (普通用户身份) </a-menu-item>
+          <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="green">普通会员</a-tag></div>
           <a-menu-item key="register">
             <RouterLink to="/user/profile">个人信息</RouterLink>
           </a-menu-item>

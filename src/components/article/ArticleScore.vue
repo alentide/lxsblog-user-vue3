@@ -53,8 +53,7 @@ function useCurrentUserScore() {
   };
   const refresh = ()=>{
     loading.value = true;
-    
-    console.log('article.id',article);
+
     return userHttp.get("article-scores/article/"+article.id).then(res=>{
       score.value = res.data?.score || 0
     }).finally(() => {

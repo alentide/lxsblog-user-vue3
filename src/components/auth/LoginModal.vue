@@ -18,7 +18,7 @@
       <a-form-item
         label="密码"
         name="password"
-        :rules="[{ required: true, message: '请输入密码' }]"
+        :rules="[{ required: true, message: '密码为8到16位',min:8,max:16 }]"
       >
         <a-input-password v-model:value="authModal.form.password" />
       </a-form-item>

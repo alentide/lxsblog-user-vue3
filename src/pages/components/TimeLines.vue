@@ -2,7 +2,7 @@
   <a-timeline mode="alternate">
     <a-timeline-item v-for="item in list" :color="item.iconColor">
       <a-popover>
-        <template #content>
+        <template v-if="auth.isAdmin" #content>
           <a-button-group>
             <a-popconfirm
               title="确定要删除这个时间线节点吗？"
@@ -39,6 +39,7 @@ import ListEmpty from "@/components/list/ListEmpty.vue";
 import useTimeLines from "@/modules/timeLine/useTimeLines";
 import timeLineRepo from "@/modules/timeLine/timeLineRepo";
 import useTimeLineForm from "@/modules/timeLine/useTimeLineForm";
+import { auth } from "@/modules/auth";
 
 const { list, refresh, remove } = inject(
   "timeLines",

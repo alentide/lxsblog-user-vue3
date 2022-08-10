@@ -9,8 +9,11 @@
           :width="300"
           v-model:collapsed="sider.collapsed"
         >
-          <div class="sider-content-x">
-            <a-affix :style="{ width: 'auto' }" :offset-top="100">
+          <a-affix
+            :style="{ width: 'auto' }"
+            :offset-top="88"
+          >
+            <div class="sider-content-x">
               <a-page-header
                 class="back"
                 title="文章详情"
@@ -21,7 +24,7 @@
               </a-anchor>
 
               <div class="my40">
-                <a-button-group >
+                <a-button-group>
                   <a-button type="primary">
                     <template #icon><EyeOutlined /></template
                     >{{ article.viewNum }}</a-button
@@ -33,13 +36,13 @@
                 </a-button-group>
 
                 <ArticleScore
-                class="my10"
+                  class="my10"
                   v-if="article.id"
                   :article="article"
                 />
               </div>
-            </a-affix>
-          </div>
+            </div>
+          </a-affix>
         </a-layout-sider>
         <a-layout-content class="article-content" style="padding: 20px">
           <div class="article-title">
@@ -226,7 +229,7 @@ const onGetCatalog = (e) => {
 .sider {
   // padding-top: 100px;
   margin-right: 10px;
-  background-color: #fff;
+  background-color: #f0f2f5;
 }
 
 .drawer-x {
@@ -243,8 +246,8 @@ const onGetCatalog = (e) => {
 
 .sider-content-x {
   // margin-right: 20px;
-  padding: 20px;
-  
+  padding: 0 20px 20px;
+    background: #fff;
 }
 
 @media screen and (min-width: 992px) {

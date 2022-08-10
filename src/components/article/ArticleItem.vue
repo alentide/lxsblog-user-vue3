@@ -7,10 +7,9 @@
     </template>
     <template #extra>
       <img
+        class="article-coverImage"
         style="object-fit: contain"
         v-if="article.coverImage?.src"
-        width="272"
-        height="120"
         alt="logo"
         :src="article.coverImage.src"
       />
@@ -80,6 +79,11 @@ const article = reactive(articleRef)
 
 .ant-carousel :deep(.slick-slide h3) {
   color: #fff;
+}
+
+.article-coverImage{
+  width: 100%;
+  max-height: 100px;
 }
 
 </style>
