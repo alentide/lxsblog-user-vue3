@@ -2,6 +2,27 @@
   <div class="user-page-content-x">
     <Loading>
       <a-layout>
+        <a-layout-content class="article-content" style="padding: 20px">
+          <div class="article-title">
+            <h1>{{ article.title }}</h1>
+            <p class="article-summary">{{ article.summary }}</p>
+            <img
+              v-if="article.coverImage?.src"
+              class="article-cover-image"
+              :src="article.coverImage?.src"
+              alt=""
+            />
+          </div>
+          <md-editor
+            @onGetCatalog="onGetCatalog"
+            v-model="article.content"
+            previewOnly
+          />
+
+          <div class="bottom-comment-x" v-if="!visible">
+            <Comments />
+          </div>
+        </a-layout-content>
         <a-layout-sider
           v-show="!sider.collapsed"
           breakpoint="lg"
@@ -10,14 +31,11 @@
           :width="300"
           v-model:collapsed="sider.collapsed"
         >
-          <a-affix
-            :style="{ width: 'auto' }"
-            :offset-top="88"
-          >
+          <a-affix :style="{ width: 'auto' }" :offset-top="88">
             <div class="sider-content-x">
               <a-page-header
                 class="back"
-                title="文章详情"
+                title="返回"
                 @back="$router.back"
               />
               <a-anchor>
@@ -45,27 +63,6 @@
             </div>
           </a-affix>
         </a-layout-sider>
-        <a-layout-content class="article-content" style="padding: 20px">
-          <div class="article-title">
-            <h1>{{ article.title }}</h1>
-            <p class="article-summary">{{ article.summary }}</p>
-            <img
-              v-if="article.coverImage?.src"
-              class="article-cover-image"
-              :src="article.coverImage?.src"
-              alt=""
-            />
-          </div>
-          <md-editor
-            @onGetCatalog="onGetCatalog"
-            v-model="article.content"
-            previewOnly
-          />
-
-          <div class="bottom-comment-x" v-if="!visible">
-            <Comments />
-          </div>
-        </a-layout-content>
       </a-layout>
 
       <a-drawer
@@ -110,7 +107,7 @@ import "md-editor-v3/lib/style.css";
 import { addArticleViewNum, useArticle } from "@/modules/article";
 import { useRoute } from "vue-router";
 
-const placement = ref<DrawerProps["placement"]>("left");
+const placement = ref<DrawerProps["placement"]>("right");
 const visible = ref<boolean>(false);
 
 const sider = reactive({
@@ -212,6 +209,7 @@ const onGetCatalog = (e) => {
 <style scoped lang="scss">
 .back {
   padding: 10px 0;
+  font-weight: normal;
 }
 .article-content {
   background: #fff;
@@ -229,7 +227,7 @@ const onGetCatalog = (e) => {
 
 .sider {
   // padding-top: 100px;
-  margin-right: 10px;
+  margin-left: 10px;
   background-color: #f0f2f5;
 }
 
@@ -248,7 +246,7 @@ const onGetCatalog = (e) => {
 .sider-content-x {
   // margin-right: 20px;
   padding: 0 20px 20px;
-    background: #fff;
+  background: #fff;
 }
 
 @media screen and (min-width: 992px) {
