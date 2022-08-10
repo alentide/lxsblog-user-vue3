@@ -32,6 +32,7 @@ import { clone, pickAll } from "ramda";
 import { reactive, toRef } from "vue";
 import AvatarUploader from "@/components/image/AvatarUploader.vue";
 import CodeSender from "../../../components/auth/CodeSender.vue";
+import router from "@/router";
 
 const user = toRef(auth, "user");
 
@@ -60,6 +61,7 @@ const [loading, save] = loadingMethod(async () => {
   user.value = Object.assign(user.value, {
     email: form.email
   });
+  router.replace('/user/setup')
 });
 </script>
 

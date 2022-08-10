@@ -35,6 +35,10 @@ watch(
 
 
 const menu = reactive([
+    {
+    key: "/user/setup",
+    title: "首页",
+  },
   {
     key: "/user/setup/profile",
     title: "个人信息",

@@ -34,6 +34,7 @@ import { use } from "chai";
 import { clone, pickAll } from "ramda";
 import { reactive, toRef } from "vue";
 import AvatarUploader from "@/components/image/AvatarUploader.vue";
+import router from "@/router";
 
 const user = toRef(auth, "user");
 
@@ -66,6 +67,7 @@ const form = reactive(clone<ProfileForm>(pickAll(['username','nickname','avatar'
 const [loading,save] = loadingMethod(async ()=>{
    await userHttp.patch('/users/profile',form)
    user.value = Object.assign(user.value,form)
+   router.replace('/user/setup')
 })
 
 
