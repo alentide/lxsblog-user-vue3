@@ -1,7 +1,7 @@
 <template>
   <div style="align-items: center; display: flex">
     <a-dropdown placement="bottomRight">
-      <a-avatar style="flex-shrink: 0; margin-left: 20px" :size="40">
+      <a-avatar :src="auth.user.avatar"  style="flex-shrink: 0; margin-left: 20px" :size="40">
         <template #icon>
           <UserOutlined />
         </template>
@@ -25,7 +25,7 @@
             <RouterLink to="/admin">管理</RouterLink>
           </a-menu-item>
           <a-menu-item key="register">
-            <RouterLink to="/user/profile">个人信息</RouterLink>
+            <RouterLink to="/user/setup">设置</RouterLink>
           </a-menu-item>
           <a-menu-item key="logout">
             <a href="javascript:;" @click="auth.logout">退出</a>
@@ -34,7 +34,7 @@
         <a-menu v-else-if="auth.isUser">
           <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="green">普通会员</a-tag></div>
           <a-menu-item key="register">
-            <RouterLink to="/user/profile">个人信息</RouterLink>
+            <RouterLink to="/user/setup">设置</RouterLink>
           </a-menu-item>
           <a-menu-item key="logout">
             <a href="javascript:;" @click="auth.logout">退出</a>

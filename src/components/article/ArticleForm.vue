@@ -83,7 +83,7 @@ import {
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { useArticleNewForm } from "@/modules/article/useArticleForm";
-import ImageUploader from "@/components/base/ImageUploader.vue";
+import ImageUploader from "@/components/image/ImageUploader.vue";
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import CategorySelector from "@/components/category/CategorySelector.vue";
 import TagSelector from "@/components/tag/TagSelector.vue";

@@ -3,6 +3,7 @@
     <Loading>
       <a-layout>
         <a-layout-sider
+          v-show="!sider.collapsed"
           breakpoint="lg"
           collapsed-width="0"
           class="sider"

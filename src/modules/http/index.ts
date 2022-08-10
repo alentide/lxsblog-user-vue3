@@ -83,8 +83,8 @@ export class Http {
         }).then((res: { data: any }) => res.data)
     }
 }
-export const http = new Http({
-    baseURL: 'http://localhost:3000/api/v1/user'
+export const commonHttp = new Http({
+    baseURL: 'http://localhost:3000/api/v1/common'
 })
 export const userHttp = new Http({
     baseURL: 'http://localhost:3000/api/v1/user'

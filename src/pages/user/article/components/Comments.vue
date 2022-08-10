@@ -7,7 +7,7 @@
         </template>
         <template #content>
           <a-form-item>
-            <a-textarea v-model:value="commentForm.content" :rows="4" />
+            <a-textarea show-count :maxlength="200" v-model:value="commentForm.content" :rows="4" />
           </a-form-item>
           <a-form-item>
             <a-button

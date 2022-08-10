@@ -17,6 +17,8 @@ export class User {
     id: number = 0
     email: string = ''
     username: string = ''
+    nickname: string=''
+    avatar: string = ''
     type: UserType = UserTypes.TOURIST
     constructor(data: UserDto) {
         Object.assign(this, data)

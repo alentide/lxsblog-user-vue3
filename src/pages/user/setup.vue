@@ -1,7 +1,7 @@
 <template>
   <a-layout class="admin-page-x" style="background: #fff">
     <a-layout-sider width="200" style="background: #fff">
-      <SiderNav />
+      <UserSiderNav />
     </a-layout-sider>
     <a-layout-content
       class="admin-content-x"
@@ -11,23 +11,6 @@
         margin: 0,
       }"
     >
-      <a-tabs
-        hideAdd
-        v-model:activeKey="current"
-        @tabClick="go"
-        type="editable-card"
-        @edit="remove"
-      >
-        <a-tab-pane
-          class="custom-pane"
-          :key="tab.fullPath"
-          :tab="tab.title"
-          v-for="(tab, i) in tabs"
-          style="display: none"
-          :closable="tab.closable"
-        >
-        </a-tab-pane>
-      </a-tabs>
       <RouterView
         class="view-x"
         v-slot="{ Component, route }"
@@ -40,7 +23,7 @@
 
 <script setup lang="ts">
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
-import SiderNav from "@/components/admin/SiderNav.vue";
+import UserSiderNav from "@/components/user/UserSiderNav.vue";
 // const current = ref("1");
 
 const { tabs, current, go, remove, currentIndex } = useAdminTabs();

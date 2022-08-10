@@ -4,7 +4,6 @@ interface AsyncFunction {
 }
 
 export const loadingHoc = (loading: Ref<boolean>, method: AsyncFunction) => {
-    loading.value = true
     return async function (...args: any[]) {
         loading.value = true
         try {

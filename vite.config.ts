@@ -16,6 +16,18 @@ import Pages from 'vite-plugin-pages'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+        modifyVars: {
+          'primary-color': '#FBB517', //'#FBB517',
+          'link-color': '#FBB517',
+          'layout-header-background': '#112437',
+        },
+      },
+    },
+  },
   plugins: [
     vue(),
     vueJsx(),
@@ -27,7 +39,7 @@ export default defineConfig({
       exclude: ["**/components/*.vue"],
       //接收一个路由，修改并返回修改后的路由
       extendRoute(route, parent) {
-        
+
         // if (route.path === "/") {
         //   // Index is unauthenticated.
         //   return {...route,redirect:'/home'};

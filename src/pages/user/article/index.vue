@@ -11,7 +11,7 @@
         </a-carousel> -->
 
         <!-- <ArticleSearch /> -->
-        
+
         <a-list
           class="articles-x"
           item-layout="vertical"
@@ -20,12 +20,16 @@
           :loading="loading"
         >
           <template #renderItem="{ item }">
-            <ArticleItem :article="item"/>
+            <ArticleItem :article="item" />
+          </template>
+          <template #footer>
+            <ListLoading v-if="homeArticleList.list.value.length" />
           </template>
         </a-list>
       </a-layout-content>
 
       <a-layout-sider
+        v-show="!sider.collapsed"
         breakpoint="lg"
         collapsed-width="0"
         :width="300"
@@ -40,7 +44,7 @@
               v-for="article in highestViewNumArticleList.data"
             >
               <a-typography-paragraph
-                :ellipsis="{row:1,tooltip:article.title}"
+                :ellipsis="{ row: 1, tooltip: article.title }"
                 :content="article.title"
             /></RouterLink>
           </a-card>
@@ -51,7 +55,7 @@
               v-for="article in highestViewNumArticleList.data"
             >
               <a-typography-paragraph
-                :ellipsis="{row:1,tooltip:article.title}"
+                :ellipsis="{ row: 1, tooltip: article.title }"
                 :content="article.title"
             /></RouterLink>
           </a-card>
@@ -62,18 +66,14 @@
               v-for="article in highestViewNumArticleList.data"
             >
               <a-typography-paragraph
-                :ellipsis="{row:1,tooltip:article.title}"
+                :ellipsis="{ row: 1, tooltip: article.title }"
                 :content="article.title"
             /></RouterLink>
           </a-card>
         </div>
       </a-layout-sider>
     </a-layout>
-    <a-layout-footer class="footer">
-      <div style="margin-right: 300px">
-        <ListLoading v-if="homeArticleList.list.value.length" />
-      </div>
-    </a-layout-footer>
+    <a-layout-footer class="footer"> </a-layout-footer>
   </a-layout>
 </template>
 
@@ -85,7 +85,7 @@ import ListLoading from "@/components/list/ListLoading.vue";
 import { onReachBottom } from "@/modules/list/index.js";
 import { useUserGet } from "@/modules/http";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
-import ArticleSearch from '@/components/article/ArticleSearch.vue'
+import ArticleSearch from "@/components/article/ArticleSearch.vue";
 
 import ArticleItem from "@/components/article/ArticleItem.vue";
 
@@ -128,7 +128,6 @@ onMounted(hightestCommentNumArticleList.request);
   width: 100%;
   height: 100%;
 }
-
 
 .sider-x {
   background-color: #f0f2f5;

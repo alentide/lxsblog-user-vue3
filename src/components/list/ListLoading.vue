@@ -19,5 +19,7 @@ const {loading,hasMore,list} = inject('list',()=>useList(''),true)
     justify-content: center;
     color: #999;
     font-size: 12px;
+    // padding: 20px 0;
+    // background-color: #fff;
 }
 </style>
