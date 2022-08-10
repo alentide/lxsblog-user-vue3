@@ -1,4 +1,4 @@
-import { reactive, ref, computed } from 'vue';
+import { reactive, ref, computed, type ComputedRef } from 'vue';
 import { useTouristRegisterForm } from './useTouristRegisterForm';
 import { useUserLoginForm } from './useUserLoginForm';
 import { useUserRegisterForm } from './useUserRegisterForm';
@@ -18,19 +18,58 @@ const enum AuthModalType {
     REGISTER
 }
 
-interface Auth {
+export  interface Auth {
     updateAuthByRes(res: any): void; prepareTouristAccount?: () => Promise<void>; notifyUsingTouristAccount?: () => void; user: any; token: any; isLogin?: any; setToken?: any; hasToken?: any; clearToken?: any; isTourist: any; isAdmin?: any; isUser?: any; logout?: any;
+}
+
+
+export interface LoginForm {
+    email: string;
+    password: string;
+}
+
+export interface RegisterForm {
+    email: string;
+    password: string;
+    code: string,
 }
 
 
 export const useAuthModal = (auth: Auth) => {
     const authModalType = ref(AuthModalType.LOGIN)
     const visible = ref(false)
-    const form = reactive({
-        email: '',
-        password: '',
+
+
+    const email = ref('')
+    const password = ref('')
+    const code = ref('')
+
+    const loginForm = reactive({
+        email,
+        password,
     })
 
+    const registerForm = reactive({
+        email,
+        password,
+        code,
+    })
+
+
+    const form:ComputedRef<LoginForm|RegisterForm> = computed(()=>{
+        if(authModalType.value===AuthModalType.LOGIN){
+            return loginForm
+        }else if(authModalType.value===AuthModalType.REGISTER){
+            return registerForm
+        }else {
+            return loginForm
+        }
+    })
+
+    function isRegister(form:LoginForm|RegisterForm):form is RegisterForm {
+        return authModalType.value===AuthModalType.REGISTER
+    }
+    
 
     //表单展示
     const showLogin = () => {
@@ -46,10 +85,10 @@ export const useAuthModal = (auth: Auth) => {
         visible.value = false
     }
 
-    const userLoginForm = useUserLoginForm(form)
+    const userLoginForm = useUserLoginForm(loginForm)
 
-    const touristRegisterForm = useTouristRegisterForm(form)
-    const userRegisterForm = useUserRegisterForm(form)
+    const touristRegisterForm = useTouristRegisterForm(registerForm)
+    const userRegisterForm = useUserRegisterForm(registerForm)
 
     const _getCurrentForm = () => {
         if (authModalType.value === AuthModalType.LOGIN) {
@@ -69,6 +108,7 @@ export const useAuthModal = (auth: Auth) => {
         hide()
     }
 
+
     return reactive({
         //共同内容
         visible,
@@ -82,5 +122,6 @@ export const useAuthModal = (auth: Auth) => {
         submit,
         submitBtnName,
         loading,
+        isRegister,
     })
 }

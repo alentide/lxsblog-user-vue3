@@ -4,6 +4,7 @@
       :model="form"
       name="nest-messages"
       :validate-messages="validateMessages"
+      :label-col="{ style: { width: '60px' } }"
       @finish="save"
     >
       <a-form-item name="email" label="邮箱" :rules="[{ required: true }]">

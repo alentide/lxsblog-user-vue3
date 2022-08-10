@@ -27,12 +27,16 @@ import { useRoute } from "vue-router";
 const route = useRoute()
 const selectedKeys: Ref<string[]> = ref([]);
 watch(
-  () => route.fullPath,
+  () => route.path,
   () => {
-    selectedKeys.value = [route.fullPath];
+    selectedKeys.value = [route.path];
+  },
+  {
+    immediate: true
   }
 );
 
+console.log('route.path',route.path);
 
 const menu = reactive([
     {

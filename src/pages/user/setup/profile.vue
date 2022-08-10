@@ -6,6 +6,7 @@
       name="nest-messages"
       :validate-messages="validateMessages"
       @finish="save"
+      :label-col="{ style: { width: '60px' } }"
     >
     <a-form-item name="avatar" label="头像" >
          <AvatarUploader 

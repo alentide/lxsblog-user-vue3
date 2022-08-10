@@ -31,7 +31,7 @@
           :width="300"
           v-model:collapsed="sider.collapsed"
         >
-          <a-affix :style="{ width: 'auto' }" :offset-top="88">
+          <a-affix :style="{ width: 'auto' }" :offset-top="74">
             <div class="sider-content-x">
               <a-page-header
                 class="back"

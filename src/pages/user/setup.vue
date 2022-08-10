@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="admin-page-x" style="background: #fff">
+  <a-layout class="admin-page-x" style="background: #fff;">
     <a-layout-sider width="200" style="background: #fff">
       <UserSiderNav />
     </a-layout-sider>
@@ -32,7 +32,7 @@ const { tabs, current, go, remove, currentIndex } = useAdminTabs();
 
 <style scoped lang="scss">
 .admin-content-x {
-  height: calc(100vh - 64px - 20px - 56px);
+  height: calc(100vh - var(--navHeight) - 20px - 56px);
 }
 
 ::v-deep(.ant-tabs-content-holder) {
@@ -43,7 +43,7 @@ const { tabs, current, go, remove, currentIndex } = useAdminTabs();
   position: fixed;
   left: 0;
   right: 0;
-  top: 64px;
+  top: var(--navHeight);
   bottom: 0;
 }
 

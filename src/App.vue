@@ -121,20 +121,24 @@ html {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-
+html {
+  --navHeight: 50px;
+}
 </style>
 <style scoped lang="scss">
+
+
 .page-x {
   min-height: 100vh;
-  padding-top: 64px;
+  padding-top: var(--navHeight);
 }
 
 .page-content-x{
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - var(--navHeight));
 }
 .view-x {
   // margin: 0 auto;
-  min-height: calc(100vh - 64px - 40px - 48px);
+  min-height: calc(100vh - var(--navHeight) - 40px - 48px);
 }
 
 .view {

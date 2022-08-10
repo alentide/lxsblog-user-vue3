@@ -9,7 +9,7 @@
 
       <template #overlay>
         <a-menu v-if="auth.isTourist">
-          <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="orange">游客</a-tag></div>
+          <div class="my10 w100p dpf jcc px10"><a-tag class="mr0" color="orange">游客</a-tag></div>
           <a-menu-item key="logout">
             <a href="javascript:;" @click="authModal.showLogin">登录其他账号</a>
           </a-menu-item>
@@ -32,7 +32,7 @@
           </a-menu-item>
         </a-menu>
         <a-menu v-else-if="auth.isUser">
-          <div class="my10 w100p dpf jcc "><a-tag class="mr0" color="green">普通会员</a-tag></div>
+          <div class="my10 w100p dpf jcc px10"><a-tag class="mr0" color="green">普通会员</a-tag></div>
           <a-menu-item key="register">
             <RouterLink to="/user/setup">设置</RouterLink>
           </a-menu-item>

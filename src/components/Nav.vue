@@ -1,20 +1,44 @@
 <template>
   <a-layout-header
-    :style="{ position: 'fixed', top: 0, zIndex: 100, width: '100%' }"
+    class="header"
+    :style="{
+      position: 'fixed',
+      top: 0,
+      zIndex: 100,
+      width: '100%',
+      background,
+      height: '50px',
+    }"
   >
-    <div class="dpf jcc">
+    <div class="">
       <a-row
-        style="max-width: 1000px;width: 100%;"
+        style="width: 100%"
         type="flex"
         justify="space-between"
         align="middle"
       >
-        <a-col>
+        <a-col
+          :xs="{
+            push: 1,
+          }"
+          :sm="{
+            push: 1,
+          }"
+          :md="{
+            push: 2,
+          }"
+          :lg="{
+            push: 2,
+          }"
+          :xl="{
+            push: 3,
+          }"
+        >
           <a-menu
             v-model:selectedKeys="selectedKeys"
-            theme="dark"
+            :theme="theme"
             mode="horizontal"
-            :style="{ lineHeight: '64px' }"
+            :style="{ lineHeight: '50px', background }"
             @click="clickMenu"
           >
             <a-menu-item key="/"
@@ -22,10 +46,26 @@
             /></a-menu-item>
             <!-- <a-menu-item key="1">首页</a-menu-item> -->
             <a-menu-item key="/user/article">文章</a-menu-item>
-            <a-menu-item key="/user/projects">项目</a-menu-item>
+            <!-- <a-menu-item key="/user/projects">项目</a-menu-item> -->
           </a-menu></a-col
         >
-        <a-col>
+        <a-col
+          :xs="{
+            pull: 1,
+          }"
+          :sm="{
+            pull: 1,
+          }"
+          :md="{
+            pull: 2,
+          }"
+          :lg="{
+            pull: 2,
+          }"
+          :xl="{
+            pull: 3,
+          }"
+        >
           <div class="nav-right dpf jcc aic">
             <a-button type="primary" shape="circle">
               <template #icon
@@ -54,6 +94,9 @@ import { useNav } from "@/modules/nav/useNav";
 import { ref, watch, type Ref } from "vue";
 import { useRoute } from "vue-router";
 
+const background = ref("#fff");
+
+const theme = ref('light')
 const nav = useNav();
 const clickMenu = ({ key }: { key: string }) => {
   nav.go(key);
@@ -62,14 +105,31 @@ const clickMenu = ({ key }: { key: string }) => {
 const route = useRoute();
 const selectedKeys: Ref<string[]> = ref([]);
 watch(
-  () => route.fullPath,
+  () => route.path,
   () => {
-    selectedKeys.value = [route.fullPath];
+    selectedKeys.value = [route.path];
+
+    if (
+      route.path.startsWith("/admin") ||
+      route.path.startsWith("/user/setup")
+    ) {
+      background.value = "#112437";
+      theme.value = 'dark'
+    } else {
+      background.value = "#fff";
+      theme.value = 'light'
+    }
+  },
+  {
+    immediate: true,
   }
 );
 </script>
 
 <style scoped lang="scss">
+.header {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+}
 .search-icon {
   color: #fff;
 }

@@ -5,6 +5,7 @@
       name="nest-messages"
       :validate-messages="validateMessages"
       @finish="save"
+      :label-col="{ style: { width: '60px' } }"
     >
       <a-form-item name="email" label="新邮箱" :rules="[{ required: true }]">
         <a-input v-model:value="form.email" />
