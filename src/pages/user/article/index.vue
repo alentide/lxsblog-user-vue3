@@ -10,7 +10,6 @@
           <div><h3>4</h3></div>
         </a-carousel> -->
 
-        <!-- <ArticleSearch /> -->
 
         <a-list
           class="articles-x"
@@ -85,7 +84,7 @@ import ListLoading from "@/components/list/ListLoading.vue";
 import { onReachBottom } from "@/modules/list/index.js";
 import { useUserGet } from "@/modules/http";
 import type { ArticleDfe } from "@/modules/article/article.interfaces";
-import ArticleSearch from "@/components/article/ArticleSearch.vue";
+
 
 import ArticleItem from "@/components/article/ArticleItem.vue";
 

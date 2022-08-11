@@ -83,14 +83,19 @@ export class Http {
         }).then((res: { data: any }) => res.data)
     }
 }
+
+
+
 export const commonHttp = new Http({
-    baseURL: 'http://192.168.123.226:3000/api/v1/common'
+    baseURL: import.meta.env.VITE_BASE_URL+'/v1/common'
 })
+
 export const userHttp = new Http({
-    baseURL: 'http://192.168.123.226:3000/api/v1/user'
+    baseURL: import.meta.env.VITE_BASE_URL+'/v1/user'
 })
+
 export const adminHttp = new Http({
-    baseURL: 'http://192.168.123.226:3000/api/v1/admin'
+    baseURL: import.meta.env.VITE_BASE_URL+'/v1/admin'
 })
 
 

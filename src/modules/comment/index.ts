@@ -6,7 +6,7 @@ export * from './useCommentForm'
 export * from './useArticleCommentList'
 export * from './dto/CommentDto'
 
-export const useUserCommentForm = (id:number,afterSubmit?: CommentFormOption['afterSubmit']) => useCommentForm({
+export const useUserCommentForm = (id:number,afterSubmit: CommentFormOption['afterSubmit']=(res)=>res) => useCommentForm({
     submitRequest: postCommentRequest(id),
     afterSubmit,
 })

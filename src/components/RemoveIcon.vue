@@ -13,7 +13,7 @@ import { toRefs } from "vue";
 import { string } from "vue-types";
 const props = defineProps({
   remove: {
-    default: async () => {},
+    default: async (res:any) => res,
   },
   /**
    * icon,link,primary

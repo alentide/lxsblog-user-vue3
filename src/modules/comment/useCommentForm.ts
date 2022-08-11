@@ -1,17 +1,19 @@
+import type { ProjectResponse } from './../http/http.interfaces';
 import { reactive, ref } from "vue"
+import type { CommentDto } from './dto/CommentDto';
 
 
 export interface CommentFormOption {
-    submitRequest?: (content: string) => Promise<unknown>
-    afterSubmit?: (...args: unknown[]) => unknown
+    submitRequest?: (content: string) => Promise<ProjectResponse<CommentDto>>
+    afterSubmit (res:ProjectResponse<CommentDto>):any
 }
 
 export const defaultCommentFormOption = () => ({
-    submitRequest: async (content: string) => { },
-    afterSubmit: () => { }
+    submitRequest: async (content: string) => ({code: 1,data: null,msg:'未发出请求'}),
+    afterSubmit: (res: any) => res
 })
 
-export const useCommentForm = (commentFormOption: CommentFormOption={}) => {
+export const useCommentForm = (commentFormOption: CommentFormOption) => {
     const {
         submitRequest,
         afterSubmit,

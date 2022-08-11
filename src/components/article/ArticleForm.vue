@@ -44,7 +44,7 @@
       >
         <ImageUploader
           style="width: 100%; height: 100px"
-          v-model="(form.coverImage as null)"
+          v-model="form.coverImage "
         />
       </a-form-item>
 

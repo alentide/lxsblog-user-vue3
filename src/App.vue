@@ -34,7 +34,10 @@
           >
             <div :style="{ paddingTop: '24px' }">
               <RouterView class="view" v-slot="{ Component }">
-                <KeepAlive exclude="ArticleDetail"  v-if="!$route.path.startsWith('/admin')">
+                <KeepAlive
+                  exclude="ArticleDetail"
+                  v-if="!$route.path.startsWith('/admin')"
+                >
                   <component :is="Component" />
                 </KeepAlive>
                 <component v-else :is="Component" />
@@ -43,7 +46,7 @@
           </a-col>
         </a-row>
       </a-layout-content>
-      <a-layout-footer :style="{ textAlign: 'center', }" v-if="footerVisible">
+      <a-layout-footer :style="{ textAlign: 'center' }" v-if="footerVisible">
         <Footer />
       </a-layout-footer>
     </a-layout>
@@ -51,19 +54,19 @@
 </template>
 
 <script setup lang="ts">
-
 import Nav from "./components/Nav.vue";
 import BreadCrumb from "./components/BreadCrumb.vue";
 import Footer from "@/components/Footer.vue";
 import { useRoute } from "vue-router";
-import { onMounted, ref, watch } from "vue";
+import { onErrorCaptured, onMounted, ref, watch } from "vue";
 
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { auth } from "./modules/auth";
 
+import useToast from "@/modules/toast/useToast";
+
 const footerVisible = ref(true);
 const route = useRoute();
-
 
 watch(
   () => route.fullPath,
@@ -88,11 +91,16 @@ onMounted(() => {
     }
   }
 });
+
+const toast = useToast();
+onErrorCaptured((err: any) => {
+  if (err.needTip) {
+    toast.error(err.msg);
+  }
+});
 </script>
 
 <style>
-
-
 html {
   overflow-x: hidden;
   background-color: #f0f2f5;
@@ -126,14 +134,12 @@ html {
 }
 </style>
 <style scoped lang="scss">
-
-
 .page-x {
   min-height: 100vh;
   padding-top: var(--navHeight);
 }
 
-.page-content-x{
+.page-content-x {
   min-height: calc(100vh - var(--navHeight));
 }
 .view-x {

@@ -1,15 +1,18 @@
+import type { TagDto } from "../tag/dto/TagDto";
+
 export interface CreateArticleDto {
     title: string;
     summary: string;
     content: string;
-    coverImage: {
+    coverImage?: {
         id: number
         src: string
-    } | null
-    category: {
+    }
+    category?: {
         id:number
         name: string
-    }|null
+    }
+    tags: TagDto[]
 }
 
 export type UpdateArticleDto = CreateArticleDto & {

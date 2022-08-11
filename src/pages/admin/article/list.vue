@@ -37,8 +37,9 @@
       </a-popconfirm>
     </div>
 
+ <!-- @resizeColumn="handleResizeColumn" -->
     <a-table
-      @resizeColumn="handleResizeColumn"
+     
       :scroll="{ x: 0 }"
       size="small"
       :pagination="pagination"
@@ -82,7 +83,7 @@
             :checkedValue="ArticleReleaseStatus.RELEASED"
             :unCheckedValue="ArticleReleaseStatus.OFF_SHELF"
             v-model:checked="record.releaseStatus"
-            @change="(e) => onChangeArticleReleaseStatus(record.id, e)"
+            @change="(e:ArticleReleaseStatus) => onChangeArticleReleaseStatus(record.id, e)"
           />
         </template>
         <template v-else-if="['category'].includes(column.dataIndex)">
@@ -122,9 +123,9 @@ const go = (record: ArticleDfe) => {
   adminTabs.go("/admin/article/edit/" + record.id, record.title);
 };
 
-const handleResizeColumn = (w, col) => {
-  col.width = w;
-};
+// const handleResizeColumn = (w, col) => {
+//   col.width = w;
+// };
 
 const {
   currentList,

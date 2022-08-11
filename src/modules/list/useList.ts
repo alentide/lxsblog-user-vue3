@@ -8,18 +8,18 @@ import { identity } from 'ramda';
 
 interface UseListOption<T,R> {
     http: Http,
-    transform(data:T): (T|R)
+    transform(data:T): (R)
 }
 
-function defaultUseListOption<T>() {
+function defaultUseListOption() {
     return {
         http: adminHttp,
-        transform: identity<T>
+        transform: identity
     }
 }
 
 export function useList<T,R>(url: string,originOption:Partial<UseListOption<T,R>> ={}) {
-    const options = mergeLeft(originOption,defaultUseListOption<R>())
+    const options = mergeLeft(originOption,defaultUseListOption())
     const {http,transform} = options
 
     const list: Ref<T[]> = ref([])
@@ -41,6 +41,7 @@ export function useList<T,R>(url: string,originOption:Partial<UseListOption<T,R>
         });
         const data = {
             ..._data,
+            // @ts-ignore
             list: _data.list.map(transform)
         };
         ({ hasMore: hasMore.value, total: total.value } = data);
@@ -56,6 +57,7 @@ export function useList<T,R>(url: string,originOption:Partial<UseListOption<T,R>
         page.value = defaultPage()
         try {
             const data = await _request()
+            // @ts-ignore
             list.value = data.list
             return data.list
         } finally {
@@ -75,6 +77,7 @@ export function useList<T,R>(url: string,originOption:Partial<UseListOption<T,R>
         page.value.num++
         try {
             const data = await _request()
+            // @ts-ignore
             list.value.push(...data.list)
             return data.list
         } finally {

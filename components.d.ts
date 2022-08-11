@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     AButtonGroup: typeof import('ant-design-vue/es')['ButtonGroup']
     ACard: typeof import('ant-design-vue/es')['Card']
     ACheckableTag: typeof import('ant-design-vue/es')['CheckableTag']
+    ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
     ACol: typeof import('ant-design-vue/es')['Col']
     AComment: typeof import('ant-design-vue/es')['Comment']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']

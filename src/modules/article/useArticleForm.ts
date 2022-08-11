@@ -31,10 +31,10 @@ const cacheArticleForm = (form: Ref<CreateArticleDto>) => {
 const emptyArticleForm = () => ({
     title: '',
     summary: '',
-    coverImage: null,
+    coverImage: undefined,
     content: '',
-    category: null,
-    tags: null,
+    category: undefined,
+    tags: [],
 })
 
 /**

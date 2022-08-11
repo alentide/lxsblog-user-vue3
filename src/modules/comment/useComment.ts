@@ -1,12 +1,8 @@
 import { reactive, ref, type Ref } from "vue"
+import type { CommentDto } from "./dto/CommentDto"
 
 
-export interface CommentDto {
-    id: number
-    content: string
-    user: CommentUser
-    createTime: string
-}
+export * from './dto/CommentDto'
 
 
 export interface CommentUser {

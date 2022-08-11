@@ -54,36 +54,76 @@ const randomFileName = (file: File) => nanoid() + extname(file)
 export interface ProjectImage {
     id: number;
     src: string;
-    createTime:string;
-    updateTime:string;
+    // createTime: string;
+    // updateTime: string;
 }
-export const emptyImage:()=>ProjectImage =()=>({
+export const emptyImage: () => ProjectImage = () => ({
     id: 0,
     src: '',
     createTime: '',
     updateTime: '',
 })
 
-export const upload = async (file: File)=>{
+export const upload = async (file: File) => {
     const token = await getToken()
     const uploader = getUploader(token)
     const newFileName = randomFileName(file)
     const res = await uploader.put(newFileName, file);
-    return await adminHttp.post<ProjectImage>('/images',{
+    return await adminHttp.post<ProjectImage>('/images', {
         src: res.url
     })
 }
+
+function getBase64(img: Blob) {
+    const reader = new FileReader();
+    return new Promise((resolve: (url: string) => void, reject) => {
+      reader.readAsDataURL(img);
+      reader.addEventListener("load", () => resolve(reader.result as string));
+    });
+  }
+
+  
 export const useImageUploader = () => {
     const loading = ref(false)
-    const image:Ref<ProjectImage|null> = ref(null)
+    const image: Ref<ProjectImage | null> = ref(null)
+
+    
+
+
+    async function  compress(file: File): Promise<Blob> {
+        const  img = new Image();
+        img.src = await getBase64(file)
+
+        const dom = document.createElement('canvas')
+        
+        const context = dom.getContext('2d') as CanvasRenderingContext2D
+        const canvas = context.canvas
+        const {width,height} = await getImageSize(img)
+        context.drawImage(img, 0, 0, width, height);
+        return new Promise((resolve,reject)=>{
+            canvas.toBlob((blob)=>{
+                resolve(blob as Blob)
+            }, file.type,)
+        })
+    }
+
+    const KB = 1024
+    const MB = 1024 * KB
     const upload = async (file: File) => {
+        if(file.size>2* MB){
+            throw  {
+                needTip: true,
+                msg: '文件大小不能大于2Mb'
+            }
+        }
+        // const blob = await compress(file)
         loading.value = true
         try {
             const token = await getToken()
             const uploader = getUploader(token)
             const newFileName = randomFileName(file)
             const res = await uploader.put(newFileName, file);
-            ({data:image.value} = await adminHttp.post<ProjectImage>('/images',{
+            ({ data: image.value } = await adminHttp.post<ProjectImage>('/images', {
                 src: res.url
             }));
             return {
@@ -102,3 +142,17 @@ export const useImageUploader = () => {
         emptyImage,
     }
 }
+
+
+
+function getImageSize(img: HTMLImageElement): { width: any; height: any } | PromiseLike<{ width: any; height: any }> {
+    return new Promise((resolve,reject)=>{
+        img.onload=function(this:any){
+            resolve({
+                width: this.width,
+                height: this.height,
+            })
+        }
+    })
+}
+

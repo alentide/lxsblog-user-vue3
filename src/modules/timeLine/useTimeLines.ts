@@ -8,7 +8,7 @@ import { useList } from '../list';
 
 
 export default () => {
-    const {list,refresh,nextPage} = useList<TimeLine>('/time-lines')
+    const {list,refresh,nextPage} = useList<TimeLine,any>('/time-lines')
     async function add(item: TimeLine) {
 
         /**

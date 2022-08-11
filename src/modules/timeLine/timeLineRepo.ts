@@ -14,7 +14,7 @@ export async function update(createTimeLineItems: CreateTimeLineDto) {
 }
 
 export async function get(id:number) {
-    return adminHttp.get('/time-lines',{id}).then((res: { data: TimeLine }) => res.data)
+    return adminHttp.get<TimeLine>('/time-lines',{id}).then((res: { data: TimeLine }) => res.data)
 }
 
 export default {

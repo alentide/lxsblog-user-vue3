@@ -55,7 +55,7 @@ watch(
   () => props.modelValue,
   (newVal) => {
     if (!newVal && image.value) {
-      emit("update:modelValue", image?.value?.src);
+      emit("update:modelValue", image?.value?.src || '');
       return;
     }
     if(!image.value){
@@ -94,6 +94,7 @@ watch(
 
 const file: Ref<File> = ref(emptyFile);
 
+
 const remove = () => {
   file.value = emptyFile;
   base64Url.value = "";
@@ -106,7 +107,11 @@ const onChangeFile = async (e: any) => {
   file.value = files[0];
   loading.value = true;
   base64Url.value = await getBase64(file.value);
-  await upload(file.value);
+  await upload(file.value).catch(async (err)=>{
+    file.value = emptyFile
+    base64Url.value = '';
+    throw err
+  });
 };
 
 
@@ -131,7 +136,12 @@ const onPasteImage = async () => {
   file.value = new File([blob], randomFileName(blob.type));
   loading.value = true;
   base64Url.value = await getBase64(file.value);
-  await upload(file.value);
+  await upload(file.value).catch(async (err)=>{
+
+    file.value = emptyFile
+    base64Url.value = '';
+    throw err
+  });
   // const files = e.clipboardData.files || []
   // file.value = files[0];
   // loading.value=true

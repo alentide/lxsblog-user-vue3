@@ -33,11 +33,7 @@
         >
           <a-affix :style="{ width: 'auto' }" :offset-top="74">
             <div class="sider-content-x">
-              <a-page-header
-                class="back"
-                title="返回"
-                @back="$router.back"
-              />
+              <a-page-header class="back" title="返回" @back="$router.back" />
               <a-anchor>
                 <CatalogueList :catalogueList="catalogueList" />
               </a-anchor>
@@ -93,7 +89,15 @@ export default {
 <script setup lang="ts">
 import Markdown from "vue3-markdown-it";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons-vue";
-import { nextTick, onMounted, ref, reactive, onActivated, provide } from "vue";
+import {
+  nextTick,
+  onMounted,
+  ref,
+  reactive,
+  onActivated,
+  provide,
+  type Ref,
+} from "vue";
 import Loading from "@/components/feedback/Loading.vue";
 
 import Comments from "./components/Comments.vue";
@@ -106,6 +110,19 @@ import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { addArticleViewNum, useArticle } from "@/modules/article";
 import { useRoute } from "vue-router";
+
+interface Link {
+  href: string;
+  title: string;
+  level: 1 | 2 | 3 | 4;
+  parent?: Link;
+  children?: Link[];
+}
+
+interface Catalogue {
+  text: string;
+  level: 1 | 2 | 3 | 4;
+}
 
 const placement = ref<DrawerProps["placement"]>("right");
 const visible = ref<boolean>(false);
@@ -133,8 +150,8 @@ const refresh = () => {
     id: string | undefined;
   };
   if (!id) return;
-  article.initAsync(id);
-  addArticleViewNum(id);
+  article.initAsync(+id);
+  addArticleViewNum(+id);
 };
 
 // onActivated(refresh);
@@ -143,7 +160,7 @@ onMounted(refresh);
 //生成文章目录
 // md-content
 
-const catalogueList = ref([]);
+const catalogueList: Ref<Link[]> = ref([]);
 
 class CatalogueItem {
   name = "";
@@ -160,10 +177,10 @@ onMounted(() => {
   };
 });
 
-let links = [];
+let links: Link[] = [];
 let lastLink = () => links.slice(-1)[0];
-const onGetCatalog = (e) => {
-  const parentAddItem = (link) => {
+const onGetCatalog = (e: Catalogue[]) => {
+  const parentAddItem = (link: Link) => {
     const parent = link.parent;
     if (!parent) return;
     if (!parent.children) {
@@ -172,9 +189,13 @@ const onGetCatalog = (e) => {
     parent.children.push(link);
   };
 
-  e = e.map((m) => ({ href: "#" + m.text, title: m.text, level: m.level }));
+  const e2: Link[] = e.map((m) => ({
+    href: "#" + m.text,
+    title: m.text,
+    level: m.level,
+  }));
   links = [];
-  e.forEach((link) => {
+  e2.forEach((link) => {
     if (!lastLink()) {
       links.push(link);
     } else {

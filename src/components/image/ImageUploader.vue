@@ -44,7 +44,7 @@ import { CameraOutlined, CloseCircleFilled } from "@ant-design/icons-vue";
 import { ref, watch, type Ref } from "vue";
 
 const props = defineProps<{
-  modelValue: ProjectImage | null;
+  modelValue: ProjectImage | undefined;
 }>();
 const emit = defineEmits(["update:modelValue"]);
 
@@ -57,7 +57,7 @@ watch(
       emit("update:modelValue", image.value);
       return;
     }
-    image.value = newVal;
+    image.value = newVal || null;
   },
   {
     immediate: true,

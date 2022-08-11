@@ -23,7 +23,7 @@ export const mergeOptions = (page: Ref<{
 
 
 
-export function usePageList<T>(url: string, {
+export function usePageList<T extends {id:number}>(url: string, {
     http,
 }: {
     http: Http

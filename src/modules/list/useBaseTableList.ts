@@ -59,7 +59,7 @@ export interface CustomFilter {
     /**
      * 用于存储所有选项的数组。不需要主动设定，内部自己添加该字段。
      */
-    refOptions?: Ref<unknown[]>
+    refOptions?: Ref<any[]>
 }
 
 export interface Pagination {
@@ -136,11 +136,14 @@ const keyRevertToPrevious = (key: string) => {
     }[key] || key
 }
 
-const getRelationFieldSortOption = (sorter: Sorter) => ({
-    [keyRevertToPrevious(sorter.field)]: {
-        [sorter.column?.sortKey]: transformOrderTypeToEndInSorter(sorter).order
+const getRelationFieldSortOption = (sorter: Sorter) => {
+    if(!sorter.column?.sortKey) return
+    return {
+        [keyRevertToPrevious(sorter.field)]: {
+            [sorter.column?.sortKey]: transformOrderTypeToEndInSorter(sorter).order
+        }
     }
-})
+}
 
 const getOwnFieldSortOption = (sorter: Sorter) => ({
     [keyRevertToPrevious(sorter.field)]: transformOrderTypeToEndInSorter(sorter).order
@@ -203,7 +206,7 @@ const getColumnFilterField = (column: Column | undefined) => {
  * @returns 
  */
 const getColumnFilterValue = (type: FilterType | undefined, value: unknown) => {
-    if (Array.isArray(value) && [FilterType.SINGLE_LIKE, FilterType.SINGLE_EQUAL].includes(type)) {
+    if (Array.isArray(value) &&type&& [FilterType.SINGLE_LIKE, FilterType.SINGLE_EQUAL].includes(type)) {
         return value[0]
     }
     return value
@@ -253,8 +256,11 @@ const initListConfig = (config: ListConfig) => {
 
             if (m?.filter?.refOptions) return {
                 ...m,
+                
                 filters: m.filter.refOptions.value.map((m1) => ({
+                    // @ts-ignore
                     value: m1[m.filter.value],
+                    // @ts-ignore
                     text: m1[m.filter.text]
                 }))
             }
@@ -333,7 +339,7 @@ export function useBaseTableList<T extends { id: number }>(url: string, config: 
      */
     const onTableChange = ({ current }: Pagination, filter: FiltersValues, sorter: Sorter) => {
         filterOption = onChangeFilter(filter, columns.value)
-        sortOption = onChangeSorter(sorter)
+        sortOption = onChangeSorter(sorter) || {}
         return baseTableList.goPageNum(current,requestExtraOptions());
     };
 

@@ -1,7 +1,8 @@
-
+/// <reference types="vite-plugin-pages/client" />
 // import Home from '@/views/home/index.vue'
 import useAdminTabs from '@/modules/adminTabs/useAdminTabs'
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
+
 import routes from '~pages'
 import useToast from '@/modules/toast/useToast';
 import { auth } from '@/modules/auth';

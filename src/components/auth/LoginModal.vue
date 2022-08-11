@@ -40,8 +40,13 @@
         name="password"
         :rules="[{ required: true, message: '密码为8到16位', min: 8, max: 16 }]"
       >
-        <a-input-password v-model:value="authModal.form.password" />
+        <a-input-password :autocomplete="remember?'on':'off'" v-model:value="authModal.form.password" />
       </a-form-item>
+      <a-form-item
+      >
+      <a-checkbox v-model:checked="remember">记住我</a-checkbox>
+      </a-form-item>
+
 
       <a-form-item>
         <a-button
@@ -57,6 +62,9 @@
 
 <script setup lang="ts">
 import { authModal } from "@/modules/auth";
+import { ref } from "vue";
+
+const remember = ref(false)
 </script>
 
 <style scoped lang="scss"></style>

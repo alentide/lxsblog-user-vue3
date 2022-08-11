@@ -10,7 +10,7 @@ import { defaultPage, mergeOptions } from "./usePageList";
 
 
 
-export function usePageList2<T>(url: string, {
+export function usePageList2<T extends {id:number}>(url: string, {
     http,
     config,
 }: {
@@ -20,7 +20,8 @@ export function usePageList2<T>(url: string, {
         config: reactive({}),
         http: adminHttp
     }) {
-    http = http || adminHttp
+    const _http  = http || adminHttp 
+    
     config = config || reactive({})
     const list: Ref<T[][]> = ref([]);
     const page = ref(defaultPage());
@@ -45,7 +46,7 @@ export function usePageList2<T>(url: string, {
     const request = async (options?: any) => {
         try {
             loading.value = true
-            return await http.get<ListResponseData<T>>(url, mergeOptions(page, { options, ...config })).then(res => res.data)
+            return await _http.get<ListResponseData<T>>(url, mergeOptions(page, { options, ...config })).then(res => res.data)
         } finally {
             loading.value = false
         }

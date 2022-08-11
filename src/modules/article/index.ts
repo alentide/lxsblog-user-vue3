@@ -1,20 +1,20 @@
+
 import { useList, usePageList } from '@/modules/list';
 import { reactive, ref, toRefs, type Ref } from 'vue';
 import { userHttp } from '../http';
 import { useBaseList } from '../list/useBaseList';
 import { loadingMethod } from '../loading';
+import type { TagDto } from '../tag/dto/TagDto';
 import type { ArticleDfe } from './article.interfaces';
+import type { UserListItemArticleDto } from './dto/ArticleDto';
 
 
-export * from './useArticleSearch'
+// export * from './useArticleSearch'
 
 
 
-const useArticleScore = (article) => {
+const useArticleScore = (article:UserListItemArticleDto) => {
 
-    const scoreUserNum = ref(article.scoreUserNum)
-    const averageScore = ref(article.averageScore)
-    const currentUserScore = ref(article.currentUserScore)
 
     const giveScoreLoading = ref(false)
 
@@ -23,7 +23,11 @@ const useArticleScore = (article) => {
         if (giveScoreLoading.value) return Promise.reject('打分中')
         giveScoreLoading.value = true
         try {
-            const res = await userHttp.post('article-scores/score', {
+            const res = await userHttp.post<{
+                scoreUserNum:number
+                averageScore:number
+                currentUserScore:number
+            }>('article-scores/score', {
                 articleId: article.id,
                 score,
             })
@@ -52,15 +56,15 @@ interface CreateArticleDto {
 }
 
 export const useArticle = (article={}) => {
-    
+    const emptyTags:TagDto[] = []
     const state = reactive({
-        id: '',
+        id: 0,
         title: '',
         summary: '',
         content: '',
         scoreUserNum: 0,
         averageScore: 0,
-        tags: [],
+        tags: emptyTags,
         category: {
             id: 0,
             name: ''
@@ -69,7 +73,8 @@ export const useArticle = (article={}) => {
             id: 0,
             src: ''
         },
-        currentUserScore: '',
+        firstReleaseTime: '',
+        currentUserScore: 0,
         viewNum: 0,
         commentNum: 0,
     })

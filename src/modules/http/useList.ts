@@ -56,7 +56,7 @@ const defaultOptions = {
 }
 export function usePageList<T extends {id:number} >(url: string,listOptions={}) {
     listOptions = Object.assign(listOptions,defaultOptions)
-    function useListRequest<T>(url: string) {
+    function useListRequest<T extends {id:number}>(url: string) {
         const page = ref(defaultPage())
         const request = async (options:any={}) => {
             const { data } = await adminHttp.get<ListResponseData<T>>(url, {

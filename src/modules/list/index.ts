@@ -9,7 +9,7 @@ export * from './usePageList2'
 
 export const onReachBottom = (callback: (...args: any[]) => any,el:Ref<HTMLElement|null>  =ref(document.documentElement)) => {
     
-    const handler = (e) => {
+    const handler = () => {
         if(!el.value) return
         if (
             el.value.scrollHeight -
