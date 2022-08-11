@@ -4,14 +4,14 @@
       :placeholder="`搜索${column.title}`"
       :value="selectedKeys[0]"
       style="width: 188px; margin-bottom: 8px; display: block"
-      @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
-      @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
+      @change="(e:any) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+      @pressEnter="handleSearch()"
     />
     <a-button
       type="primary"
       size="small"
       style="width: 90px; margin-right: 8px"
-      @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+      @click="handleSearch()"
     >
       <template #icon><SearchOutlined /></template>
       搜索
@@ -58,7 +58,7 @@ const props = defineProps({
     default: {},
   },
 });
-const selectedKeys = toRef(props, "selectedKeys");
+const selectedKeys:any = toRef(props, "selectedKeys");
 const column = toRef(props, "column");
 const { confirm, clearFilters } = props;
 
@@ -73,7 +73,7 @@ const handleSearch = () => {
   // state.searchedColumn = dataIndex;
 };
 
-const handleReset = (clearFilters) => {
+const handleReset = (clearFilters:any) => {
   clearFilters({ confirm: true });
   state.searchText = "";
 };

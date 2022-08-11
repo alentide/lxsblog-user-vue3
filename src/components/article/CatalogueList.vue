@@ -7,12 +7,9 @@
 
 <script setup lang="ts">
 import {toRefs} from 'vue'
-const props = defineProps({
-    catalogueList: {
-      type: Array,
-      default: ()=>[]
-    }
-})
+const props = defineProps<{
+  catalogueList:any
+}>()
 const {catalogueList} = toRefs(props)
 </script>
 

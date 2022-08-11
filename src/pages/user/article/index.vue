@@ -16,14 +16,14 @@
           class="articles-x"
           item-layout="vertical"
           size="default"
-          :data-source="list"
+          :data-source="homeArticleList.list"
           :loading="loading"
         >
           <template #renderItem="{ item }">
             <ArticleItem :article="item" />
           </template>
           <template #footer>
-            <ListLoading v-if="homeArticleList.list.value.length" />
+            <ListLoading v-if="homeArticleList.list.length" />
           </template>
         </a-list>
       </a-layout-content>
@@ -40,7 +40,7 @@
           <a-card title="最高阅读" :bordered="false" class="mb10">
             <RouterLink
               class="article-link"
-              :to="'article/' + article.id"
+              :to="'/user/article/' + article.id"
               v-for="article in highestViewNumArticleList.data"
             >
               <a-typography-paragraph
@@ -51,8 +51,8 @@
           <a-card title="最高评分" :bordered="false" class="mb10">
             <RouterLink
               class="article-link"
-              :to="'article/' + article.id"
-              v-for="article in highestViewNumArticleList.data"
+              :to="'/user/article/' + article.id"
+              v-for="article in highestScoreArticleList.data"
             >
               <a-typography-paragraph
                 :ellipsis="{ row: 1, tooltip: article.title }"
@@ -62,8 +62,8 @@
           <a-card title="最多评论" :bordered="false" class="mb10">
             <RouterLink
               class="article-link"
-              :to="'article/' + article.id"
-              v-for="article in highestViewNumArticleList.data"
+              :to="'/user/article/' + article.id"
+              v-for="article in hightestCommentNumArticleList.data"
             >
               <a-typography-paragraph
                 :ellipsis="{ row: 1, tooltip: article.title }"
@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { getHomeArticleList } from "@/modules/article/index.js";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons-vue";
-import { onMounted, ref, type Ref, reactive } from "vue";
+import { onMounted, ref, type Ref, reactive, toRefs } from "vue";
 import ListLoading from "@/components/list/ListLoading.vue";
 import { onReachBottom } from "@/modules/list/index.js";
 import { useUserGet } from "@/modules/http";
@@ -90,10 +90,10 @@ import ArticleSearch from "@/components/article/ArticleSearch.vue";
 import ArticleItem from "@/components/article/ArticleItem.vue";
 
 const homeArticleList = getHomeArticleList();
-const { list, loading, nextPage } = homeArticleList;
+const { list, loading } = toRefs(homeArticleList);
 
 onMounted(homeArticleList.refresh);
-onReachBottom(nextPage);
+onReachBottom(homeArticleList.nextPage);
 
 const sider = reactive({
   collapsed: false,

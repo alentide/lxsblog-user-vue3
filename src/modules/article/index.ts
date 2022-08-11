@@ -1,6 +1,7 @@
 import { useList, usePageList } from '@/modules/list';
 import { reactive, ref, toRefs, type Ref } from 'vue';
 import { userHttp } from '../http';
+import { useBaseList } from '../list/useBaseList';
 import { loadingMethod } from '../loading';
 import type { ArticleDfe } from './article.interfaces';
 
@@ -94,10 +95,11 @@ export const useArticle = (article={}) => {
 }
 
 export function getHomeArticleList() {
-    return useList('/articles/home', {
-        http: userHttp,
-        transform:useArticle
-    })
+    return useBaseList(userHttp,'/articles/home')
+    // return useList('/articles/home', {
+    //     http: userHttp,
+    //     transform:useArticle
+    // })
 }
 
 

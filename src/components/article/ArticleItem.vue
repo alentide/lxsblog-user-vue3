@@ -1,5 +1,5 @@
 <template>
-  <a-list-item :key="article.id" style="position: relative">
+  <a-list-item  style="position: relative">
     <template #actions>
       <span><EyeOutlined class="mr3" />{{ article.viewNum }}</span>
       <span><MessageOutlined class="mr3" />{{ article.commentNum }}</span>
@@ -16,7 +16,7 @@
     </template>
     <a-list-item-meta :description="article.summary">
       <template #title>
-        <RouterLink :to="'article/' + article.id">{{ article.title }}</RouterLink>
+        <RouterLink :to="'/user/article/' + article.id">{{ article.title }}</RouterLink>
       </template>
     </a-list-item-meta>
 
@@ -42,21 +42,21 @@
 <script setup lang="ts">
 import type { useArticle } from "@/modules/article";
 import {
-  StarOutlined,
-  LikeOutlined,
   EyeOutlined,
   MessageOutlined,
 } from "@ant-design/icons-vue";
 
 
-import { toRefs,reactive } from "vue";
+import { toRefs,toRef,reactive, computed } from "vue";
 
 const props = defineProps<{
   article: ReturnType<typeof useArticle>;
 }>();
 
-const { article:articleRef } = toRefs(props);
-const article = reactive(articleRef)
+// const articleRef = toRef(props,'article');
+// const article = reactive(articleRef)
+
+const article = toRef(props,'article')
 </script>
 
 <style scoped lang="scss">

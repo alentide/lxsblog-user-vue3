@@ -84,13 +84,13 @@ export class Http {
     }
 }
 export const commonHttp = new Http({
-    baseURL: 'http://localhost:3000/api/v1/common'
+    baseURL: 'http://192.168.123.226:3000/api/v1/common'
 })
 export const userHttp = new Http({
-    baseURL: 'http://localhost:3000/api/v1/user'
+    baseURL: 'http://192.168.123.226:3000/api/v1/user'
 })
 export const adminHttp = new Http({
-    baseURL: 'http://localhost:3000/api/v1/admin'
+    baseURL: 'http://192.168.123.226:3000/api/v1/admin'
 })
 
 

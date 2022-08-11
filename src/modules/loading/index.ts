@@ -7,14 +7,18 @@ interface AsyncFunction {
 
 
 
-export const loadingMethod = (method: AsyncFunction)=>{
+export function loadingMethod<P,R>(method: (...args:P[])=>R) {
     const loading = ref(false)
-    
-    const decoratedMethod = (...args:unknown[])=>{
-        loading.value=true
-        return method(...args).finally(()=>loading.value=false)
+
+    async function decoratedMethod(...args: P[]) {
+        loading.value = true
+        try {
+            return await method(...args)
+        } finally {
+            loading.value = false
+        }
     }
-    
+
     return [
         loading,
         decoratedMethod,
