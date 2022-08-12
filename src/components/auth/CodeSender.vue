@@ -13,7 +13,17 @@ import { loadingMethod } from "@/modules/loading";
 import { loadingHoc } from "@/modules/loading/loadingHoc";
 import { useStorage } from "@vueuse/core";
 import { time } from "console";
-import { computed, reactive, ref, toRef } from "vue";
+import { resolve } from "path";
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  toRef,
+  watch,
+watchEffect,
+} from "vue";
 const props = defineProps<{
   email: string;
 }>();
@@ -30,9 +40,9 @@ const genSendCode = (sendCoder: {
   toSendErrorState: () => void;
 }) => {
   return () => {
-    //用于测试的代码，避免真的发邮件。
-    // sendCoder.toSendingState()
-    // return Promise.resolve()
+    // // 用于测试的代码，避免真的发邮件。
+    // sendCoder.toSendingState();
+    // return Promise.resolve();
 
     return commonHttp
       .post("email-code/send", {
@@ -52,41 +62,52 @@ type StateNeed = {
   loading: boolean;
 };
 
-const useCountDown = (key:string,length: number) => {
+const useCountDown = (key: string, length: number) => {
   let change: (time: number) => any = () => {};
   let end = () => {};
-  const timeId = useStorage(key,0)
-  const start = useStorage(key+'_start',length);
 
+  const startTime = useStorage(key + "_start_time", ref(0));
+  const endTime = useStorage(key + "_end_time", 0);
+  const timeId = useStorage(key + "_time_id", 0);
+  const currentSecond = computed(() =>
+    parseInt((endTime.value - startTime.value) / 1000 + "")
+  );
+  const isDone = computed(() => endTime.value <= startTime.value);
   const stop = () => {
     clearInterval(timeId.value);
     timeId.value = 0;
-    start.value = length
   };
-  const run = () => {
+
+  const run = async () => {
     if (timeId.value) {
-      stop() 
+      stop();
     }
 
+    if (isDone.value) {
+      startTime.value = Date.now();
+      endTime.value = Date.now() + length * 1000;
+    }
     timeId.value = window.setInterval(() => {
-      start.value = start.value-1;
-      if (start.value <= 0) {
+      startTime.value = startTime.value + 1000;
+      if (isDone.value) {
         stop();
         end();
       } else {
-        change(start.value);
+        change(currentSecond.value);
       }
     }, 1000);
   };
-  const onChange = (fn: (time:number) => void) => (change = fn);
+
+  const onChange = (fn: (time: number) => void) => (change = fn);
   const onEnd = (fn: () => void) => (end = fn);
   return reactive({
     onChange,
     onEnd,
     run,
     stop,
-    timeId,
-  })
+    isDone,
+    currentSecond,
+  });
 };
 
 const useCodeSender = () => {
@@ -101,13 +122,12 @@ const useCodeSender = () => {
     _state.value = CodeSenderState.Again;
   };
 
-
   /**
    * 同一时间验证码只能发送一次。
    */
-  const countDown =  useCountDown('code_count_down',60)
-  if(countDown.timeId){
-    toSendingState()
+  const countDown = useCountDown("code_count_down", 60);
+  if (!countDown.isDone) {
+    toSendingState();
   }
 
   const loading = ref(false);
@@ -140,7 +160,7 @@ const useCodeSender = () => {
 
   const text = computed(() => state.value.text);
   const disabled = computed(() => state.value.disabled);
-  const sendCode = () => getCurrentState().sendCode();
+  const sendCode = () => state.value.sendCode();
 
   return reactive({
     toSendingState,
@@ -173,11 +193,10 @@ const SendingStateCodeSender = (sendCoder: StateNeed) => {
   const loading = toRef(sendCoder, "loading");
   const disabled = ref(true);
 
-  const countDown = useCountDown('code_count_down',60);
-  countDown.onChange((time: number) => {
-    text.value = `${time}秒后可重新发送`;
-    console.log("time", time);
-  });
+  const countDown = useCountDown("code_count_down", 60);
+  watchEffect(() => {
+    text.value = `${countDown.currentSecond}秒后可重新发送`;
+  })
   countDown.onEnd(() => sendCoder.toSendAgainState());
   countDown.run();
 
