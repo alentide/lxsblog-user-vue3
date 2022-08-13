@@ -24,7 +24,7 @@
           </div>
         </template>
 
-        <template v-else-if="column.dataIndex === 'order'">
+        <template v-else-if="column.dataIndex === 'sort'">
           <EditColumn
             :value="text"
             @confirm="(e:number) => updateTagOrder(record.id, e)"
@@ -47,7 +47,6 @@ import { useTableList } from "@/modules/list/useTableList.js";
 import { onMounted, reactive, type UnwrapRef } from "vue";
 import EditColumn from "@/components/form/EditColumn.vue";
 
-import "@surely-vue/table/dist/index.less";
 import { clone } from "ramda";
 import { userHttp } from "@/modules/http";
 import { loadingHoc } from "@/modules/loading/loadingHoc";
@@ -85,7 +84,7 @@ const {
     },
     {
       title: "排序",
-      dataIndex: "order",
+      dataIndex: "sort",
       sorter: true,
       sortDirections: ["descend", "ascend"],
       width: "180px",
@@ -105,11 +104,10 @@ const {
   ],
 });
 
-const updateTagOrder = loadingHoc(loading, async (id: number, order: number) => {
-  console.log('id,order',id,order);
+const updateTagOrder = loadingHoc(loading, async (id: number, sort: number) => {
   await userHttp.patch("tags/update-sort", {
     id,
-    order,
+    sort,
   });
   return refresh()
 });
