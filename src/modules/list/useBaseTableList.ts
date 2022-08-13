@@ -21,6 +21,10 @@ export const enum FilterType {
      * 判断是否在数组中，比如 in (1,2,3)
      */
     'IN_ARRAY' = 'InArray',
+    // /**
+    //  * 判断是否在包含某数组的所有元素，比如 all (1,2,3)
+    //  */
+    //  'ALL' = 'All',
     /**
      * 判断是否包含某内容，比如 like '%a%'
      */

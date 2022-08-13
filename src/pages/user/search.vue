@@ -106,6 +106,7 @@ const scrollToTop = ()=>{
 
   const equal = genFilter(FilterType.SINGLE_EQUAL);
   const inArray = genFilter(FilterType.IN_ARRAY);
+  // const all = genFilter(FilterType.ALL);
 
   const sort = (value: any) => {
     order.value = value;
@@ -128,6 +129,7 @@ const scrollToTop = ()=>{
     keywords,
     equal,
     inArray,
+    // all,
     sort,
     pagination,
     currentList,
@@ -138,7 +140,7 @@ const scrollToTop = ()=>{
 const antPageList = useAntPageList("articles/search");
 
 const onChangeCategory = antPageList.equal(["category", "id"]);
-const onChangeTags = antPageList.inArray(["tags", "id"]);
+const onChangeTags = antPageList.equal(["tags", "id"]);
 
 onMounted(antPageList.refresh);
 </script>
