@@ -75,6 +75,7 @@ declare module '@vue/runtime-core' {
     CategoryTagSelector: typeof import('./src/components/category/CategoryTagSelector.vue')['default']
     CodeSender: typeof import('./src/components/auth/CodeSender.vue')['default']
     CustomFilterDropdown: typeof import('./src/components/article/CustomFilterDropdown.vue')['default']
+    EditColumn: typeof import('./src/components/form/EditColumn.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
