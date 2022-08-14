@@ -43,10 +43,12 @@ export default defineConfig({
       //接收一个路由，修改并返回修改后的路由
       extendRoute(route, parent) {
 
-        // if (route.path === "/") {
-        //   // Index is unauthenticated.
-        //   return {...route,redirect:'/home'};
-        // }
+        
+        if (route.path === "/") {
+          // Index is unauthenticated.
+          console.log('route',route);
+          return {...route,redirect:'/user/article'};
+        }
         // Augment the route with meta that indicates that the route requires authentication.
         return {
           ...route,

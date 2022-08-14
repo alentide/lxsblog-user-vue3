@@ -100,7 +100,7 @@ import {
 } from "vue";
 import Loading from "@/components/feedback/Loading.vue";
 
-import Comments from "./components/Comments.vue";
+import Comments from "@/components/comment/Comments.vue";
 
 import CatalogueList from "@/components/article/CatalogueList.vue";
 

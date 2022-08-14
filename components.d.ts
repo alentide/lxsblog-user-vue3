@@ -74,6 +74,7 @@ declare module '@vue/runtime-core' {
     CategorySelector: typeof import('./src/components/category/CategorySelector.vue')['default']
     CategoryTagSelector: typeof import('./src/components/category/CategoryTagSelector.vue')['default']
     CodeSender: typeof import('./src/components/auth/CodeSender.vue')['default']
+    Comments: typeof import('./src/components/comment/Comments.vue')['default']
     CustomFilterDropdown: typeof import('./src/components/article/CustomFilterDropdown.vue')['default']
     EditColumn: typeof import('./src/components/form/EditColumn.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
@@ -98,6 +99,8 @@ declare module '@vue/runtime-core' {
     TagEdit: typeof import('./src/components/tag/TagEdit.vue')['default']
     TagSelector: typeof import('./src/components/tag/TagSelector.vue')['default']
     TagTagSelector: typeof import('./src/components/tag/TagTagSelector.vue')['default']
+    TimeLineForm: typeof import('./src/components/timeLine/TimeLineForm.vue')['default']
+    TimeLines: typeof import('./src/components/timeLine/TimeLines.vue')['default']
     UserSiderNav: typeof import('./src/components/user/UserSiderNav.vue')['default']
   }
 }

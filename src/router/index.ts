@@ -40,6 +40,8 @@ const keepAliveNextPage = (to: RouteLocationNormalized) => {
 const adminTabs = useAdminTabs()
 const toast = useToast()
 router.beforeEach(async (to, from,next) => {
+
+  console.log('to',to);
   if (to.fullPath.startsWith('/admin')) {
     await adminTabs.add(to.fullPath)
   }
