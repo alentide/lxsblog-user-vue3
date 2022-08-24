@@ -275,6 +275,38 @@ const onGetCatalog = (e: Catalogue[]) => {
     display: none;
   }
 }
+
+// ::v-deep(#md-editor-v3){
+
+// /* 自动编号 */
+// /* reset h2 counter to -1 when meet a h1 element */
+// h1 {
+//     counter-reset: h2Counter -1;
+// }
+// /* insert number before h2 element */
+// h2:before {
+//     content: counter(h2Counter)'. '
+// }
+// /* increase h2 counter and reset h3 counter when meet a h2 element */
+// h2 {
+//     counter-increment: h2Counter;
+//     counter-reset: h3Counter;
+// }
+// h3:before {
+//     content: counter(h2Counter) '.' counter(h3Counter) ' '
+// }
+// h3 {
+//     counter-increment: h3Counter;
+// }
+// h4:before {
+//     content: counter(h2Counter) '.' counter(h3Counter) '.' counter(h4Counter) ' '
+// }
+// h4 {
+//     counter-increment: h4Counter;
+// }
+// }
+
+
 </style>
 
 <style>
@@ -306,4 +338,7 @@ h5:target {
 .bottom-comment-x {
   height: calc(100vh - 55px);
 }
+
+
+
 </style>
