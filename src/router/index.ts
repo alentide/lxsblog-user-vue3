@@ -6,6 +6,7 @@ import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vu
 import routes from '~pages'
 import useToast from '@/modules/toast/useToast';
 import { auth } from '@/modules/auth';
+import { useNav } from '@/modules/nav/useNav';
 
 
 const router = createRouter({
@@ -39,11 +40,14 @@ const keepAliveNextPage = (to: RouteLocationNormalized) => {
 
 const adminTabs = useAdminTabs()
 const toast = useToast()
+const nav = useNav()
 router.beforeEach(async (to, from,next) => {
 
-  console.log('to',to);
   if (to.fullPath.startsWith('/admin')) {
+    nav.zeroZIndex()
     await adminTabs.add(to.fullPath)
+  }else {
+    nav.defaultZIndex()
   }
 
   if(to.path.startsWith('/admin') && auth.user?.type !=='admin'){

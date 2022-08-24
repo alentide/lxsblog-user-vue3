@@ -41,9 +41,13 @@
 <script setup lang="ts">
 import useAdminTabs from "@/modules/adminTabs/useAdminTabs";
 import SiderNav from "@/components/admin/SiderNav.vue";
+import { onBeforeUnmount, onMounted } from "vue";
+import { useNav } from "@/modules/nav/useNav";
 // const current = ref("1");
 
 const { tabs, current, go, remove, currentIndex } = useAdminTabs();
+
+
 
 </script>
 

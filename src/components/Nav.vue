@@ -4,7 +4,7 @@
     :style="{
       position: 'fixed',
       top: 0,
-      zIndex: 100,
+      zIndex: nav.ZIndex,
       width: '100%',
       background,
       height: '50px',
