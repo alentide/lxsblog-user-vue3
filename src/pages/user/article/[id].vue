@@ -33,7 +33,7 @@
         >
           <a-affix :style="{ width: 'auto' }" :offset-top="74">
             <div class="sider-content-x">
-              <a-page-header class="back" title="返回" @back="$router.back" />
+              <a-page-header class="back" :title="article.title" @back="$router.back" />
               <a-anchor>
                 <CatalogueList :catalogueList="catalogueList" />
               </a-anchor>
@@ -307,6 +307,9 @@ const onGetCatalog = (e: Catalogue[]) => {
 // }
 
 
+::v-deep(.ant-anchor-wrapper) {
+  max-height: calc(100vh - var(--navHeight) - 24px - 70px - 200px)!important;
+}
 </style>
 
 <style>
